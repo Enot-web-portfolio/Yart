@@ -1,3 +1,4 @@
 backend/django/.env
 backend/venv
 backend/.idea
+backend/django/backend/__pycache__
