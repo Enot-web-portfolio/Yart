@@ -1,0 +1,61 @@
+{
+  "extends": [
+    "@saritasa/eslint-config-saritasa",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "react-app",
+    "react-app/jest"
+  ],
+  "rules": {
+    "no-void": "error",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/member-ordering": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off",
+    "max-classes-per-file": "off",
+    "react/prop-types": "off",
+    "max-len": ["warn", 120],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": ["state"]
+      }
+    ],
+    "arrow-parens": ["error", "as-needed"],
+    "react/function-component-definition": ["warn", {
+      "namedComponents": "arrow-function"
+    }],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "jsdoc/require-param": [
+      "error",
+      {
+        "checkDestructuredRoots": false
+      }
+    ],
+    "spaced-comment": ["error", "always", { "markers": ["/"] }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.tsx"],
+      "rules": {
+        "no-restricted-syntax": [
+          "error",
+          {
+            "selector": "TSInterfaceDeclaration[id.name=/Props$/] TSPropertySignature[readonly=undefined]",
+            "message": "Missing readonly modifier."
+          },
+          {
+            "selector": "TSInterfaceDeclaration[id.name=/Props$/] TSPropertySignature TSTypeAnnotation[typeAnnotation.type=TSArrayType]",
+            "message": "Missing readonly type modifier for array."
+          },
+          {
+            "selector": "TSTypeReference[typeName.name='FC'] > TSTypeReference[typeName.name!=/PropsWithChildren$|Props$/]",
+            "message": "Prefer name with `Props` ending for the component's props interface."
+          }
+        ]
+      }
+    }
+  ]
+}
