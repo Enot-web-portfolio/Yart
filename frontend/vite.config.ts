@@ -4,6 +4,9 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
 
+const HOST = process.env.HOST ?? "0.0.0.0";
+const PORT = isNaN(parseInt(process.env.PORT ?? '3000')) ? 3000 : Number(process.env.PORT)
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -17,5 +20,5 @@ export default defineConfig({
   build: {
     outDir: './build',
   },
-  server: { port: 3000 },
+  server: { host: HOST, port: PORT },
 });
