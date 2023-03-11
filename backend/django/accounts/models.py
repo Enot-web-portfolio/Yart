@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, name, surname, gender, password=None):
         if not email:
-            raise ValueError('Обязательное поле.')
+            raise ValueError('Required.')
 
         email = self.normalize_email(email)
         user = self.model(email=email, name=name, surname=surname, gender=gender)
@@ -28,7 +28,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'surname']
+    REQUIRED_FIELDS = ['name', 'surname', 'gender']
 
     def get_full_name(self):
         return self.name
