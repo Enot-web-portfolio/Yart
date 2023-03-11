@@ -10,6 +10,9 @@ const AppHeaderComponent: FC = () => {
   const { logout } = useAuthActions();
   const user = useCurrentUserStore(store => store.user);
 
+
+
+
   const handleUserLogout = () => {
     logout();
   };
