@@ -2,7 +2,7 @@ name: Run linting
 
 on:
   pull_request:
-    branches: [develop]
+    branches: [master]
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Select frontend dir
+        run: cd frontend
       - name: Install nodejs
         uses: actions/setup-node@v3
         with:
