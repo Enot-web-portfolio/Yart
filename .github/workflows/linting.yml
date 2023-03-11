@@ -9,7 +9,7 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     env:
-       working-directory: ./frontend
+       working-directory: frontend
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
