@@ -13,7 +13,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Select frontend dir
-        run: cd frontend
+        working-directory: ./frontend
       - name: Install nodejs
         uses: actions/setup-node@v3
         with:
