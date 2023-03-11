@@ -8,14 +8,10 @@ on:
 jobs:
   linting:
     runs-on: ubuntu-latest
-    env:
-       working-directory: frontend
     defaults:
       run:
-        working-directory: ${{ env.working-directory }}
+        working-directory: frontend
     steps:
-      - name: log
-        run: pwd | ll
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Install nodejs
