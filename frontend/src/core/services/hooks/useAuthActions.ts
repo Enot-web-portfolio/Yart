@@ -14,7 +14,7 @@ export const useAuthActions = () => {
     if (isUserAuthorized) {
       getCurrentUser();
     }
-  });
+  },[isUserAuthorized]);
 
   return {
     async logout() {

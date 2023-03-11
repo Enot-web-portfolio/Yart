@@ -1,7 +1,6 @@
 /**
- * Asd.
+ * Extract error message.
  * @param errorArray Error array.
- * @returns Afdsa.
  */
 export function extractErrorMessage(
   errorArray?: string[],
