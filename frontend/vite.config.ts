@@ -5,7 +5,7 @@ import svgrPlugin from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
 
 const HOST = process.env.HOST ?? "0.0.0.0";
-const PORT = isNaN(parseInt(process.env.PORT ?? '3000')) ? 3000 : Number(process.env.PORT)
+const PORT = process.env.PORT != null ? parseInt(`${process.env.PORT}`) : 3000
 
 // https://vitejs.dev/config/
 export default defineConfig({
