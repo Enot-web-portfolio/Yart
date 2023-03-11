@@ -4,14 +4,13 @@ on:
   pull_request:
     branches: [master]
     types: [opened, synchronize, reopened, ready_for_review]
+defaults:
+  run:
+    working-directory: ./frontend
 
 jobs:
   linting:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
