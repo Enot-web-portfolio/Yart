@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'djoser',
     'main',
     'accounts',
+    'drf_yasg',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -108,7 +109,7 @@ DJOSER = {
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     'SEND_CONFIRMATION_EMAIL': True,
-    'SET_USERNAME_RETYPE': True,
+    'SET_USERNAME_RETYPE': False,
     'SET_PASSWORD_RETYPE': True,
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
