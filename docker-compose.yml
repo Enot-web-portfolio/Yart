@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./frontend/
+    environment:
+      HOST: '0.0.0.0'
+      PORT: ${FRONTEND_CONTAINER_PORT}
+    ports:
+      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
+    volumes:
+      - ./frontend/src:/app/src

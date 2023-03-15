@@ -1,0 +1,8 @@
+:root {
+  font-size: 14px;
+
+  /*
+    Material UI v5 doesn't support CSS variables for theming.
+    That's why all theme related values must be defined in 'mui-theme.ts' file.
+  */
+}
