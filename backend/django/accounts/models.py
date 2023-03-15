@@ -3,12 +3,12 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, email, name, surname, gender, password=None):
+    def create_user(self, email, gender, password=None, **extra_fields):
         if not email:
             raise ValueError('Required.')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name, surname=surname, gender=gender)
+        user = self.model(email=email, gender=gender, **extra_fields)
 
         user.set_password(password)
         user.save()
@@ -18,8 +18,8 @@ class UserAccountManager(BaseUserManager):
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     gender = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     is_premium = models.BooleanField(default=False)
@@ -28,13 +28,13 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'surname', 'gender']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'gender']
 
     def get_full_name(self):
-        return self.name
+        return self.first_name
 
     def get_short_name(self):
-        return self.name
+        return self.first_name
 
     def __str__(self):
         return self.email
