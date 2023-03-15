@@ -3,6 +3,8 @@ import { Login } from 'src/core/models/login-data';
 import { useAuthStore } from 'src/core/store/auth/store';
 import { useCurrentUserStore } from 'src/core/store/user/store';
 
+
+// TODO: Fix bug with much rerender in useEffect.
 export const useAuthActions = () => {
   const resetUserStore = useCurrentUserStore(store => store.reset);
   const getCurrentUser = useCurrentUserStore(store => store.getCurrentUser);
