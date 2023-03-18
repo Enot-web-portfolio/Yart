@@ -4,6 +4,6 @@ WORKDIR /app
 COPY ./ /app/
 
 RUN rm -rf /app/node_modules
-RUN npm install
+RUN npm ci
 
 CMD ["npm", "start"]
