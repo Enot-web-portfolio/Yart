@@ -7,7 +7,7 @@ import {typedMemo} from 'src/core/utils/typed-memo'
 
 type Props = ButtonProps & {
   // Ф-ция при клике
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
   // Тип кнопки
   type: "primary" | "default" | "link";
   // Текст внутри кнопки
