@@ -1,9 +1,9 @@
-import React, {FC} from 'react'
-import {Button as ButtonAntd} from 'antd'
-import {ButtonProps} from 'antd/es/button/button'
-import './Button.scss'
-import {ButtonBackgroundColor} from './types'
-import {typedMemo} from 'src/core/utils/typed-memo'
+import React, {FC} from 'react';
+import {Button as ButtonAntd} from 'antd';
+import {ButtonProps} from 'antd/es/button/button';
+import './Button.scss';
+import {ButtonBackgroundColor} from './types';
+import {typedMemo} from 'src/core/utils/typed-memo';
 
 type Props = ButtonProps & {
   // Ф-ция при клике

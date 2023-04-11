@@ -1,2 +1,2 @@
-export {Button} from './Button'
-export {ButtonBackgroundColor} from './types'
+export {Button} from './Button';
+export {ButtonBackgroundColor} from './types';

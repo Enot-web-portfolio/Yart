@@ -1,9 +1,9 @@
-import React, {FC} from 'react'
-import {TextSize, TextColor} from "./types";
-import './Text.scss'
-import {Typography} from 'antd'
-import {TextProps} from 'antd/es/typography/Text'
-import {typedMemo} from 'src/core/utils/typed-memo'
+import React, {FC} from 'react';
+import {TextSize, TextColor} from "./types";;
+import './Text.scss';
+import {Typography} from 'antd';
+import {TextProps} from 'antd/es/typography/Text';
+import {typedMemo} from 'src/core/utils/typed-memo';
 
 const {Text: TextAntd} = Typography
 

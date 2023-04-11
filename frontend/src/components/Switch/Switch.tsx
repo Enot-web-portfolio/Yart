@@ -1,8 +1,8 @@
-import React, {FC, useState} from 'react'
-import {Switch as SwitchAntd} from 'antd'
-import {SwitchProps, SwitchChangeEventHandler} from 'antd/es/switch'
-import './Switch.scss'
-import {typedMemo} from 'src/core/utils/typed-memo'
+import React, {FC, useState} from 'react';
+import {Switch as SwitchAntd} from 'antd';
+import {SwitchProps, SwitchChangeEventHandler} from 'antd/es/switch';
+import './Switch.scss';
+import {typedMemo} from 'src/core/utils/typed-memo';
 
 type Props = SwitchProps & {
   // Ф-ция клика на Switch
