@@ -1,8 +1,39 @@
 :root {
   font-size: 14px;
 
+  //  Text Font Size
+  --bigTitleFS: 70px;
+  --middleTitleFS: 50px;
+  --smallTitleFS: 35px;
+  --bigTextFS: 30px;
+  --middleTextFS: 25px;
+  --smallTextFS: 20px;
+  --microTextFS: 15px;
+
+  // Colors
+  --pearGreenColor: #C9E82D;
+  --yellowColor: #FACD08;
+  --orangeColor: #FDA72E;
+  --pinkColor: #FE5EC8;
+  --turquoiseColor: #45E7E7;
+  --darkPinkColor: #E61E59;
+  --violetColor: #9500FE;
+
+  --buttonPrimaryColor: #10BDF9;
+  --buttonSecondaryColor: #6978FA;
+  --backgroundColor: #EDEEF0;
+  --secondaryElementColor: #C5C8CF;
+  --inactiveElementColor: #5A5A5A;
+  --secondaryTextColor: #1B2B4C;
+
+  --line-height: 1.4;
   /*
     Material UI v5 doesn't support CSS variables for theming.
     That's why all theme related values must be defined in 'mui-theme.ts' file.
   */
 }
+
+
+
+
+

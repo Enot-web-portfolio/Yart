@@ -1,0 +1,41 @@
+.text {
+  color: black;
+  line-height: var(--line-height);
+
+  &.fs_70_px {
+    font-size: var(--bigTitleFS);
+    color: var(--pinkColor);
+  }
+
+  &.fs_50_px {
+    font-size: var(--middleTitleFS);
+  }
+
+  &.fs_35_px {
+    font-size: var(--smallTitleFS);
+  }
+
+  &.fs_30_px {
+    font-size: var(--bigTextFS);
+  }
+
+  &.fs_25_px {
+    font-size: var(--middleTextFS);
+  }
+
+  &.fs_20_px {
+    font-size: var(--smallTextFS);
+  }
+
+  &.fs_15_px {
+    font-size: var(--microTextFS);
+  }
+
+  &.main_color {
+    color: #000;
+  }
+
+  &.secondary_color {
+    color: var(--secondaryTextColor);
+  }
+}
