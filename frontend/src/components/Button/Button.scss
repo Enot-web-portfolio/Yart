@@ -1,0 +1,35 @@
+.button {
+  font-size: var(--middleTextFS);
+  padding: 8px 27px;
+  border-radius: 50px;
+  height: auto;
+
+  &.ant-btn-primary {
+    &.primary_color {
+      background-color: var(--buttonPrimaryColor);
+    }
+
+    &.secondary_color {
+      background-color: var(--buttonSecondaryColor);
+    }
+
+    &:hover {
+      background-color: var(--buttonHoverColor);
+    }
+  }
+
+  &.ant-btn-default {
+    border-color: var(--secondaryTextColor);
+    color: var(--secondaryTextColor);
+  }
+
+  &.ant-btn-link {
+    padding: 4px 15px;
+    color: var(--buttonPrimaryColor);
+  }
+
+  &.small_size {
+    font-size: var(--microTextFS);
+    padding: 5px 10px;
+  }
+}
