@@ -1,15 +1,13 @@
 import { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
-import { authRoutes } from 'src/features/auth/routes';
-import { homeRoutes } from 'src/features/home/routes';
+import {componentsRoutes} from "../features/components/routes";
 
 const routes: RouteObject[] = [
   {
     path: '*',
     element: <Navigate to="/" />,
   },
-  ...homeRoutes,
-  ...authRoutes,
+  ...componentsRoutes
 ];
 
 export const RootRouter: FC = () => useRoutes(routes);
