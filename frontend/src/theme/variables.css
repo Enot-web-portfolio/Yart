@@ -24,9 +24,4 @@
   --inactive-element-color: #5a5a5a;
   --secondary-text-color: #1b2b4c;
   --line-height: 1.4;
-
-  /*
-    Material UI v5 doesn't support CSS variables for theming.
-    That's why all theme related values must be defined in 'mui-theme.ts' file.
-  */
 }
