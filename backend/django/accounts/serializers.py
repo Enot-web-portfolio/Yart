@@ -24,3 +24,19 @@ class UserCreateSerializer(UserCreateSerializer):
                   'additional_links',
                   'description',
                   )
+
+
+class UserDetailSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ('first_name',
+                  'last_name',
+                  'city',
+                  'company',
+                  'subscribers_count',
+                  'selected_main_skills',
+                  'id',
+                  'image_url',
+                  'description',
+                  'selected_secondary_skills',
+                  )
