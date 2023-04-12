@@ -1,8 +1,9 @@
-/** Цвет заливки кнопки с типом primary
- * Primary - голубой, основной;
- * Secondary - фиолетовый, второстепенный.
- */
+/** Цвет заливки кнопки с типом primary */
 export enum ButtonBackgroundColor {
-  Primary = 'primary',
-  Secondary = 'secondary',
+
+  /** Основной. */
+  Primary = "primary",
+  
+  /** Второстепенный. */
+  Secondary = "secondary"
 }
