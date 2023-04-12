@@ -21,4 +21,6 @@ class UserCreateSerializer(UserCreateSerializer):
                   'subscribers_count',
                   'works_count',
                   'phone',
-                  'additional_links',)
+                  'additional_links',
+                  'description',
+                  )
