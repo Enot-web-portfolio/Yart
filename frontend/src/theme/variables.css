@@ -1,13 +1,13 @@
 :root {
-  font-size: 14px;
+  font-size: 25px;
 
-  --big-title-fs: 70px;
-  --middle-title-fs: 50px;
-  --small-title-fs: 35px;
-  --big-text-fs: 30px;
-  --middle-text-fs: 25px;
-  --small-text-fs: 20px;
-  --micro-text-fs: 15px;
+  --big-title-fs: 2.8rem;
+  --middle-title-fs: 2rem;
+  --small-title-fs: 1.4rem;
+  --big-text-fs: 1.2rem;
+  --middle-text-fs: 1rem;
+  --small-text-fs: 0.8rem;
+  --micro-text-fs: 0.6rem;
   --pear-green-color: #c9e82d;
   --yellow-color: #facd08;
   --orange-color: #fda72e;

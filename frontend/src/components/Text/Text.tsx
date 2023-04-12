@@ -14,11 +14,11 @@ type Props = TextProps & {
   size: TextSize;
 
   // Цвет текста
-  color: TextColor;
+  color?: TextColor;
 };
 
 // Компонент Текст
-const TextComponent: FC<Props> = (props: Props) => <TextAntd {...props} className={`text fs_${props.size}_px ${props.color}_color`}>daw</TextAntd>;
+const TextComponent: FC<Props> = ({ color = TextColor.Main, ...props }: Props) => <TextAntd {...props} className={`text fs_${props.size}_px ${color}_color`}>daw</TextAntd>;
 
 // Компонент Текст
 export const Text = typedMemo(TextComponent);

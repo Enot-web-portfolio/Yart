@@ -1,10 +1,8 @@
 .text {
-  color: black;
   line-height: var(--line-height);
 
   &.fs_70_px {
     font-size: var(--big-title-fs);
-    color: var(--pink-color);
   }
 
   &.fs_50_px {
