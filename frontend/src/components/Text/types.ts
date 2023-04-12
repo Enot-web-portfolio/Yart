@@ -5,7 +5,7 @@
  * BigText = 30px,
  * MiddleText = 25px,
  * SmallText = 20px,
- * MicroText = 15px
+ * MicroText = 15px.
  */
 export enum TextSize {
   BigTitle = 70,
@@ -14,14 +14,15 @@ export enum TextSize {
   BigText = 30,
   MiddleText = 25,
   SmallText = 20,
-  MicroText = 15
+  MicroText = 15,
 }
 
-/** Цвет текста
- * Main - черный, основной,
- * Secondary - темно-синий, вторичный
- */
+/** Цвет текста. */
 export enum TextColor {
-  Main = "main",
-  Secondary = "secondary"
+
+  /** Main - черный, основной. */
+  Main = 'main',
+
+  /** Secondary - темно-синий, вторичный. */
+  Secondary = 'secondary',
 }

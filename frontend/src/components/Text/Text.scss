@@ -3,32 +3,32 @@
   line-height: var(--line-height);
 
   &.fs_70_px {
-    font-size: var(--bigTitleFS);
-    color: var(--pinkColor);
+    font-size: var(--big-title-fs);
+    color: var(--pink-color);
   }
 
   &.fs_50_px {
-    font-size: var(--middleTitleFS);
+    font-size: var(--middle-title-fs);
   }
 
   &.fs_35_px {
-    font-size: var(--smallTitleFS);
+    font-size: var(--small-title-fs);
   }
 
   &.fs_30_px {
-    font-size: var(--bigTextFS);
+    font-size: var(--big-text-fs);
   }
 
   &.fs_25_px {
-    font-size: var(--middleTextFS);
+    font-size: var(--middle-text-fs);
   }
 
   &.fs_20_px {
-    font-size: var(--smallTextFS);
+    font-size: var(--small-text-fs);
   }
 
   &.fs_15_px {
-    font-size: var(--microTextFS);
+    font-size: var(--micro-text-fs);
   }
 
   &.main_color {
@@ -36,6 +36,6 @@
   }
 
   &.secondary_color {
-    color: var(--secondaryTextColor);
+    color: var(--secondary-text-color);
   }
 }

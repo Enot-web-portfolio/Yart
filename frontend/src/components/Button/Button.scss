@@ -1,35 +1,35 @@
 .button {
-  font-size: var(--middleTextFS);
+  font-size: var(--middle-text-fs);
   padding: 8px 27px;
   border-radius: 50px;
   height: auto;
 
   &.ant-btn-primary {
     &.primary_color {
-      background-color: var(--buttonPrimaryColor);
+      background-color: var(--button-primary-color);
     }
 
     &.secondary_color {
-      background-color: var(--buttonSecondaryColor);
+      background-color: var(--button-secondary-color);
     }
 
     &:hover {
-      background-color: var(--buttonHoverColor);
+      background-color: var(--button-hover-color);
     }
   }
 
   &.ant-btn-default {
-    border-color: var(--secondaryTextColor);
-    color: var(--secondaryTextColor);
+    border-color: var(--secondary-text-color);
+    color: var(--secondary-text-color);
   }
 
   &.ant-btn-link {
     padding: 4px 15px;
-    color: var(--buttonPrimaryColor);
+    color: var(--button-primary-color);
   }
 
   &.small_size {
-    font-size: var(--microTextFS);
+    font-size: var(--micro-text-fs);
     padding: 5px 10px;
   }
 }
