@@ -15,13 +15,13 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserCreateSerializer
     User = get_user_model()
     queryset = User.objects.all()
-    filter_backends = (filters.BaseFilterBackend, filters.SearchFilter)
-    filter_fields = ('username', 'email', 'usertype')
-    search_fields = ('username', 'email', 'usertype')
+    # filter_backends = (filters.BaseFilterBackend, filters.SearchFilter)
+    # filter_fields = ('username', 'email', 'usertype')
+    # search_fields = ('username', 'email', 'usertype')
 
     @action(permission_classes=[IsAuthenticated], detail=True)
-    def me(self, request, *args, **kwargs):
+    def user_detail(self, request, *args, **kwargs):
         User = get_user_model()
-        self.object = get_object_or_404(User, pk=request.user.id)
+        self.object = User.objects.get(pk=kwargs["id"])
         serializer = self.get_serializer(self.object)
         return Response(serializer.data)
