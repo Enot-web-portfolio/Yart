@@ -1,4 +1,4 @@
-from djoser.serializers import UserCreateSerializer
+from djoser.serializers import UserCreateSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -26,8 +26,8 @@ class UserCreateSerializer(UserCreateSerializer):
                   )
 
 
-class UserDetailSerializer(UserCreateSerializer):
-    class Meta(UserCreateSerializer.Meta):
+class UserDetailSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
         model = User
         fields = ('first_name',
                   'last_name',
@@ -39,4 +39,15 @@ class UserDetailSerializer(UserCreateSerializer):
                   'image_url',
                   'description',
                   'selected_secondary_skills',
+                  )
+
+
+class UserShortSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model = User
+        fields = ('first_name',
+                  'last_name',
+                  'image_url',
+                  'works_count',
+                  'id',
                   )

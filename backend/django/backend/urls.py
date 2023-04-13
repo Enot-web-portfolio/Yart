@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Digital Portfolio API",
+      title="Yart API",
       default_version='v1',
       description="Our best description",
       terms_of_service="https://www.google.com/policies/terms/",
@@ -31,7 +31,7 @@ urlpatterns = [
          name="reset_password_confirm"),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path("users/", include("accounts.urls"), name="users"),
+    path("", include("accounts.urls"), name="users"),
 ]
 
 # urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]

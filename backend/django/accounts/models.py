@@ -14,6 +14,8 @@ class UserAccountManager(BaseUserManager):
         user.set_password(password)
         user.save()
 
+        UserSubscribtions.objects.create(id=user.id, subs_list=list())
+
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -25,6 +27,8 @@ class UserAccountManager(BaseUserManager):
 
         user.set_password(password)
         user.save()
+
+        UserSubscribtions.objects.create(id=user.id, subs_list=list())
 
         return user
 
@@ -61,4 +65,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class UserSubscribtions(models.Model):
+    id = models.IntegerField(primary_key=True)
+    subs_list = ArrayField(models.IntegerField(), default=list())
+
 
