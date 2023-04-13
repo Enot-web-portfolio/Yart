@@ -38,7 +38,7 @@ class SkillsViewSet(viewsets.ViewSet):
     def skills_list(self, request, *args, **kwargs):
         List = MainSkillsType
         skills_list = []
-        for i in range(MainSkillsType.objects.all().count()):  # В зависимости от того, сколько вы добавите типов в БД
+        for i in range(MainSkillsType.objects.all().count()):
             try:
                 skill = SkillsSerializer(List.objects.get(pk=i))
             except MainSkillsType.DoesNotExist:
