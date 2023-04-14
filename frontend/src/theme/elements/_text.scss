@@ -1,39 +1,3 @@
 .ant-typography {
   line-height: var(--line-height);
-
-  &.fs_70_px {
-    font-size: var(--big-title-fs);
-  }
-
-  &.fs_50_px {
-    font-size: var(--middle-title-fs);
-  }
-
-  &.fs_35_px {
-    font-size: var(--small-title-fs);
-  }
-
-  &.fs_30_px {
-    font-size: var(--big-text-fs);
-  }
-
-  &.fs_25_px {
-    font-size: var(--middle-text-fs);
-  }
-
-  &.fs_20_px {
-    font-size: var(--small-text-fs);
-  }
-
-  &.fs_15_px {
-    font-size: var(--micro-text-fs);
-  }
-
-  &.main_color {
-    color: #000;
-  }
-
-  &.secondary_color {
-    color: var(--secondary-text-color);
-  }
 }
