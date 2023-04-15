@@ -1,0 +1,44 @@
+import datetime
+from django.contrib.postgres.fields import ArrayField
+from django.db import models
+
+
+class WorkBlockType(models.Model):
+    id = models.IntegerField(primary_key=True)
+    type = models.IntegerField()
+    image_urls = ArrayField(models.CharField(max_length=255), default=list())
+    text = models.CharField(max_length=255)
+    order = models.IntegerField()
+
+    objects = models.Manager()
+
+
+class UserComments(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user_id = models.IntegerField()
+    text = models.CharField(max_length=255)
+
+    objects = models.Manager()
+
+
+class UserWorks(models.Model):
+    id = models.IntegerField(primary_key=True)
+    user_first_name = models.CharField(max_length=255)
+    user_last_name = models.CharField(max_length=255)
+    user_id = models.IntegerField()
+    user_main_skills = ArrayField(models.CharField(max_length=255))
+    user_image_url = models.CharField(max_length=255, default='')
+    main_skills = ArrayField(models.CharField(max_length=255))
+    likes_count = models.IntegerField(default=0)
+    likes_list = ArrayField(models.IntegerField(), default=list())
+    image_url = models.CharField(max_length=255, default='')
+    start_text = models.CharField(max_length=255, default='')
+    name = models.CharField(max_length=255, default=f'New work {id} from {user_first_name}')
+    comments = ArrayField(models.IntegerField(), default=list())
+    open_comments = models.BooleanField(default=False)
+    blocks = ArrayField(models.IntegerField(), default=list())
+    date = models.DateField(default=datetime.datetime.now())
+    tags = ArrayField(models.CharField(max_length=255), default=list())
+    file_urls = ArrayField(models.CharField(max_length=255), default=list())
+
+    objects = models.Manager()

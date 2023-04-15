@@ -1,13 +1,13 @@
-import simplejson
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, _get_queryset
 from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-
+from django.core.paginator import Paginator
 from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer
 from .models import UserSubscribtions, MainSkillsType
+from backend.pagination import Pagination
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'djoser',
     'main',
     'accounts',
+    'works',
     'drf_yasg',
     'corsheaders',
 ]
@@ -161,6 +162,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 }
 
 SIMPLE_JWT = {
