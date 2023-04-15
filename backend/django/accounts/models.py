@@ -71,6 +71,8 @@ class UserSubscribtions(models.Model):
     id = models.IntegerField(primary_key=True)
     subs_list = ArrayField(models.IntegerField(), default=list())
 
+    objects = models.Manager()
+
 
 class MainSkillsType(models.Model):
     name = models.CharField(max_length=255)
