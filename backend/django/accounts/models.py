@@ -72,3 +72,10 @@ class UserSubscribtions(models.Model):
     subs_list = ArrayField(models.IntegerField(), default=list())
 
 
+class MainSkillsType(models.Model):
+    name = models.CharField(max_length=255)
+    background_color = models.CharField(max_length=255)
+    font_color = models.CharField(max_length=255)
+    checked = models.BooleanField(default=False)
+
+    objects = models.Manager()

@@ -1,5 +1,7 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
+from .models import MainSkillsType
 
 User = get_user_model()
 
@@ -51,3 +53,9 @@ class UserShortSerializer(UserSerializer):
                   'works_count',
                   'id',
                   )
+
+
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MainSkillsType
+        fields = '__all__'
