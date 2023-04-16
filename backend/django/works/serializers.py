@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import UserWorks
+from .models import UserWorks, UserComments
+
 
 class WorksSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,7 +29,9 @@ class WorksLikeSerializer(serializers.ModelSerializer):
         model = UserWorks
         fields = ('likes_count', 'id')
 
-    def update(self, instance, validated_data):
-        instance.likes_count = validated_data.get("likes_count", instance.likes_count)
-        instance.save()
-        return instance
+
+class UserCommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserComments
+        fields = '__all__'
+

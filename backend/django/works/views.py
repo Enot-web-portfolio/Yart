@@ -1,11 +1,13 @@
+import json
+
 from django.core.paginator import Paginator
 from rest_framework import viewsets
 from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import UserSubscribtions
-from .models import UserWorks
-from .serializers import WorksShortSerializer, WorksSerializer, WorksLikeSerializer
+from .models import UserWorks, UserComments
+from .serializers import WorksShortSerializer, WorksSerializer, WorksLikeSerializer, UserCommentsSerializer
 
 
 class WorksViewSet(viewsets.ViewSet):
@@ -70,3 +72,33 @@ class WorksViewSet(viewsets.ViewSet):
         Works = UserWorks
         work = Works.objects.get(pk=kwargs["id"])
         return Response(WorksSerializer(work).data)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def comment_work(self, request, *args, **kwargs):
+        Works = UserWorks
+        work = Works.objects.get(pk=kwargs['id'])
+        Comments = UserComments
+        new_id = Comments.objects.latest('id').id + 1
+        Comments.objects.create(id=new_id, user_id=kwargs['id'], text=json.loads(request.body)['text'])
+        work.comments.append(Comments.objects.get(id=new_id).id)
+        work.save()
+        return Response(UserCommentsSerializer(Comments.objects.get(id=new_id)).data)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def edit_comment_work(self, request, *args, **kwargs):
+        Comments = UserComments
+        comment = Comments.objects.get(id=kwargs['com_id'])
+        comment.text = json.loads(request.body)['text']
+        comment.save()
+        return Response(UserCommentsSerializer(Comments.objects.get(id=kwargs['com_id'])).data)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def delete_comment_work(self, request, *args, **kwargs):
+        Works = UserWorks
+        work = Works.objects.get(pk=kwargs['id'])
+        work.comments.remove(kwargs['com_id'])
+        Comments = UserComments
+        id = Comments.objects.get(id=kwargs['com_id']).id
+        Comments.objects.get(id=kwargs['com_id']).delete()
+        work.save()
+        return Response(id)
