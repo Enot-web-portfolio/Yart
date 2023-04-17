@@ -1,6 +1,7 @@
 :root {
   font-size: 25px;
 
+  /* Font size */
   --big-title-fs: 2.8rem;
   --middle-title-fs: 2rem;
   --small-title-fs: 1.4rem;
@@ -8,6 +9,11 @@
   --middle-text-fs: 1rem;
   --small-text-fs: 0.8rem;
   --micro-text-fs: 0.6rem;
+
+  /* Other */
+  --border-radius: 50px;
+
+  /* Colors */
   --pear-green-color: #c9e82d;
   --yellow-color: #facd08;
   --orange-color: #fda72e;
@@ -24,4 +30,9 @@
   --inactive-element-color: #5a5a5a;
   --secondary-text-color: #1b2b4c;
   --line-height: 1.4;
+
+  /* Paddings */
+  --small-padding: 15px;
+  --medium-padding: 30px;
+  --big-padding: 60px;
 }
