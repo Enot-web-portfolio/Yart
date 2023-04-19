@@ -55,6 +55,22 @@ class UserShortSerializer(UserSerializer):
                   )
 
 
+class UserEditSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model = User
+        fields = ('first_name',
+                  'last_name',
+                  'email',
+                  'phone',
+                  'additional_links',
+                  'city',
+                  'company',
+                  'available_main_skills',
+                  'available_secondary_skills',
+                  'id',
+                  )
+
+
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainSkillsType
