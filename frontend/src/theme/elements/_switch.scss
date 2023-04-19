@@ -1,0 +1,19 @@
+.ant-switch {
+  &, &:hover {
+    background-color: var(--background-color) !important;
+  }
+
+  .ant-switch-handle::before {
+    background-color: var(--secondary-element-color);
+  }
+
+  &.ant-switch-checked {
+    &, &:hover {
+      background-color: var(--yellow-color) !important;
+    }
+
+    .ant-switch-handle::before {
+      background-color: var(--violet-color);
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.ant-tabs.ant-tabs-card {
+  .ant-tabs-nav {
+    &::before {
+      display: none;
+    }
+
+    .ant-tabs-nav-list .ant-tabs-tab {
+      padding: var(--space-s) var(--space-m);
+      background-color: initial;
+      border: none;
+      border-radius: var(--border-radius);
+
+      .ant-tabs-tab-btn {
+        font-size: var(--big-text-fs);
+        color: #000;
+      }
+
+      &:hover .ant-tabs-tab-btn,
+      &.ant-tabs-tab-active .ant-tabs-tab-btn {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+      }
+
+      &.ant-tabs-tab-active {
+        background-color: #fff;
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, UserManager
 from django.contrib.postgres.fields import ArrayField
@@ -21,6 +22,9 @@ class UserAccountManager(BaseUserManager):
     def create_superuser(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('Required.')
+
+        extra_fields.is_staff = True
+        extra_fields.is_superuser = True
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
