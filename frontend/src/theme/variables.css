@@ -1,6 +1,4 @@
 :root {
-  font-size: 14px;
-
   font-size: 25px;
 
   /* Font size */
@@ -34,7 +32,7 @@
   --line-height: 1.4;
 
   /* Paddings */
-  --small-padding: 15px;
-  --medium-padding: 30px;
-  --big-padding: 60px;
+  --space-s: 15px;
+  --space-m: 30px;
+  --space-l: 60px;
 }
