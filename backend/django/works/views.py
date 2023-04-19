@@ -1,13 +1,15 @@
 import json
-
+import uuid
+import boto3
 from django.core.paginator import Paginator
 from rest_framework import viewsets
 from rest_framework.decorators import action, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import UserSubscribtions
-from .models import UserWorks, UserComments
-from .serializers import WorksShortSerializer, WorksSerializer, WorksLikeSerializer, UserCommentsSerializer
+from backend import settings
+from .models import UserWorks, UserComments, WorksFiles
+from .serializers import WorksShortSerializer, WorksSerializer, WorksLikeSerializer, UserCommentsSerializer, EditingWorkSerializer, WorkFilesSerializer
 
 
 class WorksViewSet(viewsets.ViewSet):
@@ -102,3 +104,38 @@ class WorksViewSet(viewsets.ViewSet):
         Comments.objects.get(id=kwargs['com_id']).delete()
         work.save()
         return Response(id)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def edit_work(self, request, *args, **kwargs):
+        Works = UserWorks
+        work = Works.objects.get(pk=kwargs['id'])
+        serializer = EditingWorkSerializer()
+        EditingWorkSerializer.update(self=serializer, instance=work, validated_data=request.data)
+        return Response(EditingWorkSerializer(work).data)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def work_fileedit(self, request, *args, **kwargs):
+        response_list = []
+        for i in range(len(json.loads(request.body)['orderArr'])):
+            image_file = json.loads(request.body)["files"][i]
+            session = boto3.session.Session()
+            s3 = session.client(
+                service_name='s3',
+                endpoint_url='https://hb.bizmrg.com',
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            )
+            id = uuid.uuid4()
+            key = f'worksfile_{kwargs["id"]}_{id}.'+image_file.rsplit('.', 1)[1].lower()
+            s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/works/{kwargs["id"]}/{key}')
+            workfile = WorksFiles
+            workfile.objects.create(file=f'https://digital-portfolio.hb.bizmrg.com/media/works/{kwargs["id"]}/{key}')
+            response_list.append(
+                {
+                    'order': json.loads(request.body)['orderArr'][i],
+                    'fileUrl': f'https://digital-portfolio.hb.bizmrg.com/media/works/{kwargs["id"]}/{key}',
+                    'isFile': json.loads(request.body)['isFile'][i]
+                }
+            )
+        return Response(response_list)
+

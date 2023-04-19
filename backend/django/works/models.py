@@ -1,4 +1,6 @@
 import datetime
+import uuid
+
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
@@ -26,9 +28,9 @@ class UserWorks(models.Model):
     user_first_name = models.CharField(max_length=255)
     user_last_name = models.CharField(max_length=255)
     user_id = models.IntegerField()
-    user_main_skills = ArrayField(models.CharField(max_length=255))
+    user_main_skills = ArrayField(models.CharField(max_length=255), default=list())
     user_image_url = models.CharField(max_length=255, default='')
-    main_skills = ArrayField(models.CharField(max_length=255))
+    main_skills = ArrayField(models.CharField(max_length=255), default=list())
     likes_count = models.IntegerField(default=0)
     likes_list = ArrayField(models.IntegerField(), default=list())
     image_url = models.CharField(max_length=255, default='')
@@ -40,5 +42,12 @@ class UserWorks(models.Model):
     date = models.DateField(default=datetime.datetime.now())
     tags = ArrayField(models.CharField(max_length=255), default=list())
     file_urls = ArrayField(models.CharField(max_length=255), default=list())
+
+    objects = models.Manager()
+
+
+class WorksFiles(models.Model):
+    uploaded_at = models.DateField(default=datetime.datetime.now())
+    file = models.CharField(max_length=255)
 
     objects = models.Manager()
