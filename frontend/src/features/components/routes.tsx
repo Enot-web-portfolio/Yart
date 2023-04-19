@@ -5,7 +5,7 @@ const ComponentsPage = lazy(() => import('./pages/components-page').then(module 
 
 export const componentsRoutes: RouteObject[] = [
   {
-    path: 'components',
+    path: '/',
     element: <ComponentsPage/>,
   },
 ];
