@@ -1,5 +1,5 @@
 /** Параметры иконки. */
-export interface IconProps {
+export type IconProps = Readonly<{
 
   /** Размер иконки. */
   size: IconSize;
@@ -12,7 +12,7 @@ export interface IconProps {
 
   /** Класс. */
   className?: string;
-}
+}>;
 
 /** Размер иконки. */
 export enum IconSize {
