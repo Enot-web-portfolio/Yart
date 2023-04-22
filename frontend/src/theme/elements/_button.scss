@@ -1,7 +1,7 @@
 .ant-btn {
   font-size: var(--middle-text-fs);
   padding: 8px 27px;
-  border-radius: 50px;
+  border-radius: var(--border-radius-m);
   height: auto;
 
   &.ant-btn-primary {
@@ -24,7 +24,7 @@
   }
 
   &.ant-btn-link {
-    padding: 4px 15px;
+    padding: 5px 15px;
     color: var(--button-primary-color);
   }
 

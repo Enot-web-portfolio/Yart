@@ -10,8 +10,9 @@
   --small-text-fs: 0.8rem;
   --micro-text-fs: 0.6rem;
 
-  /* Other */
-  --border-radius: 50px;
+  /* Border Radius */
+  --border-radius-m: 50px;
+  --border-radius-s: 25px;
 
   /* Colors */
   --pear-green-color: #c9e82d;
@@ -32,6 +33,7 @@
   --line-height: 1.4;
 
   /* Paddings */
+  --space-vs: 5px;
   --space-s: 15px;
   --space-m: 30px;
   --space-l: 60px;

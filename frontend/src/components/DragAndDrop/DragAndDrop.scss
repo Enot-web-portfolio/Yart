@@ -1,0 +1,43 @@
+.drag_and_drop {
+  .ant-upload-drag {
+    border: none;
+    padding: var(--space-s);
+    background-color: var(--background-color);
+    border-radius: var(--border-radius-s);
+
+    .ant-upload-btn {
+      padding: 0;
+
+      .drag_and_drop__content {
+        padding: var(--space-m);
+        border-radius: var(--border-radius-s);
+        background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='25' ry='25' stroke='%231b2b4c' stroke-width='2' stroke-dasharray='8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+
+        .ant-typography {
+          font-size: var(--small-text-fs);
+        }
+      }
+    }
+  }
+
+  .ant-upload-list-text {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: var(--space-s);
+    justify-content: flex-start;
+
+    .ant-upload-list-item-container {
+      .ant-upload-list-item {
+        padding: var(--space-vs);
+        height: auto;
+        border-radius: 15px;
+        background-color: var(--background-color);
+
+        .ant-upload-list-item-name {
+          font-size: var(--micro-text-fs);
+        }
+      }
+    }
+  }
+}
