@@ -9,13 +9,18 @@ import './DragAndDrop.scss';
 const { Dragger } = Upload;
 const { Text } = Typography;
 
-type Props = Readonly<UploadProps>;
+type Props = Readonly<UploadProps & {
 
+  // Максимальный размер файла в Мб
+  maxSize: number;
+}>;
+
+// Компонент Drag&Drop
 const DragAndDropComponent: FC<Props> = (props: Props) => (
   <Dragger {...props}
     className={'drag_and_drop'}
     showUploadList={{
-             removeIcon: <img src={'/src/assets/icons/cross.svg'}/>,
+               removeIcon: <img src={'/src/assets/icons/cross.svg'}/>,
     }}
     beforeUpload={() => false}>
     <div className="drag_and_drop__content">
@@ -24,4 +29,5 @@ const DragAndDropComponent: FC<Props> = (props: Props) => (
   </Dragger>
 );
 
+// Компонент Drag&Drop
 export const DragAndDrop = typedMemo(DragAndDropComponent);
