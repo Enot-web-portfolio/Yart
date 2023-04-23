@@ -129,11 +129,11 @@ class WorksViewSet(viewsets.ViewSet):
             key = f'worksfile_{kwargs["id"]}_{id}.'+image_file.rsplit('.', 1)[1].lower()
             s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/works/{kwargs["id"]}/{key}')
             workfile = WorksFiles
-            workfile.objects.create(file=f'https://digital-portfolio.hb.bizmrg.com/media/works/{kwargs["id"]}/{key}')
+            workfile.objects.create(file=f'https://cloud.enotwebstudio.ru/media/works/{kwargs["id"]}/{key}')
             response_list.append(
                 {
                     'order': json.loads(request.body)['orderArr'][i],
-                    'fileUrl': f'https://digital-portfolio.hb.bizmrg.com/media/works/{kwargs["id"]}/{key}',
+                    'fileUrl': f'https://cloud.enotwebstudio.ru/media/works/{kwargs["id"]}/{key}',
                     'isFile': json.loads(request.body)['isFile'][i]
                 }
             )
