@@ -40,7 +40,9 @@ class UserViewSet(viewsets.ModelViewSet):
                     except:
                         pass
             else:
-                potential_query = User.objects.filter(selected_main_skills__contains=request.GET.get("mainSkills", [])[1:-1].split(', '), first_name__contains=search)
+                potential_query = User.objects.filter(
+                    selected_main_skills__contains=request.GET.get("mainSkills", [])[1:-1].split(', '),
+                    first_name__contains=search)
                 for i in potential_query:
                     query.append(UserShortSerializer(i).data)
         elif request.GET.get("onlySubscriptions", False) is False:
@@ -83,19 +85,19 @@ class SubscribtionViewSet(viewsets.ViewSet):
 
     @action(permission_classes=[IsAuthenticated], detail=True)
     def subscribe(self, request, *args, **kwargs):
-        self.object, is_created = UserSubscribtions.objects.get_or_create(pk=kwargs["id"])
+        self.object, is_created = UserSubscribtions.objects.get_or_create(pk=request.user.id)
         if kwargs["id"] != request.user.id:
-            self.object.subs_list.append(request.user.id)
+            self.object.subs_list.append(kwargs["id"])
             self.object.save()
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_409_CONFLICT)
 
     @action(permission_classes=[IsAuthenticated], detail=True)
     def unsubscribe(self, request, *args, **kwargs):
-        self.object = get_object_or_404(UserSubscribtions, pk=kwargs["id"])
+        self.object = get_object_or_404(UserSubscribtions, pk=request.user.id)
         if kwargs["id"] != request.user.id:
             try:
-                self.object.subs_list.remove(request.user.id)
+                self.object.subs_list.remove(kwargs["id"])
             except ValueError:
                 return Response(status=status.HTTP_403_FORBIDDEN)
             self.object.save()
@@ -104,7 +106,9 @@ class SubscribtionViewSet(viewsets.ViewSet):
 
 
 class SkillsViewSet(viewsets.ViewSet):
-    @action(permission_classes=[IsAuthenticated], detail=True)
+    permission_classes = (AllowAny,)
+
+    @action(permission_classes=(AllowAny,), detail=True)
     def skills_list(self, request, *args, **kwargs):
         List = MainSkillsType
         skills_list = []
