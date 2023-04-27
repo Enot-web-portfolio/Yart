@@ -1,19 +1,19 @@
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer
 from .models import UserSubscribtions, MainSkillsType
-from backend.pagination import Pagination
 
 
 class UserViewSet(viewsets.ModelViewSet):
-
     User = get_user_model()
     queryset = User.objects.all()
     serializer_class = UserEditSerializer
+    permission_classes = (AllowAny,)
 
     @action(permission_classes=[IsAuthenticated], detail=True)
     def user_detail(self, request, *args, **kwargs):
@@ -21,6 +21,37 @@ class UserViewSet(viewsets.ModelViewSet):
         self.object = get_object_or_404(User, pk=kwargs["id"])
         serializer = UserDetailSerializer(self.object)
         return Response(serializer.data)
+
+    @action(permission_classes=(AllowAny,), detail=True)
+    def user_search(self, request, *args, **kwargs):
+        User = get_user_model()
+        potential_query = []
+        query = []
+        search = str(request.GET.get("search", '')).strip()
+        if request.GET.get("onlySubscriptions", False) == 'true' and request.user.id:
+            List = UserSubscribtions
+            potential_query = List.objects.get(pk=request.user.id, first_name__contains=search)
+        if request.GET.get("mainSkills", None) is not None:
+            if potential_query:
+                for i in potential_query.subs_list:
+                    try:
+                        query.append(UserShortSerializer(User.objects.get(
+                            pk=int(i), selected_main_skills=request.GET.get("mainSkills", []))).data)
+                    except:
+                        pass
+            else:
+                potential_query = User.objects.filter(selected_main_skills__contains=request.GET.get("mainSkills", [])[1:-1].split(', '), first_name__contains=search)
+                for i in potential_query:
+                    query.append(UserShortSerializer(i).data)
+        elif request.GET.get("onlySubscriptions", False) is False:
+            potential_query = User.objects.filter(first_name__contains=search)
+            for i in potential_query:
+                query.append(UserShortSerializer(i).data)
+        paginator = Paginator(query, int(request.GET.get("count", 10)))
+        if int(request.GET.get("page", 1)) not in paginator.page_range:
+            paginator = []
+            return Response(paginator)
+        return Response(paginator.page(int(request.GET.get("page", 1))).object_list)
 
     @action(permission_classes=[IsAuthenticated], detail=True)
     def edit_get(self, request, *args, **kwargs):

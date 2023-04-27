@@ -5,6 +5,7 @@ from . import views
 from djoser.views import UserViewSet
 
 urlpatterns = [
+    path("users", views.UserViewSet.as_view({"get": "user_search"}), name="search"),
     path("users/<int:id>/subscribe", views.SubscribtionViewSet.as_view({"post": "subscribe"}), name="subscribe"),
     path("users/<int:id>/unsubscribe", views.SubscribtionViewSet.as_view({"post": "unsubscribe"}), name="unsubscribe"),
     path("users/<int:id>/edit", views.UserViewSet.as_view({"get": "edit_get", "post": "edit_post"}), name="edit"),
