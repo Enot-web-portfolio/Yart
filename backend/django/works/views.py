@@ -21,11 +21,14 @@ class WorksViewSet(viewsets.ViewSet):
 
         if request.GET.get("onlySubscriptions", None) is not None:
             List = UserSubscribtions
-            query_subs = List.objects.get(pk=int(request.GET.get("onlySubscriptions", 1)))
+            query_subs = List.objects.get(pk=request.user.id)
             query = []
+            serializer = WorksShortSerializer(Works.objects.get(user_id=int(i))).data
+            if request.user.id is not None and request.user.id in serializer['likes_list']:
+                serializer['isLike'] = True
             for i in query_subs.subs_list:
                 try:
-                    query.append(WorksShortSerializer(Works.objects.get(user_id=int(i))).data)
+                    query.append(serializer)
                 except:
                     pass
 
@@ -34,16 +37,21 @@ class WorksViewSet(viewsets.ViewSet):
                 paginator = []
                 return Response(paginator)
         elif request.GET.get("userOuterId", None) is not None:
-            List = UserSubscribtions
+            List = Works
             query = List.objects.filter(user_id=int(request.GET.get("userOuterId", 1)))
-            paginator = Paginator(query, int(request.GET.get("count", 10)))
+            serializer = WorksShortSerializer(query, many=True).data
+            if request.user.id is not None and request.user.id in serializer['likes_list']:
+                serializer['isLike'] = True
+            paginator = Paginator(serializer, int(request.GET.get("count", 10)))
             if int(request.GET.get("page", 1)) not in paginator.page_range:
                 paginator = []
                 return Response(paginator)
         else:
             query = Works.objects.all()
-            serializer = WorksShortSerializer(query, many=True)
-            paginator = Paginator(serializer.data, int(request.GET.get("count", 10)))
+            serializer = WorksShortSerializer(query, many=True).data
+            if request.user.id is not None and request.user.id in serializer['likes_list']:
+                serializer['isLike'] = True
+            paginator = Paginator(serializer, int(request.GET.get("count", 10)))
             if int(request.GET.get("page", 1)) not in paginator.page_range:
                 paginator = []
                 return Response(paginator)
@@ -73,7 +81,10 @@ class WorksViewSet(viewsets.ViewSet):
     def works_id(self, request, *args, **kwargs):
         Works = UserWorks
         work = Works.objects.get(pk=kwargs["id"])
-        return Response(WorksSerializer(work).data)
+        serializer = WorksSerializer(work).data
+        if request.user.id is not None and request.user.id in serializer['likes_list']:
+            serializer['isLike'] = True
+        return Response(serializer)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def comment_work(self, request, *args, **kwargs):
@@ -116,8 +127,8 @@ class WorksViewSet(viewsets.ViewSet):
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def work_fileedit(self, request, *args, **kwargs):
         response_list = []
-        for i in range(len(json.loads(request.body)['orderArr'])):
-            image_file = json.loads(request.body)["files"][i]
+        for i in range(len(json.loads(request.body))):
+            image_file = json.loads(request.body)[i]['file']
             session = boto3.session.Session()
             s3 = session.client(
                 service_name='s3',
@@ -132,9 +143,8 @@ class WorksViewSet(viewsets.ViewSet):
             workfile.objects.create(file=f'https://cloud.enotwebstudio.ru/media/works/{kwargs["id"]}/{key}')
             response_list.append(
                 {
-                    'order': json.loads(request.body)['orderArr'][i],
+                    'blockOrder': json.loads(request.body)[i]['blockOrder'],
                     'fileUrl': f'https://cloud.enotwebstudio.ru/media/works/{kwargs["id"]}/{key}',
-                    'isFile': json.loads(request.body)['isFile'][i]
                 }
             )
         return Response(response_list)
