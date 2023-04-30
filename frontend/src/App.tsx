@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Spin, ConfigProvider } from 'antd';
 
 import { RootRouter } from './routes/RootRouter';
+import { Header } from './components/Header';
 
 export const App: FC = () => (
   <BrowserRouter>
@@ -13,7 +14,10 @@ export const App: FC = () => (
         },
       }}>
       <Suspense fallback={<Spin/>}>
-        <RootRouter/>
+        <Header/>
+        <div className="content">
+          <RootRouter/>
+        </div>
       </Suspense>
     </ConfigProvider>
   </BrowserRouter>
