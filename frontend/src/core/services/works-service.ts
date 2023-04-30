@@ -24,4 +24,36 @@ export namespace WorksService {
       throw error;
     }
   }
+
+  /**
+   * Like work.
+   * @param workId - Id работы.
+   * @param userId - Id пользователя, который лайкает.
+   */
+  export async function postWorkLike(workId: number, userId: number) {
+    try {
+      await WorksApi.postWorkLike(workId, userId);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Like work.
+   * @param workId - Id работы.
+   * @param userId - Id пользователя, который убирает лайк.
+   */
+  export async function postWorkUnlike(workId: number, userId: number) {
+    try {
+      await WorksApi.postWorkUnlike(workId, userId);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
 }

@@ -10,6 +10,12 @@ import { HeartFillIcon, HeartLineIcon } from '../Icons';
 
 import { Tag } from '../Tag';
 
+import { useCurrentUserStore } from '../../core/store/user/store';
+
+import { useAuthStore } from '../../core/store/auth/store';
+
+import { WorksService } from '../../core/services/works-service';
+
 import classes from './WorkCard.module.scss';
 
 const { Text } = Typography;
@@ -22,8 +28,19 @@ type Props = Readonly<Work & {
 
 // Компонент Карточка работы
 const WorkCardComponent: FC<Props> = props => {
-  const onWorkLike = () => {
+  const { isUserAuthorized } = useAuthStore();
+  const { user } = useCurrentUserStore();
 
+  // Ф-ция лайка работы
+  const onWorkLike = () => {
+    if (!isUserAuthorized || !user) {
+      return null;
+    }
+    if (props.workIsLike) {
+      WorksService.postWorkUnlike(props.workId, user.id);
+    } else {
+      WorksService.postWorkLike(props.workId, user.id);
+    }
   };
 
   return (
@@ -49,7 +66,7 @@ const WorkCardComponent: FC<Props> = props => {
             {props.userFirstName} {props.userLastName}
           </Text>
         </div>
-        <div className={`${classes['work-card__like']}`}>
+        <div className={`${classes['work-card__like']}`} onClick={onWorkLike}>
           {props.workIsLike ?
             <HeartFillIcon size={30} fill={'#E61E59'}/> :
             <HeartLineIcon size={30} className={`${classes['work-card__line_icon']}`}/>}

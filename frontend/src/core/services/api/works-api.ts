@@ -5,7 +5,7 @@ import { workMapper } from '../mappers/workMapper';
 export namespace WorksApi {
 
   /**
-   * Get workd.
+   * Get works.
    * @param page - Текущая страница работ.
    * @param count - Кол-во работ на странице.
    * @param onlySubscriptions - Работы только людей, на которых подписан.
@@ -13,8 +13,26 @@ export namespace WorksApi {
    */
   export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number): Promise<Work[]> {
     const response = await fetch(`/works?page=${page}&count=${count}&only_subscriptions=${onlySubscriptions}&user_id=${userId}`);
-    const works: WorkDto[] = await response.json() ;
+    const works: WorkDto[] = await response.json();
 
     return works.map(workDto => workMapper.fromDto(workDto));
+  }
+
+  /**
+   * Like work.
+   * @param workId - Id работы.
+   * @param userId - Id пользователя, который лайкает.
+   */
+  export async function postWorkLike(workId: number, userId: number) {
+    await fetch(`/works/${workId}/${userId}/like`);
+  }
+
+  /**
+   * Like work.
+   * @param workId - Id работы.
+   * @param userId - Id пользователя, который убирает лайк.
+   */
+  export async function postWorkUnlike(workId: number, userId: number) {
+    await fetch(`/works/${workId}/${userId}/unlike`);
   }
 }
