@@ -1,14 +1,14 @@
 :root {
-  font-size: 25px;
+  --root-font-size: 25px;
 
   /* Font size */
-  --big-title-fs: 2.8rem;
-  --middle-title-fs: 2rem;
-  --small-title-fs: 1.4rem;
-  --big-text-fs: 1.2rem;
-  --middle-text-fs: 1rem;
-  --small-text-fs: 0.8rem;
-  --micro-text-fs: 0.6rem;
+  --big-title-fs: calc(var(--root-font-size) * 2.8);
+  --middle-title-fs: calc(var(--root-font-size) * 2);
+  --small-title-fs: calc(var(--root-font-size) * 1.4);
+  --big-text-fs: calc(var(--root-font-size) * 1.2);
+  --middle-text-fs: calc(var(--root-font-size) * 1);
+  --small-text-fs: calc(var(--root-font-size) * 0.8);
+  --micro-text-fs: calc(var(--root-font-size) * 0.6);
 
   /* Border Radius */
   --border-radius-m: 50px;

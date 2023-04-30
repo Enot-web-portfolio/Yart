@@ -1,0 +1,26 @@
+.category_select {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-vs) 0;
+
+  .category_select__item {
+    padding: var(--space-s) var(--space-m);
+    border-radius: var(--border-radius-m);
+    border: 1px solid transparent;
+    background-color: #fff;
+
+    &:hover, &.checked {
+      border-color: var(--secondary-text-color);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .category_select__item_name {
+      font-size: var(--middle-text-fs);
+      white-space: nowrap;
+      color: var(--secondary-text-color);
+    }
+  }
+}
