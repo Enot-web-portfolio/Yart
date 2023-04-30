@@ -1,11 +1,27 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useState, useEffect } from 'react';
 
-import { CategorySelect } from '../../../../components/CategorySelect';
+import { SkillsSelect } from '../../../../components/SkillsSelect';
+
+import { Work } from '../../../../core/models/work';
+
+import { WorksService } from '../../../../core/services/works-service';
 
 import classes from './WorksPage.module.scss';
 
 const WorksPageComponents: FC = () => {
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+  const [works, setWorks] = useState<Work[]>([]);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    getWorks();
+  });
+
+  const getWorks = async() => {
+    const newWorks = await WorksService.getWorks(page, 10, false);
+    setWorks(currentWorks => currentWorks.concat(newWorks));
+    setPage(currentPage => currentPage + 1);
+  };
 
   return (
     <div className={classes['works-page']}>
@@ -14,7 +30,8 @@ const WorksPageComponents: FC = () => {
       </div>
 
       <div className={classes['works-page__works']}>
-        <CategorySelect categories={} onChange={}/>
+        <SkillsSelect onChange={setSelectedSkills}/>
+
       </div>
     </div>
   );

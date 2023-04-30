@@ -1,0 +1,20 @@
+import { Work } from '../../models/work';
+import { WorkDto } from '../../dtos/work-dto';
+import { workMapper } from '../mappers/workMapper';
+
+export namespace WorksApi {
+
+  /**
+   * Get workd.
+   * @param page - Текущая страница работ.
+   * @param count - Кол-во работ на странице.
+   * @param onlySubscriptions - Работы только людей, на которых подписан.
+   * @param userId - Работы пользователя с данным id.
+   */
+  export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number): Promise<Work[]> {
+    const response = await fetch(`/works?page=${page}&count=${count}&only_subscriptions=${onlySubscriptions}&user_id=${userId}`);
+    const works: WorkDto[] = await response.json() ;
+
+    return works.map(workDto => workMapper.fromDto(workDto));
+  }
+}

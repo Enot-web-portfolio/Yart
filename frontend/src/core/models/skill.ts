@@ -1,5 +1,5 @@
-// Модель Категория
-export interface Category {
+/** Модель Категории. */
+export type Skill = {
 
   /** Название категории. */
   name: string;
@@ -15,4 +15,4 @@ export interface Category {
 
   /** Выбрана ли категория. */
   checked: boolean;
-}
+};
