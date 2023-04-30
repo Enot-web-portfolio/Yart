@@ -1,0 +1,12 @@
+.ant-input-affix-wrapper, .ant-input {
+  font-size: 30px;
+  border-radius: var(--border-radius);
+  padding: 0.3rem 1rem;
+  background-color: #edeef0;
+}
+
+
+.ant-input-affix-wrapper .ant-input-prefix {
+  color: #79797B;
+  margin-right: calc(0.5 * var(--space-s));
+}
