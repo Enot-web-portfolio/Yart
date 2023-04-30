@@ -2,9 +2,10 @@ from django.urls import path
 from django.views.decorators.http import require_http_methods
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from . import views
-from .views import UserViewSet
+from djoser.views import UserViewSet
 
 urlpatterns = [
+    path("users", views.UserViewSet.as_view({"get": "user_search"}), name="search"),
     path("users/<int:id>/subscribe", views.SubscribtionViewSet.as_view({"post": "subscribe"}), name="subscribe"),
     path("users/<int:id>/unsubscribe", views.SubscribtionViewSet.as_view({"post": "unsubscribe"}), name="unsubscribe"),
     path("users/<int:id>/edit", views.UserViewSet.as_view({"get": "edit_get", "post": "edit_post"}), name="edit"),

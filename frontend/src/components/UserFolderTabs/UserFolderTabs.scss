@@ -7,8 +7,8 @@
         border: 1px solid var(--button-hover-color);
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        border-top-left-radius: var(--border-radius) !important;
-        border-top-right-radius: var(--border-radius) !important;
+        border-top-left-radius: var(--border-radius-m) !important;
+        border-top-right-radius: var(--border-radius-m) !important;
         padding: var(--space-s) var(--space-l);
         background-color: #fff;
         margin: 0 !important;
@@ -31,8 +31,8 @@
 
   .folder_tabs__container {
     background-color: var(--button-hover-color);
-    border-bottom-left-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius-m);
+    border-bottom-right-radius: var(--border-radius-m);
     padding: var(--space-m);
   }
 }

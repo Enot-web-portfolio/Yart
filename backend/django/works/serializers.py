@@ -22,6 +22,7 @@ class WorksShortSerializer(serializers.ModelSerializer):
             'start_text',
             'name',
             'id',
+            'likes_list'
         )
 
 

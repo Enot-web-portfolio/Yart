@@ -3,7 +3,6 @@ import { BrowserRouter} from 'react-router-dom';
 import { Spin } from 'antd';
 
 import { RootRouter } from './routes/RootRouter';
-import './theme';
 
 export const App: FC = () => (
   <BrowserRouter>
