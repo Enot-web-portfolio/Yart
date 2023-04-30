@@ -12,7 +12,6 @@ type Props = Readonly<SelectProps>;
 const SelectComponent: FC<Props> = props => (
   <SelectAntd
     {...props}
-    mode="multiple"
     suffixIcon={<ArrowMiniIcon size={25}/>}
     removeIcon={<img src={'/src/assets/icons/cross.svg'} height={15}/>}>
     {props.children}
