@@ -1,0 +1,60 @@
+.ant-select.ant-select-multiple {
+  .ant-select-selector {
+    background-color: var(--background-color);
+    border-color: var(--background-color);
+    border-radius: var(--border-radius-s);
+    padding: var(--space-s);
+    padding-right: calc(var(--middle-text-fs) + var(--space-vs) * 4);
+
+    .ant-select-selection-overflow {
+      min-height: calc(var(--space-s) * 2 + var(--middle-text-fs));
+      gap: var(--space-vs);
+
+      .ant-select-selection-item {
+        border: none;
+        margin-right: 0;
+        padding: var(--space-s);
+        height: auto;
+        font-size: var(--middle-text-fs);
+        background-color: var(--secondary-element-color);
+
+        .ant-select-selection-item-remove {
+          display: flex;
+          align-items: center;
+          margin-left: var(--space-s);
+        }
+      }
+
+      .ant-select-selection-search {
+        margin-left: var(--space-s);
+
+        .ant-select-selection-search-input {
+          font-size: var(--middle-text-fs);
+
+        }
+      }
+
+    }
+  }
+}
+
+.ant-select-dropdown {
+  background-color: var(--background-color);
+
+  .rc-virtual-list-holder-inner {
+    gap: var(--space-vs);
+
+    .ant-select-item {
+      font-size: var(--middle-text-fs);
+      padding: var(--space-vs);
+
+      &.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+        background-color: var(--secondary-element-color);
+      }
+
+      &.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+        background-color: var(--selected-background-color);
+      }
+    }
+  }
+}
