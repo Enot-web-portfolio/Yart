@@ -1,12 +1,12 @@
 .ant-input-affix-wrapper, .ant-input {
   font-size: var(--big-text-fs);
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-m);
   padding: var(--space-s) var(--space-m);
   background-color: var(--background-color);
+  border-color: transparent;
 }
-
 
 .ant-input-affix-wrapper .ant-input-prefix {
   color: var(--inactive-element-color);
-  margin-right: var(--space-vs);
+  margin-right: var(--space-s);
 }

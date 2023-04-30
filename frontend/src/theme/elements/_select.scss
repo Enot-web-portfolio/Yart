@@ -1,7 +1,7 @@
 .ant-select.ant-select-multiple {
   .ant-select-selector {
     background-color: var(--background-color);
-    border-color: var(--background-color);
+    border-color: transparent;
     border-radius: var(--border-radius-s);
     padding: var(--space-s);
     padding-right: calc(var(--middle-text-fs) + var(--space-vs) * 4);
