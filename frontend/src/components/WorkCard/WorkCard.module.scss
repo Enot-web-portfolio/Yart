@@ -1,8 +1,9 @@
 .work-card {
-  background-color: var(--background-color);
+  background-color: #fff;
   border-radius: var(--border-radius-s);
   overflow: hidden;
   max-width: 550px;
+  min-width:350px;
   width: 100%;
   cursor: pointer;
 

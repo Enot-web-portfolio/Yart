@@ -68,7 +68,7 @@ const WorkCardComponent: FC<Props> = props => {
         </div>
         <div className={`${classes['work-card__like']}`} onClick={onWorkLike}>
           {props.workIsLike ?
-            <HeartFillIcon size={30} fill={'#E61E59'}/> :
+            <HeartFillIcon size={30} fill={'#E61E59'} stroke={'#E61E59'}/> :
             <HeartLineIcon size={30} className={`${classes['work-card__line_icon']}`}/>}
           <Text className={`${classes['work-card__line_count']}`}>{props.workLikesCount}</Text>
         </div>

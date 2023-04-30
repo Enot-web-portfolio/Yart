@@ -4,6 +4,18 @@
   }
 
   .works-page__works{
+    background-color: var(--background-color);
+    padding: var(--space-l);
+    .works-page__works_grid{
+      display: grid;
+      grid-gap: var(--space-m);
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
 
+@media(max-width: 1300px){
+  .works-page .works-page__works .works-page__works_grid{
+    grid-template-columns: 1fr 1fr;
   }
 }

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { componentsRoutes } from '../features/components/routes';
-import { worksRoutes } from '../features/works/pages/routes';
+import { worksRoutes } from '../features/works/routes';
 
 const routes: RouteObject[] = [
   {

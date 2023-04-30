@@ -1,11 +1,11 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-// const ComponentsPage = lazy(() => import('./pages/components-page').then(module => ({ default: module.ComponentsPage })));
+const WorksPage = lazy(() => import('./pages/works-page').then(module => ({ default: module.WorksPage })));
 
 export const worksRoutes: RouteObject[] = [
   {
     path: '/works',
-    element: null,
+    element: <WorksPage/>,
   },
 ];
