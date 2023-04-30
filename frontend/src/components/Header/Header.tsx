@@ -2,6 +2,7 @@ import { FC, memo, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Header.scss';
 
+// Компонент Хедер сайта
 const HeaderComponent: FC = () => {
   useEffect(() => {
     /** Ф-ция фиксации шапки сайта. */
@@ -41,4 +42,5 @@ const HeaderComponent: FC = () => {
   </header>);
 };
 
+// Компонент Хедер сайта
 export const Header = memo(HeaderComponent);

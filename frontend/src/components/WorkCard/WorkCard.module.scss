@@ -1,0 +1,107 @@
+.work-card {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius-s);
+  overflow: hidden;
+  max-width: 550px;
+  width: 100%;
+  cursor: pointer;
+
+  .work-card__content {
+    height: 300px;
+
+    &.work-card_textual {
+      padding: var(--space-s);
+      display: flex;
+      flex-direction: column;
+
+      .work-card__content_text {
+        color: var(--inactive-element-color);
+        font-size: var(--middle-text-fs);
+      }
+
+      .work-card__content_name {
+        margin-bottom: var(--space-s);
+      }
+    }
+
+    &.work-card_picture {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      align-items: flex-end;
+      display: flex;
+
+      .work-card__content_hover {
+        padding: var(--space-s);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.66) 100%);
+        opacity: 0;
+        width: 100%;
+        transition: opacity 0.3s;
+
+
+        .work-card__content_name {
+          color: #fff
+        }
+      }
+    }
+
+    &.work-card__content_name {
+      font-size: var(--small-title-fs);
+    }
+  }
+
+  .work-card__info {
+    padding: calc(var(--space-s) * 2 / 3) var(--space-s);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .work-card__user-info {
+      display: flex;
+      align-items: center;
+
+      .work-card_user-img {
+        width: var(--small-title-fs);
+        height: var(--small-title-fs);
+        border-radius: var(--border-radius-m);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin-right: var(--space-vs);
+      }
+
+      .work-card_user-full-name {
+        font-size: var(--small-text-fs);
+      }
+    }
+
+    .work-card__like {
+      display: flex;
+      align-items: center;
+      padding: var(--space-vs);
+      border-radius: var(--border-radius-m);
+      background-color: #fff;
+
+      .work-card__line_count {
+        color: var(--inactive-element-color);
+        font-size: var(--small-text-fs);
+        margin-left: var(--space-vs);
+      }
+
+      &:hover {
+        box-shadow: var(--box-shadow);
+      }
+    }
+  }
+
+  .work-card__tags {
+    padding: 0 var(--space-s) calc(var(--space-s) * 2 / 3) var(--space-s);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &:hover .work-card__content.work-card_picture .work-card__content_hover {
+    opacity: 1;
+  }
+}

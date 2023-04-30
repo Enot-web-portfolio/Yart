@@ -28,7 +28,7 @@
     .navbar__element {
       cursor: pointer;
       &:hover {
-        box-shadow: 0 0 11px rgba(65, 96, 234, 0.3);
+        box-shadow: var(--box-shadow);
       }
     }
 

@@ -1,3 +1,5 @@
+import { Skill } from './skill';
+
 /** Work. */
 export type Work = Readonly<{
 
@@ -14,7 +16,7 @@ export type Work = Readonly<{
   userId: number;
 
   /** Work skills. */
-  workMainSkills: string[];
+  workMainSkills: readonly Skill[];
 
   /** Work likes. */
   workLikesCount: number;

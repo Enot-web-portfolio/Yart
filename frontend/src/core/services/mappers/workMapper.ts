@@ -2,6 +2,7 @@ import { Work } from '../../models/work';
 import { WorkDto } from '../../dtos/work-dto';
 
 import { IMapperFromDto } from './mappers';
+import { skillMapper } from './skillMapper';
 
 /** User mapper. */
 class WorkMapper implements IMapperFromDto<WorkDto, Work> {
@@ -13,7 +14,7 @@ class WorkMapper implements IMapperFromDto<WorkDto, Work> {
       workIsLike: dto.is_like,
       workImageUrl: dto.image_url,
       workLikesCount: dto.likes_count,
-      workMainSkills: dto.main_skills,
+      workMainSkills: dto.main_skills.map(skillDto => skillMapper.fromDto(skillDto)),
       workStartText: dto.start_text,
       userFirstName: dto.user_first_name,
       userId: dto.user_id,

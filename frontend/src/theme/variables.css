@@ -38,4 +38,7 @@
   --space-s: 15px;
   --space-m: 30px;
   --space-l: 60px;
+
+  /* Special */
+  --box-shadow: 0 0 11px rgba(65 96 234 / 30%);
 }

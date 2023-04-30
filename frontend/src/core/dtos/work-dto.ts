@@ -1,3 +1,5 @@
+import {SkillDto} from "./skill-dto";
+
 /** Work Dto. */
 export type WorkDto = Readonly<{
 
@@ -14,7 +16,7 @@ export type WorkDto = Readonly<{
   user_id: number;
 
   /** Work skills. */
-  main_skills: string[];
+  main_skills: readonly SkillDto[];
 
   /** Work likes. */
   likes_count: number;
