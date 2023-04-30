@@ -1,19 +1,13 @@
 import { Suspense, FC } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@emotion/react';
-
-import { RootRouter } from './routes/RootRouter';
-import { muiTheme } from './theme/muiTheme';
-
-import './theme';
+import { BrowserRouter} from 'react-router-dom';
 import { Spin } from 'antd';
 
+import { RootRouter } from './routes/RootRouter';
+
 export const App: FC = () => (
-  <ThemeProvider theme={muiTheme}>
-    <BrowserRouter>
-      <Suspense fallback={<Spin/>}>
-        <RootRouter/>
-      </Suspense>
-    </BrowserRouter>
-  </ThemeProvider>
+  <BrowserRouter>
+    <Suspense fallback={<Spin/>}>
+      <RootRouter/>
+    </Suspense>
+  </BrowserRouter>
 );

@@ -7,7 +7,7 @@ const routes: RouteObject[] = [
     path: '*',
     element: <Navigate to="/" />,
   },
-  ...componentsRoutes
+  ...componentsRoutes,
 ];
 
 export const RootRouter: FC = () => useRoutes(routes);
