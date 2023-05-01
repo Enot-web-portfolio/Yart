@@ -69,7 +69,6 @@ class WorksViewSet(viewsets.ViewSet):
                 for j in s_ids:
                     if int(j) in i['main_skills'] and i not in response_list:
                         response_list.append(i)
-                        serializer.remove(i)
             for i in range(len(response_list)):
                 if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
                     response_list[i]['isLike'] = True
