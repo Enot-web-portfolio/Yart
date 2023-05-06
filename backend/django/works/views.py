@@ -23,12 +23,17 @@ class WorksViewSet(viewsets.ViewSet):
             List = UserSubscribtions
             query_subs = List.objects.get(pk=request.user.id)
             query = []
-            serializer = WorksShortSerializer(Works.objects.get(user_id=int(i))).data
-            if request.user.id is not None and request.user.id in serializer['likes_list']:
-                serializer['isLike'] = True
             for i in query_subs.subs_list:
                 try:
+                    serializer = WorksShortSerializer(Works.objects.get(user_id=int(i))).data
                     query.append(serializer)
+                    if request.user.id is not None and request.user.id in serializer['likes_list']:
+                        serializer['isLike'] = True
+                    elif request.user.id is not None and request.user.id not in serializer['likes_list']:
+                        serializer['isLike'] = False
+                    elif request.user.id is None:
+                        serializer['isLike'] = False
+                    del serializer['likes_list']
                 except:
                     pass
 
@@ -40,17 +45,54 @@ class WorksViewSet(viewsets.ViewSet):
             List = Works
             query = List.objects.filter(user_id=int(request.GET.get("userOuterId", 1)))
             serializer = WorksShortSerializer(query, many=True).data
-            if request.user.id is not None and request.user.id in serializer['likes_list']:
-                serializer['isLike'] = True
+            print(serializer)
+            for i in range(len(serializer)):
+                print(serializer[i])
+                if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
+                    serializer[i]['isLike'] = True
+                elif request.user.id is not None and request.user.id not in serializer[i]['likes_list']:
+                    serializer[i]['isLike'] = False
+                elif request.user.id is None:
+                    serializer[i]['isLike'] = False
+                del serializer[i]['likes_list']
             paginator = Paginator(serializer, int(request.GET.get("count", 10)))
+            if int(request.GET.get("page", 1)) not in paginator.page_range:
+                paginator = []
+                return Response(paginator)
+        elif request.GET.getlist("skillIds", None) is not None:
+            List = Works
+            query = List.objects.all()
+            serializer = WorksShortSerializer(query, many=True).data
+            response_list = []
+            s_ids = request.GET.getlist("skillIds")
+            for i in serializer:
+                for j in s_ids:
+                    if int(j) in i['main_skills'] and i not in response_list:
+                        response_list.append(i)
+            for i in range(len(response_list)):
+                if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
+                    response_list[i]['isLike'] = True
+                elif request.user.id is not None and request.user.id not in serializer[i]['likes_list']:
+                    response_list[i]['isLike'] = False
+                elif request.user.id is None:
+                    response_list[i]['isLike'] = False
+                del response_list[i]['likes_list']
+            paginator = Paginator(response_list, int(request.GET.get("count", 10)))
             if int(request.GET.get("page", 1)) not in paginator.page_range:
                 paginator = []
                 return Response(paginator)
         else:
             query = Works.objects.all()
             serializer = WorksShortSerializer(query, many=True).data
-            if request.user.id is not None and request.user.id in serializer['likes_list']:
-                serializer['isLike'] = True
+            for i in range(len(serializer)):
+                print(serializer[i])
+                if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
+                    serializer[i]['isLike'] = True
+                elif request.user.id is not None and request.user.id not in serializer[i]['likes_list']:
+                    serializer[i]['isLike'] = False
+                elif request.user.id is None:
+                    serializer[i]['isLike'] = False
+                del serializer[i]['likes_list']
             paginator = Paginator(serializer, int(request.GET.get("count", 10)))
             if int(request.GET.get("page", 1)) not in paginator.page_range:
                 paginator = []
@@ -84,6 +126,11 @@ class WorksViewSet(viewsets.ViewSet):
         serializer = WorksSerializer(work).data
         if request.user.id is not None and request.user.id in serializer['likes_list']:
             serializer['isLike'] = True
+        elif request.user.id is not None and request.user.id not in serializer['likes_list']:
+            serializer['isLike'] = False
+        elif request.user.id is None:
+            serializer['isLike'] = False
+        del serializer['likes_list']
         return Response(serializer)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
