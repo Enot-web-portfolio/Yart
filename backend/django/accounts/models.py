@@ -1,4 +1,3 @@
-import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, UserManager
 from django.contrib.postgres.fields import ArrayField
@@ -44,10 +43,10 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     image_url = models.CharField(default='', max_length=255, blank=True)
-    available_main_skills = ArrayField(models.CharField(max_length=255, default=''), default=list())
-    selected_main_skills = ArrayField(models.CharField(max_length=255, default=''), default=list())
-    available_secondary_skills = ArrayField(models.CharField(max_length=255, default=''), default=list())
-    selected_secondary_skills = ArrayField(models.CharField(max_length=255, default=''), default=list())
+    available_main_skills = ArrayField(models.IntegerField(), default=list())
+    selected_main_skills = ArrayField(models.IntegerField(), default=list())
+    available_secondary_skills = ArrayField(models.IntegerField(), default=list())
+    selected_secondary_skills = ArrayField(models.IntegerField(), default=list())
     city = models.CharField(default='', max_length=255, blank=True)
     company = models.CharField(default='', max_length=255, blank=True)
     subscribers_count = models.IntegerField(default=0, blank=True)
