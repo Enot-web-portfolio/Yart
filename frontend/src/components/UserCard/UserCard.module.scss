@@ -1,0 +1,49 @@
+.user-card {
+  display: flex;
+  max-width: 300px;
+  justify-content: space-between;
+  gap: var(--space-s);
+
+  .user-card__info {
+    display: flex;
+    flex-direction: column;
+
+    .user-card__info_name {
+      font-size: var(--middle-text-fs);
+      font-weight: 600;
+      margin-bottom: var(--space-vs);
+    }
+
+    .user-card__info_works {
+      font-size: var(--small-text-fs);
+      margin-bottom: var(--space-vs);
+    }
+
+    .user-card__info_actions {
+      display: flex;
+      gap: var(--space-vs);
+
+      .user-card__info_actions__action {
+        background-color: #fff;
+        border-radius: var(--border-radius-s);
+        color: #000;
+        max-width: 100%;
+        font-size: var(--micro-text-fs);
+        padding: var(--space-vs);
+
+
+        &.circle {
+          width: calc(var(--micro-text-fs) + 2 * var(--space-vs));
+          height: calc(var(--micro-text-fs) + 2 * var(--space-vs));
+        }
+      }
+    }
+  }
+
+  .user-card__image {
+    width: calc(var(--middle-text-fs) * var(--line-height) + var(--space-vs) + var(--small-text-fs) * var(--line-height));
+    height: calc(var(--middle-text-fs) * var(--line-height) + var(--space-vs) + var(--small-text-fs) * var(--line-height));
+    background-color: var(--secondary-element-color);
+    border-radius: var(--border-radius-m);
+  }
+}

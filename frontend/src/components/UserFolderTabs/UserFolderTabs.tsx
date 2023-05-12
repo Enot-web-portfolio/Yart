@@ -4,17 +4,18 @@ import { Tabs, TabsProps } from 'antd';
 import { typedMemo } from '../../core/utils/typed-memo';
 
 import './UserFolderTabs.scss';
+import { ShortUser } from '../../core/models/short-user';
+import { UserCard } from '../UserCard';
 
 type Props = Readonly<TabsProps & {
-  users: unknown[];
+  users: ShortUser[];
 }>;
 
-// TODO после создания компонента пользователей заменить null на компонент
 const UserFolderTabsComponents: FC<Props> = (props: Props) => (
   <div className={'folder_tabs'}>
     <Tabs {...props} type={'card'}/>
     <div className={'folder_tabs__container'}>
-      {props.users.map(() => null)}
+      {props.users.map((user, i) => <UserCard {...user} key={i}/>)}
     </div>
   </div>
 );

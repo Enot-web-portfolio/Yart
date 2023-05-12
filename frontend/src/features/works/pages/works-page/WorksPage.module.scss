@@ -1,21 +1,30 @@
-.works-page{
-  .works-page__best-work{
+.works-page {
+  flex: 1;
+  background-color: var(--background-color);
+
+  .works-page__best-work {
 
   }
 
-  .works-page__works{
-    background-color: var(--background-color);
+  .works-page__works {
     padding: var(--space-l);
-    .works-page__works_grid{
+
+    .works-page__works_grid {
       display: grid;
       grid-gap: var(--space-m);
       grid-template-columns: 1fr 1fr 1fr;
     }
   }
+
+  .works-page__popular-users{
+    .works-page__popular-users__header{
+      font-size: var(--small-title-fs);
+    }
+  }
 }
 
-@media(max-width: 1300px){
-  .works-page .works-page__works .works-page__works_grid{
+@media(max-width: 1300px) {
+  .works-page .works-page__works .works-page__works_grid {
     grid-template-columns: 1fr 1fr;
   }
 }

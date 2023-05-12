@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-vs) 0;
+  margin-bottom: var(--space-m);
 
   .category_select__item {
     padding: var(--space-s) var(--space-m);
