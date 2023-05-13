@@ -59,6 +59,7 @@ const UserFolderTabsComponents: FC = () => {
    */
   const getUsers = async (selectedSkill: string) => {
     setLoadingUsers(true)
+    setUsers([]);
     try {
       const newUsers = await UsersService.getUsers(1, 6, false, undefined, [selectedSkill]);
       setUsers(newUsers);
@@ -74,9 +75,9 @@ const UserFolderTabsComponents: FC = () => {
     return <ErrorResult/>;
   }
   return (
-    <div className={'folder_tabs'}>
+    <div className={'folder-tabs'}>
       <Tabs type={'card'} items={skills} onChange={setActiveSkill}/>
-      <div className={'folder_tabs__container'}>
+      <div className={`folder-tabs__container ${users.length > 0 ? 'filled' : ''}`}>
         {loadingUsers ?
           <Spin/> :
           users.length > 0 ?
@@ -88,7 +89,7 @@ const UserFolderTabsComponents: FC = () => {
                                                action: 'folder-tabs__user-card_action',
                                              }}
                                              key={i}/>)
-            : <EmptyResult iconColor={'#fff'} className={'folder_tabs__empty'}/>}
+            : <EmptyResult iconColor={'#fff'} className={'folder-tabs__empty'}/>}
       </div>
     </div>
   )

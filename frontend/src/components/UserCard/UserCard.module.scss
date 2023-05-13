@@ -1,16 +1,20 @@
 .user-card {
-  display: flex;
+  display: grid;
   width: 100%;
-  justify-content: space-between;
-  gap: var(--space-s);
+  grid-template-columns: 1fr calc(var(--middle-text-fs) * var(--line-height) + var(--space-vs) + var(--small-text-fs) * var(--line-height));
+  grid-gap: var(--space-s);
 
   .user-card__info {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     .user-card__info_name {
       font-size: var(--middle-text-fs);
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       margin-bottom: var(--space-vs);
     }
 
@@ -33,6 +37,14 @@
         &.circle {
           width: calc(var(--micro-text-fs) + 2 * var(--space-vs));
           height: calc(var(--micro-text-fs) + 2 * var(--space-vs));
+        }
+
+        &:hover {
+          color: var(--button-primary-color);
+
+          svg {
+            stroke: var(--button-primary-color);
+          }
         }
       }
     }

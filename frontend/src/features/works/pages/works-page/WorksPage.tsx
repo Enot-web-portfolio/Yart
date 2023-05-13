@@ -37,10 +37,6 @@ return null;
 }
   return (
     <div className={classes['works-page']}>
-      <div className={classes['works-page__best-work']}>
-
-      </div>
-
       <div className={classes['works-page__works']}>
         <SkillsSelect onChange={setSelectedSkills}/>
         <div className={`${classes['works-page__works_grid']}`}>
