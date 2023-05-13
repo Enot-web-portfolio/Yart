@@ -1,18 +1,18 @@
-/** Модель Категории. */
+/** Skill. */
 export type Skill = {
 
-  /** Название категории. */
-  name: string;
+  /** Id skill. */
+  readonly id: number;
 
-  /** Id категории. */
-  id: number;
+  /** Name. */
+  readonly name: string;
 
-  /** Фоновый увет категории. */
-  backgroundColor: string;
+  /** Background color tag skill. */
+  readonly backgroundColor: string;
 
-  /** Цвет текста категории. */
-  fontColor: string;
+  /** Font color tag skill. */
+  readonly fontColor: string;
 
-  /** Выбрана ли категория. */
+  /** Checked tag skill. */
   checked: boolean;
-};
+}

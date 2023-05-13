@@ -1,48 +1,72 @@
-import React, { FC, memo, useState, useEffect } from 'react';
+import React, {FC, memo, useState, useEffect} from 'react';
 
-import { SkillsSelect } from '../../../../components/SkillsSelect';
+import {SkillsSelect} from '../../../../components/SkillsSelect';
 
-import { Work } from '../../../../core/models/work';
+import {Work} from '../../../../core/models/work';
 
-import { WorksService } from '../../../../core/services/works-service';
+import {WorksService} from '../../../../core/services/works-service';
 
-import { WorkCard } from '../../../../components/WorkCard';
+import {WorkCard} from '../../../../components/WorkCard';
 
-import {Typography} from "antd";
+import {Spin, Typography} from "antd";
 
 import classes from './WorksPage.module.scss';
 import {UserFolderTabs} from "../../../../components/UserFolderTabs";
+import {AppError} from "../../../../core/models/app-error";
+import {EmptyResult} from "../../../../components/EmptyResult";
+import {ErrorResult} from "../../../../components/ErrorResult";
 
 const {Text} = Typography;
 // TODO ф-ция открывания чтения статьи
 // TODO ф-ция для расчета кол-ва колонок работ(стили)
 
+/** Страница Работы. */
 const WorksPageComponents: FC = () => {
+  /** Выбранные категории.*/
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+  /** Работы. */
   const [works, setWorks] = useState<Work[] | null>(null);
+  /** Загружаются ли работы. */
+  const [loading, setLoading] = useState(true);
+  /** Ошибка при загрузке работ. */
+  const [error, setError] = useState<AppError<Work[]> | null>(null);
+
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     getWorks();
-  }, []);
+  }, [selectedSkills]);
 
-  const getWorks = async() => {
-    const newWorks = await WorksService.getWorks(page, 10, false);
-    setWorks(currentWorks => currentWorks ? currentWorks.concat(newWorks) : newWorks);
-    setPage(currentPage => currentPage + 1);
+  const getWorks = async () => {
+    setLoading(true);
+    try {
+      const newWorks = await WorksService.getWorks(page, 10, false, undefined, selectedSkills);
+      setWorks(currentWorks => currentWorks ? currentWorks.concat(newWorks) : newWorks);
+      setPage(currentPage => currentPage + 1);
+    } catch (error: unknown) {
+      if (error instanceof AppError<Work[]>) {
+        setError(error);
+      }
+    }
+    setLoading(false);
   };
 
-  if (!works) {
-return null;
-}
   return (
     <div className={classes['works-page']}>
       <div className={classes['works-page__works']}>
         <SkillsSelect onChange={setSelectedSkills}/>
-        <div className={`${classes['works-page__works_grid']}`}>
-          {works.map((work, i) =>
-            <WorkCard key={i} {...work} onWorkClick={() => {}}/>)}
-        </div>
+        {loading ?
+          <Spin/> :
+          works !== null ?
+            works.length === 0 ?
+              <EmptyResult/> :
+              <div className={`${classes['works-page__works_grid']}`}>
+                {works.map((work, i) =>
+                  <WorkCard key={i} {...work} onWorkClick={() => {
+                  }}/>
+                )}
+              </div> :
+            <ErrorResult/>}
       </div>
 
       <div className={`${classes['works-page__popular-users']}`}>

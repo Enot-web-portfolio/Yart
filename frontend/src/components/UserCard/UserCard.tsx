@@ -22,6 +22,9 @@ type Props = Readonly<ShortUser & {
   };
 }>;
 
+// TODO добавить Link, когда перейду к лк
+// TODO добавить ф-цию подписки, если авторизован(после авторизации)
+/** Компонент Карточка пользователя. */
 const UserCardComponents: FC<Props> = (props: Props) => (
   <div className={`${classes['user-card']} ${props.classes?.container ?? ''}`}>
     <div className={`${classes['user-card__info']}`}>
@@ -39,4 +42,5 @@ const UserCardComponents: FC<Props> = (props: Props) => (
   </div>
 );
 
+/** Компонент Карточка пользователя. */
 export const UserCard = typedMemo(UserCardComponents);

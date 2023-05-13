@@ -10,7 +10,6 @@ import { ShortUserDto } from '../../dtos/short-user-dto';
 import { ShortUser } from '../../models/short-user';
 import { shortUserMapper } from '../mappers/shortUserMapper';
 
-// TODO (template preparation): This service was made for template. Remove it from your project.
 export namespace UsersApi {
 
   /** Get mock user. */

@@ -16,10 +16,6 @@ export namespace SkillsService {
         throw AppErrorMapper.fromDto(error);
       }
       throw error;
-
-      /* return new Promise(resolve => {
-        resolve(null)
-      });*/
     }
   }
 }

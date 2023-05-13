@@ -3,7 +3,6 @@ import {FindIcon} from "../Icons/FindIcon";
 import {Result} from "antd";
 import {typedMemo} from "../../core/utils/typed-memo";
 
-
 type Props = Readonly<{
 
   /** Class name for Result/ */

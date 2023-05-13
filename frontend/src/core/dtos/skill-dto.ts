@@ -1,4 +1,4 @@
-/** Skills Dto. */
+/** Skill Dto. */
 export type SkillDto = Readonly<{
 
   /** Id skill. */

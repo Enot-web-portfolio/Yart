@@ -28,17 +28,17 @@ const SkillsSelectComponent: FC<Props> = props => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if(defaultSkills == null && !isLoading){
+    if (defaultSkills === null && !isLoading) {
       getSkills();
     }
   }, []);
 
-  useEffect(()=>{
-    if(defaultSkills !== null){
+  useEffect(() => {
+    if (defaultSkills !== null) {
       setSkills(defaultSkills);
       setLoading(false)
     }
-  },[defaultSkills])
+  }, [defaultSkills])
 
   /** Ф-ция выбора/развыбора категории. */
   const onToggle = (skillId: number) => {
