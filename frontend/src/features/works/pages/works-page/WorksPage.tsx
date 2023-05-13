@@ -8,9 +8,12 @@ import { WorksService } from '../../../../core/services/works-service';
 
 import { WorkCard } from '../../../../components/WorkCard';
 
-import classes from './WorksPage.module.scss';
-import { PopularUsers } from './PopularUsers';
+import {Typography} from "antd";
 
+import classes from './WorksPage.module.scss';
+import {UserFolderTabs} from "../../../../components/UserFolderTabs";
+
+const {Text} = Typography;
 // TODO ф-ция открывания чтения статьи
 // TODO ф-ция для расчета кол-ва колонок работ(стили)
 
@@ -46,7 +49,10 @@ return null;
         </div>
       </div>
 
-      <PopularUsers/>
+      <div className={`${classes['works-page__popular-users']}`}>
+        <Text className={`${classes['works-page__popular-users__header']}`}>Популярные пользователи</Text>
+        <UserFolderTabs/>
+      </div>
 
     </div>
   );

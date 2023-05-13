@@ -1,13 +1,17 @@
 .works-page {
   flex: 1;
   background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+  padding: var(--space-l) 0;
 
   .works-page__best-work {
 
   }
 
   .works-page__works {
-    padding: var(--space-l);
+    padding: 0 var(--space-l);
 
     .works-page__works_grid {
       display: grid;
@@ -16,9 +20,12 @@
     }
   }
 
-  .works-page__popular-users{
-    .works-page__popular-users__header{
+  .works-page__popular-users {
+    padding: 0 var(--space-l);
+
+    .works-page__popular-users__header {
       font-size: var(--small-title-fs);
+      margin-bottom: var(--space-m);
     }
   }
 }

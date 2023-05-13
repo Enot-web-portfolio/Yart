@@ -34,8 +34,12 @@
     border-bottom-left-radius: var(--border-radius-m);
     border-bottom-right-radius: var(--border-radius-m);
     padding: var(--space-m);
-    display:flex;
+    display: flex;
     gap: var(--space-s);
     flex-wrap: wrap;
+  }
+
+  .folder_tabs__empty .ant-result-title {
+    color: #fff;
   }
 }

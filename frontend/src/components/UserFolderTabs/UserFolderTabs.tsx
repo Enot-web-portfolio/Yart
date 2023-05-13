@@ -1,23 +1,90 @@
-import React, { FC } from 'react';
-import { Tabs, TabsProps } from 'antd';
+import React, {FC, useEffect, useState} from 'react';
+import {Spin, Tabs} from 'antd';
 
-import { typedMemo } from '../../core/utils/typed-memo';
-
+import {typedMemo} from '../../core/utils/typed-memo';
+import {Tab} from 'rc-tabs/lib/interface';
 import './UserFolderTabs.scss';
-import { ShortUser } from '../../core/models/short-user';
-import { UserCard } from '../UserCard';
+import {ShortUser} from '../../core/models/short-user';
+import {UserCard} from '../UserCard';
+import {UsersService} from "../../core/services/users-service";
+import {EmptyResult} from "../EmptyResult";
+import {ErrorResult} from "../ErrorResult";
+import {AppError} from "../../core/models/app-error";
+import {Skill} from "../../core/models/skill";
+import {useSkillsStore} from "../../core/store/skills/store";
 
-type Props = Readonly<TabsProps & {
-  users: ShortUser[];
-}>;
+/** Компонент Табы пользователей по категориям. */
+const UserFolderTabsComponents: FC = () => {
+  /** Стор категорий. */
+  const {defaultSkills, isLoading, getSkills} = useSkillsStore();
+  /** Категории. */
+  const [skills, setSkills] = useState<Tab[]>([]);
+  /** Id активного скилла. */
+  const [activeSkill, setActiveSkill] = useState<string | null>(null);
 
-const UserFolderTabsComponents: FC<Props> = (props: Props) => (
-  <div className={'folder_tabs'}>
-    <Tabs {...props} type={'card'}/>
-    <div className={'folder_tabs__container'}>
-      {props.users.map((user, i) => <UserCard {...user} key={i}/>)}
+  /** Пользователи с выбранным скиллом. */
+  const [users, setUsers] = useState<ShortUser[]>([]);
+
+  /** Загружаются ли скиллы. */
+  const [loadingSkills, setLoadingSkills] = useState(true);
+  /** Загружаются ли пользователи. */
+  const [loadingUsers, setLoadingUsers] = useState(true);
+  /** Ошибка при загрузке скиллов/пользователей. */
+  const [error, setError] = useState<null | AppError<Skill[] | ShortUser[]>>(null);
+
+  useEffect(() => {
+    if(defaultSkills === null && !isLoading){
+      getSkills()
+    }
+  }, []);
+
+  useEffect(() => {
+    if(defaultSkills !== null){
+      const parsedSkills: Tab[] = defaultSkills.map(skill => ({key:skill.id.toString(), label: skill.name}))
+      setSkills(parsedSkills);
+      setActiveSkill(parsedSkills[0].key);
+      setLoadingSkills(false);
+    }
+  },[defaultSkills])
+
+  useEffect(() => {
+    if (activeSkill !== null) {
+      getUsers(activeSkill);
+    }
+  }, [activeSkill]);
+
+  /**
+   * Ф-ция получения пользователей.
+   * @param selectedSkill - Выбранная категория.
+   */
+  const getUsers = async (selectedSkill: string) => {
+    setLoadingUsers(true)
+    try{
+      const newUsers = await UsersService.getUsers(1, 6, false, undefined, [selectedSkill]);
+      setUsers(newUsers);
+    } catch(error: unknown){
+      if (error instanceof AppError<ShortUser[]>)
+        setError(error)
+    }
+    setLoadingUsers(false)
+  };
+
+  if (loadingSkills) return <Spin/>
+  if (skills == null) {
+    return <ErrorResult/>;
+  }
+  return (
+    <div className={'folder_tabs'}>
+      <Tabs type={'card'} items={skills} onChange={setActiveSkill}/>
+      <div className={'folder_tabs__container'}>
+        {loadingUsers ?
+          <Spin/> :
+          users.length > 0 ?
+          users.map((user, i) => <UserCard {...user} key={i}/>)
+        : <EmptyResult iconColor={'#fff'} className={'folder_tabs__empty'}/>}
+      </div>
     </div>
-  </div>
-);
+  )
+};
 
 export const UserFolderTabs = typedMemo(UserFolderTabsComponents);

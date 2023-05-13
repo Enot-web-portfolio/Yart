@@ -1,14 +1,15 @@
 .category_select {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-vs) 0;
   margin-bottom: var(--space-m);
+  background-color: #fff;
+  border: 1px solid var(--secondary-text-color);
+  border-radius: calc(var(--middle-text-fs) * var(--line-height) / 2 + var(--space-s));
 
   .category_select__item {
     padding: var(--space-s) var(--space-m);
-    border-radius: var(--border-radius-m);
+    border-radius: calc(var(--middle-text-fs) * var(--line-height) / 2 + var(--space-s));
     border: 1px solid transparent;
-    background-color: #fff;
 
     &:hover, &.checked {
       border-color: var(--secondary-text-color);

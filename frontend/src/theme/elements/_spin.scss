@@ -1,0 +1,31 @@
+.ant-spin {
+  width: 100%;
+
+  .ant-spin-dot {
+    font-size: var(--middle-text-fs);
+    width: calc(2 * var(--small-text-fs));
+    height: calc(2 * var(--small-text-fs));
+
+    .ant-spin-dot-item {
+      width: var(--small-text-fs);
+      height: var(--small-text-fs);
+      opacity: 1;
+
+      &:nth-child(1) {
+        background-color: var(--blue-color);
+      }
+
+      &:nth-child(2) {
+        background-color: var(--violet-color);
+      }
+
+      &:nth-child(3) {
+        background-color: var(--yellow-color);
+      }
+
+      &:nth-child(4) {
+        background-color: var(--dark-pink-color);
+      }
+    }
+  }
+}
