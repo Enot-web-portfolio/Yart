@@ -33,19 +33,19 @@ const UserFolderTabsComponents: FC = () => {
   const [error, setError] = useState<null | AppError<Skill[] | ShortUser[]>>(null);
 
   useEffect(() => {
-    if(defaultSkills === null && !isLoading){
+    if (defaultSkills === null && !isLoading) {
       getSkills()
     }
   }, []);
 
   useEffect(() => {
-    if(defaultSkills !== null){
-      const parsedSkills: Tab[] = defaultSkills.map(skill => ({key:skill.id.toString(), label: skill.name}))
+    if (defaultSkills !== null) {
+      const parsedSkills: Tab[] = defaultSkills.map(skill => ({key: skill.id.toString(), label: skill.name}))
       setSkills(parsedSkills);
       setActiveSkill(parsedSkills[0].key);
       setLoadingSkills(false);
     }
-  },[defaultSkills])
+  }, [defaultSkills])
 
   useEffect(() => {
     if (activeSkill !== null) {
@@ -59,10 +59,10 @@ const UserFolderTabsComponents: FC = () => {
    */
   const getUsers = async (selectedSkill: string) => {
     setLoadingUsers(true)
-    try{
+    try {
       const newUsers = await UsersService.getUsers(1, 6, false, undefined, [selectedSkill]);
       setUsers(newUsers);
-    } catch(error: unknown){
+    } catch (error: unknown) {
       if (error instanceof AppError<ShortUser[]>)
         setError(error)
     }
@@ -80,8 +80,15 @@ const UserFolderTabsComponents: FC = () => {
         {loadingUsers ?
           <Spin/> :
           users.length > 0 ?
-          users.map((user, i) => <UserCard {...user} key={i}/>)
-        : <EmptyResult iconColor={'#fff'} className={'folder_tabs__empty'}/>}
+            users.map((user, i) => <UserCard {...user}
+                                             classes={{
+                                               container: 'folder-tabs__user-card',
+                                               name: 'folder-tabs__user-card_name',
+                                               works: 'folder-tabs__user-card_works',
+                                               action: 'folder-tabs__user-card_action',
+                                             }}
+                                             key={i}/>)
+            : <EmptyResult iconColor={'#fff'} className={'folder_tabs__empty'}/>}
       </div>
     </div>
   )

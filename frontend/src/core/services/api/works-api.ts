@@ -13,7 +13,11 @@ export namespace WorksApi {
    * @param userId - Работы пользователя с данным id.
    */
   export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number): Promise<Work[]> {
-    const response = await fetch(`${CONFIG.apiUrl}/works?page=${page}&count=${count}&only_subscriptions=${onlySubscriptions}&user_id=${userId}`);
+    const url = `${CONFIG.apiUrl}/works?page=${page}
+    &count=${count}
+    &only_subscriptions=${onlySubscriptions}
+    ${userId !== undefined ? `&user_id=${userId}` : ''}`;
+    const response = await fetch(url);
     const works: WorkDto[] = await response.json();
 
     return works.map(workDto => workMapper.fromDto(workDto));

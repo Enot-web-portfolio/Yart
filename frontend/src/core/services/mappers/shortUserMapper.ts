@@ -10,8 +10,8 @@ class ShortUserMapper implements IMapperFromDto<ShortUserDto, ShortUser> {
   public fromDto(dto: ShortUserDto): ShortUser {
     return {
       userId: dto.id,
-      userFullName: `${dto.user_first_name} ${dto.user_last_name}`,
-      userImageUrl: dto.user_image_url,
+      userFullName: `${dto.first_name} ${dto.last_name}`,
+      userImageUrl: dto.image_url,
       worksCount: dto.works_count,
     };
   }

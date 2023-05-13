@@ -28,7 +28,7 @@ export namespace UsersService {
    * @param search - Значение в поиске.
    * @param mainSkills - Выбранные категории.
    */
-  export async function getUsers(page?: number, count?: number, onlySubscriptions?: boolean, search?: string, mainSkills?: string[] | number[]): Promise<ShortUser[]> {
+  export async function getUsers(page: number, count: number, onlySubscriptions: boolean, search?: string, mainSkills?: string[] | number[]): Promise<ShortUser[]> {
     try {
       return await UsersApi.getUsers(page, count, onlySubscriptions, search, mainSkills);
     } catch (error: unknown) {
