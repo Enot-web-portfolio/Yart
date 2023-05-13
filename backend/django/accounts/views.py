@@ -28,7 +28,7 @@ class UserViewSet(viewsets.ModelViewSet):
         potential_query = []
         query = []
         search = str(request.GET.get("search", '')).strip()
-        if request.GET.get("onlySubscriptions", False) == 'true' and request.user.id:
+        if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
             potential_query = List.objects.get(pk=request.user.id, first_name__contains=search)
         if request.GET.get("mainSkills", None) is not None:
@@ -45,7 +45,7 @@ class UserViewSet(viewsets.ModelViewSet):
                     first_name__contains=search)
                 for i in potential_query:
                     query.append(UserShortSerializer(i).data)
-        elif request.GET.get("onlySubscriptions", False) is False:
+        elif request.GET.get("onlySubscriptions", 'false') == 'false':
             potential_query = User.objects.filter(first_name__contains=search)
             for i in potential_query:
                 query.append(UserShortSerializer(i).data)
