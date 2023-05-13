@@ -12,10 +12,18 @@ type Props = Readonly<TabsProps & {
 }>;
 
 const UserFolderTabsComponents: FC<Props> = (props: Props) => (
-  <div className={'folder_tabs'}>
+  <div className={'folder-tabs'}>
     <Tabs {...props} type={'card'}/>
-    <div className={'folder_tabs__container'}>
-      {props.users.map((user, i) => <UserCard {...user} key={i}/>)}
+    <div className={'folder-tabs__container'}>
+      {props.users.map((user, i) =>
+        <UserCard {...user}
+          classes={{
+                    container: 'folder-tabs__user-card',
+                    name: 'folder-tabs__user-card_name',
+                    works: 'folder-tabs__user-card_works',
+                    action: 'folder-tabs__user-card_action',
+          }}
+          key={i}/>)}
     </div>
   </div>
 );

@@ -3,6 +3,9 @@
   flex-wrap: wrap;
   gap: var(--space-vs) 0;
   margin-bottom: var(--space-m);
+  background-color: #fff;
+  border-radius: var(--border-radius-m);
+  border: 1px solid var(--secondary-text-color);
 
   .category_select__item {
     padding: var(--space-s) var(--space-m);

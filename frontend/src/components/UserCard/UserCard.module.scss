@@ -1,6 +1,6 @@
 .user-card {
   display: flex;
-  max-width: 300px;
+  width: 100%;
   justify-content: space-between;
   gap: var(--space-s);
 
@@ -16,7 +16,7 @@
 
     .user-card__info_works {
       font-size: var(--small-text-fs);
-      margin-bottom: var(--space-vs);
+      margin-bottom: var(--space-s);
     }
 
     .user-card__info_actions {
@@ -24,13 +24,11 @@
       gap: var(--space-vs);
 
       .user-card__info_actions__action {
-        background-color: #fff;
-        border-radius: var(--border-radius-s);
         color: #000;
         max-width: 100%;
         font-size: var(--micro-text-fs);
         padding: var(--space-vs);
-
+        cursor: pointer;
 
         &.circle {
           width: calc(var(--micro-text-fs) + 2 * var(--space-vs));

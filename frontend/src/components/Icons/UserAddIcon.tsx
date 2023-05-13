@@ -4,7 +4,7 @@ import { IconProps } from './types';
 
 // Иконка Пользователь с плюсом
 const UserAddIconComponent: FC<IconProps> = (props: IconProps) =>
-  <svg width={props.size} height={props.size} viewBox="0 0 22 20" fill="none" stroke="#000" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg width={props.size} height={props.size} viewBox="0 0 22 20" fill="none" stroke="#000" xmlns="http://www.w3.org/2000/svg" {...props} className={'user-add_icon'}>
     <g clipPath="url(#clip0_127_732)">
       <path
         d="M9.52377 13.3861C12.8842 13.3861 15.6084 10.6619 15.6084 7.30145C15.6084 3.94099 12.8842 1.2168 9.52377 1.2168C6.16331 1.2168 3.43912 3.94099 3.43912 7.30145C3.43912 10.6619 6.16331 13.3861 9.52377 13.3861Z"/>

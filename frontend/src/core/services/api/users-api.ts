@@ -39,9 +39,12 @@ export namespace UsersApi {
    * @param search - Значение в поиске.
    * @param mainSkills - Выбранные категории.
    */
-  export async function getUsers(page?: number, count?: number, onlySubscriptions?: boolean, search?: string, mainSkills?: number[] | string[]): Promise<ShortUser[]> {
-    const url = `${CONFIG.apiUrl}/users?page=${page}&count=${count}&only_subscriptions=${onlySubscriptions}
-    &search=${search}&main_shills=${mainSkills?.join(', ')}`;
+  export async function getUsers(page: number, count: number, onlySubscriptions: boolean, search?: string, mainSkills?: number[] | string[]): Promise<ShortUser[]> {
+    const url = `${CONFIG.apiUrl}/users?page=${page}
+    &count=${count}
+    &only_subscriptions=${onlySubscriptions}
+    ${search !== undefined ? `&search=${search}` : ''}
+    ${mainSkills !== undefined ? `&main_skills=${mainSkills.join(', ')}` : ''}`;
     const response = await fetch(url);
     const users: ShortUserDto[] = await response.json();
 
