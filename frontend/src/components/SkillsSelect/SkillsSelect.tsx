@@ -2,9 +2,7 @@ import React, {FC, useState, useEffect} from 'react';
 
 import {typedMemo} from 'src/core/utils/typed-memo';
 import {Skill} from 'src/core/models/skill';
-import {Result, Spin, Typography} from 'antd';
-
-import {SkillsService} from '../../core/services/skills-service';
+import {Spin, Typography} from 'antd';
 
 import classes from './SkillsSelect.module.scss';
 import {ErrorResult} from "../ErrorResult";
@@ -21,14 +19,14 @@ type Props = Readonly<{
 /** Компонент Панель выбора категорий навыков (фильтр по категориям). */
 const SkillsSelectComponent: FC<Props> = props => {
   /** Стор категорий. */
-  const {defaultSkills, isLoading, getSkills} = useSkillsStore();
+  const {defaultSkills, isLoading, getSkills, error} = useSkillsStore();
   /** Категории для выбора в панели. */
   const [skills, setSkills] = useState<Skill[]>([]);
   /** Загружаются ли скиллы. */
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (defaultSkills === null && !isLoading) {
+    if (defaultSkills === null && !isLoading && error === null) {
       getSkills();
     }
   }, []);
@@ -36,9 +34,15 @@ const SkillsSelectComponent: FC<Props> = props => {
   useEffect(() => {
     if (defaultSkills !== null) {
       setSkills(defaultSkills);
-      setLoading(false)
+      setLoading(false);
     }
   }, [defaultSkills])
+
+  useEffect(() => {
+    if (error !== null) {
+      setLoading(false);
+    }
+  }, [error])
 
   /** Ф-ция выбора/развыбора категории. */
   const onToggle = (skillId: number) => {
@@ -53,8 +57,8 @@ const SkillsSelectComponent: FC<Props> = props => {
     props.onChange(newSkills.filter(skill => skill.checked).map(skill => skill.id));
   };
 
-  if (loading) return <Spin/>
-  if (skills == null) return <ErrorResult/>
+  if (loading) return <Spin/>;
+  if (skills == null) return <ErrorResult/>;
   return (
     <div className={classes.category_select}>
       {skills.map((skill, i) =>

@@ -16,9 +16,9 @@ import {useSkillsStore} from "../../core/store/skills/store";
 /** Компонент Табы пользователей по категориям. */
 const UserFolderTabsComponents: FC = () => {
   /** Стор категорий. */
-  const {defaultSkills, isLoading, getSkills} = useSkillsStore();
+  const {defaultSkills, isLoading, getSkills, error: skillError} = useSkillsStore();
   /** Категории. */
-  const [skills, setSkills] = useState<Tab[]>([]);
+  const [skills, setSkills] = useState<Tab[] | null>(null);
   /** Id активного скилла. */
   const [activeSkill, setActiveSkill] = useState<string | null>(null);
 
@@ -33,8 +33,8 @@ const UserFolderTabsComponents: FC = () => {
   const [error, setError] = useState<null | AppError<Skill[] | ShortUser[]>>(null);
 
   useEffect(() => {
-    if (defaultSkills === null && !isLoading) {
-      getSkills()
+    if (defaultSkills === null && !isLoading && skillError === null) {
+      getSkills();
     }
   }, []);
 
@@ -48,6 +48,13 @@ const UserFolderTabsComponents: FC = () => {
   }, [defaultSkills])
 
   useEffect(() => {
+    if (skillError !== null) {
+      setLoadingSkills(false);
+      setError(skillError);
+    }
+  }, [skillError])
+
+  useEffect(() => {
     if (activeSkill !== null) {
       getUsers(activeSkill);
     }
@@ -58,22 +65,20 @@ const UserFolderTabsComponents: FC = () => {
    * @param selectedSkill - Выбранная категория.
    */
   const getUsers = async (selectedSkill: string) => {
-    setLoadingUsers(true)
+    setLoadingUsers(true);
     setUsers([]);
     try {
       const newUsers = await UsersService.getUsers(1, 6, false, undefined, [selectedSkill]);
       setUsers(newUsers);
     } catch (error: unknown) {
       if (error instanceof AppError<ShortUser[]>)
-        setError(error)
+        setError(error);
     }
     setLoadingUsers(false)
   };
 
-  if (loadingSkills) return <Spin/>
-  if (skills == null) {
-    return <ErrorResult/>;
-  }
+  if (loadingSkills) return <Spin/>;
+  if (skills == null) return <ErrorResult/>;
   return (
     <div className={'folder-tabs'}>
       <Tabs type={'card'} items={skills} onChange={setActiveSkill}/>

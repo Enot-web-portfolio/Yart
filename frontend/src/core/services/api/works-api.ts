@@ -2,6 +2,7 @@ import {Work} from '../../models/work';
 import {WorkDto} from '../../dtos/work-dto';
 import {workMapper} from '../mappers/workMapper';
 import {CONFIG} from '../config';
+import {http} from "../http";
 
 export namespace WorksApi {
 
@@ -19,8 +20,7 @@ export namespace WorksApi {
     &only_subscriptions=${onlySubscriptions}
     ${userId !== undefined ? `&user_id=${userId}` : ''}
     ${mainSkills !== undefined ? `&main_skills=${mainSkills.join(', ')}` : ''}`;
-    const response = await fetch(url);
-    const works: WorkDto[] = await response.json();
+    const {data: works} = await http.get<WorkDto[]>(url);
 
     return works.map(workDto => workMapper.fromDto(workDto));
   }
@@ -31,7 +31,7 @@ export namespace WorksApi {
    * @param userId - Id пользователя, который лайкает.
    */
   export async function postWorkLike(workId: number, userId: number) {
-    await fetch(`${CONFIG.apiUrl}/works/${workId}/${userId}/like/`);
+    await http.post(`${CONFIG.apiUrl}/works/${workId}/${userId}/like/`);
   }
 
   /**
@@ -40,6 +40,6 @@ export namespace WorksApi {
    * @param userId - Id пользователя, который убирает лайк.
    */
   export async function postWorkUnlike(workId: number, userId: number) {
-    await fetch(`${CONFIG.apiUrl}/works/${workId}/${userId}/unlike/`);
+    await http.post(`${CONFIG.apiUrl}/works/${workId}/${userId}/unlike/`);
   }
 }

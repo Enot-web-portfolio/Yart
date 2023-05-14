@@ -1,14 +1,16 @@
-import { User } from 'src/core/models/user';
+import {User} from 'src/core/models/user';
 
-import { AxiosError } from 'axios';
+import {AxiosError} from 'axios';
 
-import { UserDto } from '../../dtos/user-dto';
-import { userMapper } from '../mappers/userMapper';
-import { UserSecretStorageService } from '../user-secret-storage-service';
-import { CONFIG } from '../config';
-import { ShortUserDto } from '../../dtos/short-user-dto';
-import { ShortUser } from '../../models/short-user';
-import { shortUserMapper } from '../mappers/shortUserMapper';
+import {UserDto} from '../../dtos/user-dto';
+import {userMapper} from '../mappers/userMapper';
+import {UserSecretStorageService} from '../user-secret-storage-service';
+import {CONFIG} from '../config';
+import {ShortUserDto} from '../../dtos/short-user-dto';
+import {ShortUser} from '../../models/short-user';
+import {shortUserMapper} from '../mappers/shortUserMapper';
+
+import {http} from "../http";
 
 export namespace UsersApi {
 
@@ -19,9 +21,9 @@ export namespace UsersApi {
       throw new AxiosError<User>('Error', '400');
     }
     return new Promise(resolve => {
-      const userDto: UserDto = { email: 'mockemail@gg.com', id: 1, name: 'Mock User' };
+      const userDto: UserDto = {email: 'mockemail@gg.com', id: 1, name: 'Mock User'};
       resolve(userDto);
-   });
+    });
   }
 
   /** Get current user. */
@@ -44,8 +46,7 @@ export namespace UsersApi {
     &only_subscriptions=${onlySubscriptions}
     ${search !== undefined ? `&search=${search}` : ''}
     ${mainSkills !== undefined ? `&main_skills=${mainSkills.join(', ')}` : ''}`;
-    const response = await fetch(url);
-    const users: ShortUserDto[] = await response.json();
+    const {data: users} = await http.get<ShortUserDto[]>(url);
 
     return users.map(userDto => shortUserMapper.fromDto(userDto));
   }
