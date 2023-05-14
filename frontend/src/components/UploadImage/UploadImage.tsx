@@ -1,11 +1,8 @@
 import React, { FC, useState } from 'react';
-
 import { Upload, UploadProps, Typography } from 'antd';
 import './UploadImage.scss';
 import { UploadChangeParam, UploadFile } from 'antd/es/upload/interface';
-
 import { checkFileSize } from '../../core/utils/check-file-size';
-
 import { typedMemo } from '../../core/utils/typed-memo';
 
 const { Text } = Typography;

@@ -1,13 +1,8 @@
 import React, { FC } from 'react';
-
 import { Typography } from 'antd';
-
 import { typedMemo } from '../../core/utils/typed-memo';
-
 import { ShortUser } from '../../core/models/short-user';
-
 import { UserAddIcon } from '../Icons';
-
 import classes from './UserCard.module.scss';
 
 const { Text } = Typography;

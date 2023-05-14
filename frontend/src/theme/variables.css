@@ -41,4 +41,5 @@
 
   /* Special */
   --box-shadow: 0 0 11px rgba(65 96 234 / 30%);
+  --header-height: calc(var(--space-s) * 4 + var(--middle-text-fs) * var(--line-height));
 }

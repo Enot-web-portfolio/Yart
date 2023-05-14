@@ -1,12 +1,10 @@
-import React, {FC, useState, useEffect} from 'react';
-
+import React, {FC} from 'react';
 import {typedMemo} from 'src/core/utils/typed-memo';
-import {Skill} from 'src/core/models/skill';
 import {Spin, Typography} from 'antd';
-
 import classes from './SkillsSelect.module.scss';
 import {ErrorResult} from "../ErrorResult";
-import {useSkillsStore} from "../../core/store/skills/store";
+import {useSeparatedSkills} from "../../core/services/hooks/useSeparateSkills";
+import {Skill} from "../../core/models/skill";
 
 const {Text} = Typography;
 
@@ -18,47 +16,26 @@ type Props = Readonly<{
 
 /** Компонент Панель выбора категорий навыков (фильтр по категориям). */
 const SkillsSelectComponent: FC<Props> = props => {
-  /** Стор категорий. */
-  const {defaultSkills, isLoading, getSkills, error} = useSkillsStore();
   /** Категории для выбора в панели. */
-  const [skills, setSkills] = useState<Skill[]>([]);
-  /** Загружаются ли скиллы. */
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (defaultSkills === null && !isLoading && error === null) {
-      getSkills();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (defaultSkills !== null) {
-      setSkills(defaultSkills);
-      setLoading(false);
-    }
-  }, [defaultSkills])
-
-  useEffect(() => {
-    if (error !== null) {
-      setLoading(false);
-    }
-  }, [error])
+  const {skills, isLoading, error, setSkills} = useSeparatedSkills<Skill>((skill) => skill);
 
   /** Ф-ция выбора/развыбора категории. */
   const onToggle = (skillId: number) => {
-    const newSkills = [...skills];
-    const toggleSkillIndex = newSkills.findIndex(skill => skill.id === skillId);
+    setSkills(skills => {
+      const updatedSkills = (skills || []).map(skill => {
+        if (skill.id == skillId) {
+          skill.checked = !skill.checked;
+        }
+        return skill;
+      })
 
-    if (toggleSkillIndex > -1) {
-      newSkills[toggleSkillIndex].checked = !newSkills[toggleSkillIndex].checked;
-    }
-
-    setSkills(newSkills);
-    props.onChange(newSkills.filter(skill => skill.checked).map(skill => skill.id));
+      props.onChange(updatedSkills.filter(skill => skill.checked).map(skill => skill.id));
+      return updatedSkills;
+    });
   };
 
-  if (loading) return <Spin/>;
-  if (skills == null) return <ErrorResult/>;
+  if (isLoading) return <Spin/>;
+  if (skills === null) return <ErrorResult/>;
   return (
     <div className={classes.category_select}>
       {skills.map((skill, i) =>

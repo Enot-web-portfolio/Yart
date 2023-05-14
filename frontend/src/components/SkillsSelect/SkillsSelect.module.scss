@@ -1,14 +1,16 @@
 .category_select {
+  --skill-border-radius: calc(var(--middle-text-fs) * var(--line-height) / 2 + var(--space-s));
+
   display: flex;
   flex-wrap: wrap;
   margin-bottom: var(--space-m);
   background-color: #fff;
   border: 1px solid var(--secondary-text-color);
-  border-radius: calc(var(--middle-text-fs) * var(--line-height) / 2 + var(--space-s));
+  border-radius: var(--skill-border-radius);
 
   .category_select__item {
     padding: var(--space-s) var(--space-m);
-    border-radius: calc(var(--middle-text-fs) * var(--line-height) / 2 + var(--space-s));
+    border-radius: var(--skill-border-radius);
     border: 1px solid transparent;
 
     &:hover, &.checked {

@@ -1,9 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
-
 import { Tag as TagAntd, TagProps } from 'antd';
-
 import { typedMemo } from '../../core/utils/typed-memo';
-
 import classes from './Tag.module.scss';
 
 type Props = Readonly<TagProps & PropsWithChildren & {

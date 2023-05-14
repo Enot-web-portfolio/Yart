@@ -4,8 +4,10 @@
   justify-content: space-between;
   padding: var(--space-s);
   background-color: #fff;
-  width:100%;
-  z-index:10;
+  width: 100%;
+  z-index: 10;
+  height: var(--header-height);
+  position: fixed;
 
   .header__logo {
     height: 50px;
@@ -28,6 +30,7 @@
 
     .navbar__element {
       cursor: pointer;
+
       &:hover {
         box-shadow: var(--box-shadow);
       }
@@ -47,12 +50,4 @@
       }
     }
   }
-}
-
-.header_fixed{
-  position: fixed;
-}
-
-.header_fixed + .content{
-  padding-top: calc(var(--space-s) * 4 + var(--middle-text-fs))
 }

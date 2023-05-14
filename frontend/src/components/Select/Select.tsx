@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
-
 import { Select as SelectAntd, SelectProps } from 'antd';
-
 import { typedMemo } from '../../core/utils/typed-memo';
-
 import { ArrowMiniIcon } from '../Icons';
 
 type Props = Readonly<SelectProps>;

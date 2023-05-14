@@ -1,21 +1,12 @@
 import React, {FC} from 'react';
-
 import {Work} from 'src/core/models/work';
-
 import {Typography} from 'antd';
-
 import {typedMemo} from '../../core/utils/typed-memo';
-
 import {HeartFillIcon, HeartLineIcon} from '../Icons';
-
 import {Tag} from '../Tag';
-
 import {useCurrentUserStore} from '../../core/store/user/store';
-
 import {useAuthStore} from '../../core/store/auth/store';
-
 import {WorksService} from '../../core/services/works-service';
-
 import classes from './WorkCard.module.scss';
 
 const {Text} = Typography;

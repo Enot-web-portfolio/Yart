@@ -1,91 +1,38 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Spin, Tabs} from 'antd';
-
 import {typedMemo} from '../../core/utils/typed-memo';
 import {Tab} from 'rc-tabs/lib/interface';
 import './UserFolderTabs.scss';
-import {ShortUser} from '../../core/models/short-user';
 import {UserCard} from '../UserCard';
-import {UsersService} from "../../core/services/users-service";
 import {EmptyResult} from "../EmptyResult";
 import {ErrorResult} from "../ErrorResult";
-import {AppError} from "../../core/models/app-error";
 import {Skill} from "../../core/models/skill";
-import {useSkillsStore} from "../../core/store/skills/store";
+import {useSeparatedSkills} from "../../core/services/hooks/useSeparateSkills";
+import {useStateShortUsers} from "../../core/services/hooks/useUsersBySkills";
 
 /** Компонент Табы пользователей по категориям. */
 const UserFolderTabsComponents: FC = () => {
-  /** Стор категорий. */
-  const {defaultSkills, isLoading, getSkills, error: skillError} = useSkillsStore();
   /** Категории. */
-  const [skills, setSkills] = useState<Tab[] | null>(null);
+  const {skills, isLoading: isLoadingSkills, error: errorSkills} = useSeparatedSkills(mapSkillToTab)
   /** Id активного скилла. */
   const [activeSkill, setActiveSkill] = useState<string | null>(null);
-
   /** Пользователи с выбранным скиллом. */
-  const [users, setUsers] = useState<ShortUser[]>([]);
+  const {users, error: errorUsers, isLoading: isLoadingUsers} = useStateShortUsers(activeSkill);
 
-  /** Загружаются ли скиллы. */
-  const [loadingSkills, setLoadingSkills] = useState(true);
-  /** Загружаются ли пользователи. */
-  const [loadingUsers, setLoadingUsers] = useState(true);
-  /** Ошибка при загрузке скиллов/пользователей. */
-  const [error, setError] = useState<null | AppError<Skill[] | ShortUser[]>>(null);
+  /** Ф-ция маппинга Skill в Tab. */
+  function mapSkillToTab(skill: Skill): Tab {
+    return {key: skill.id.toString(), label: skill.name}
+  }
 
-  useEffect(() => {
-    if (defaultSkills === null && !isLoading && skillError === null) {
-      getSkills();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (defaultSkills !== null) {
-      const parsedSkills: Tab[] = defaultSkills.map(skill => ({key: skill.id.toString(), label: skill.name}))
-      setSkills(parsedSkills);
-      setActiveSkill(parsedSkills[0].key);
-      setLoadingSkills(false);
-    }
-  }, [defaultSkills])
-
-  useEffect(() => {
-    if (skillError !== null) {
-      setLoadingSkills(false);
-      setError(skillError);
-    }
-  }, [skillError])
-
-  useEffect(() => {
-    if (activeSkill !== null) {
-      getUsers(activeSkill);
-    }
-  }, [activeSkill]);
-
-  /**
-   * Ф-ция получения пользователей.
-   * @param selectedSkill - Выбранная категория.
-   */
-  const getUsers = async (selectedSkill: string) => {
-    setLoadingUsers(true);
-    setUsers([]);
-    try {
-      const newUsers = await UsersService.getUsers(1, 6, false, undefined, [selectedSkill]);
-      setUsers(newUsers);
-    } catch (error: unknown) {
-      if (error instanceof AppError<ShortUser[]>)
-        setError(error);
-    }
-    setLoadingUsers(false)
-  };
-
-  if (loadingSkills) return <Spin/>;
-  if (skills == null) return <ErrorResult/>;
+  if (isLoadingSkills) return <Spin/>;
+  if (skills === null || errorSkills) return <ErrorResult/>;
   return (
     <div className={'folder-tabs'}>
       <Tabs type={'card'} items={skills} onChange={setActiveSkill}/>
-      <div className={`folder-tabs__container ${users.length > 0 ? 'filled' : ''}`}>
-        {loadingUsers ?
+      <div className={`folder-tabs__container ${users && users.length > 0 ? 'filled' : ''}`}>
+        {isLoadingUsers ?
           <Spin/> :
-          users.length > 0 ?
+          users && users.length > 0 ?
             users.map((user, i) => <UserCard {...user}
                                              classes={{
                                                container: 'folder-tabs__user-card',
