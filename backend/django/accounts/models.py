@@ -76,6 +76,9 @@ class UserSubscribtions(models.Model):
 
     objects = models.Manager()
 
+    def __str__(self):
+        return str(self.id)
+
 
 class MainSkillsType(models.Model):
     name = models.CharField(max_length=255)
@@ -84,3 +87,6 @@ class MainSkillsType(models.Model):
     checked = models.BooleanField(default=False)
 
     objects = models.Manager()
+
+    def __str__(self):
+        return self.name
