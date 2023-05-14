@@ -8,6 +8,7 @@ class UserWorksAdmin(admin.ModelAdmin):
     search_fields = ('id', 'user_id', 'name', 'date')
     list_filter = ('user_id', 'date')
     readonly_fields = ('id', 'user_id', 'likes_count', 'date', 'user_first_name', 'user_last_name', 'user_image_url', 'likes_list')
+    save_on_top = True
 
 
 class UserCommentsAdmin(admin.ModelAdmin):
