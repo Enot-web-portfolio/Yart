@@ -14,6 +14,7 @@ class UserAccountAdmin(admin.ModelAdmin):
 admin.site.register(UserAccount, UserAccountAdmin)
 admin.site.register(UserSubscribtions)
 admin.site.register(MainSkillsType)
+admin.site.register(SecondarySkillsType)
 
 admin.site.site_title = 'Управление Yart'
 admin.site.site_header = 'Управление Yart'
