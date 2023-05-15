@@ -19,7 +19,7 @@ class WorksViewSet(viewsets.ViewSet):
     def get_works(self, request, *args, **kwargs):
         Works = UserWorks
 
-        if request.GET.get("onlySubscriptions", None) is not None:
+        if request.GET.get("onlySubscriptions", 'false') != 'false':
             List = UserSubscribtions
             query_subs = List.objects.get(pk=request.user.id)
             query = []
