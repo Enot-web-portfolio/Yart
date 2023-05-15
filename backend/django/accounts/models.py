@@ -90,3 +90,15 @@ class MainSkillsType(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class SecondarySkillsType(models.Model):
+    name = models.CharField(max_length=255)
+    background_color = models.CharField(max_length=255)
+    font_color = models.CharField(max_length=255)
+    checked = models.BooleanField(default=False)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name

@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer
-from .models import UserSubscribtions, MainSkillsType
+from .models import UserSubscribtions, MainSkillsType, SecondarySkillsType
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -119,3 +119,16 @@ class SkillsViewSet(viewsets.ViewSet):
                 continue
             skills_list.append(skill.data)
         return Response(skills_list, content_type="application/json")
+
+    @action(permission_classes=(AllowAny,), detail=True)
+    def secondary_skills_list(self, request, *args, **kwargs):
+        List = SecondarySkillsType
+        skills_list = []
+        for i in range(SecondarySkillsType.objects.all().count()):
+            try:
+                skill = SkillsSerializer(List.objects.get(pk=i))
+            except SecondarySkillsType.DoesNotExist:
+                continue
+            skills_list.append(skill.data)
+        return Response(skills_list, content_type="application/json")
+

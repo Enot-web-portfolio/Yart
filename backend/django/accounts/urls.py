@@ -12,6 +12,7 @@ urlpatterns = [
     path("users/<int:id>/", views.UserViewSet.as_view({"get": "user_detail"}), name="user_detail"),
     path("subscriptions/<int:id>/", views.SubscribtionViewSet.as_view({"get": "user_subs"}), name="user_subs"),
     path("skills/", views.SkillsViewSet.as_view({"get": "skills_list"}), name="skills_list"),
+    path("secondSkills/", views.SkillsViewSet.as_view({"get": "secondary_skills_list"}), name="secondary_skills_list"),
     path('auth/signup', UserViewSet.as_view({'post': 'create'}), name="register"),
     path("auth/signin", TokenObtainPairView.as_view(), name="create-token"),
     path("auth/refresh", TokenRefreshView.as_view(), name="refresh-token"),
