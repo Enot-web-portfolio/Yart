@@ -15,9 +15,7 @@ class UserCreateSerializer(UserCreateSerializer):
                   'last_name',
                   'password',
                   'image_url',
-                  'available_main_skills',
                   'selected_main_skills',
-                  'available_secondary_skills',
                   'city',
                   'company',
                   'subscribers_count',
@@ -65,8 +63,7 @@ class UserEditSerializer(UserSerializer):
                   'additional_links',
                   'city',
                   'company',
-                  'available_main_skills',
-                  'available_secondary_skills',
+                  'image_url',
                   'id',
                   )
 

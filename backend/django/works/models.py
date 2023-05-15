@@ -7,18 +7,24 @@ class WorkBlockType(models.Model):
     id = models.IntegerField(primary_key=True)
     type = models.IntegerField()
     image_urls = ArrayField(models.CharField(max_length=255), default=list())
-    text = models.CharField(max_length=255)
+    text = models.TextField(blank=True)
     order = models.IntegerField()
 
     objects = models.Manager()
+
+    def __str__(self):
+        return str(self.id)
 
 
 class UserComments(models.Model):
     id = models.IntegerField(primary_key=True)
     user_id = models.IntegerField()
-    text = models.CharField(max_length=255)
+    text = models.TextField()
 
     objects = models.Manager()
+
+    def __str__(self):
+        return str(self.id)
 
 
 class UserWorks(models.Model):
@@ -43,9 +49,15 @@ class UserWorks(models.Model):
 
     objects = models.Manager()
 
+    def __str__(self):
+        return str(self.id)
+
 
 class WorksFiles(models.Model):
     uploaded_at = models.DateField(default=datetime.datetime.now())
     file = models.CharField(max_length=255)
 
     objects = models.Manager()
+
+    def __str__(self):
+        return self.file

@@ -10,7 +10,7 @@ from accounts.models import UserSubscribtions
 from backend import settings
 from .models import UserWorks, UserComments, WorksFiles
 from .serializers import WorksShortSerializer, WorksSerializer, WorksLikeSerializer, UserCommentsSerializer, EditingWorkSerializer, WorkFilesSerializer
-
+from accounts.models import UserAccount
 
 class WorksViewSet(viewsets.ViewSet):
     permission_classes = (AllowAny,)
@@ -166,7 +166,10 @@ class WorksViewSet(viewsets.ViewSet):
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_work(self, request, *args, **kwargs):
         Works = UserWorks
-        work = Works.objects.get(pk=kwargs['id'])
+        work = Works.objects.get_or_create(pk=kwargs['id'])
+        User = UserAccount
+        user = User.objects.get(pk=request.user.id)
+        user.works_count += 1
         serializer = EditingWorkSerializer()
         EditingWorkSerializer.update(self=serializer, instance=work, validated_data=request.data)
         return Response(EditingWorkSerializer(work).data)
