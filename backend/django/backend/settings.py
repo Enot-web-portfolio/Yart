@@ -20,7 +20,7 @@ AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
 
 AUTH_USER_MODEL = 'accounts.UserAccount'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["enotwebstudio.ru"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'works',
     'drf_yasg',
     'corsheaders',
+    'whitenoise.runserver_nostatic',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -52,6 +53,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -187,6 +189,15 @@ SWAGGER_SETTINGS = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://46.163.137.48:80",
+    "https://enotwebstudio.ru:80"
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://46.163.137.48:80",
+    "https://enotwebstudio.ru:80"
 ]
 
 LANGUAGE_CODE = 'ru'

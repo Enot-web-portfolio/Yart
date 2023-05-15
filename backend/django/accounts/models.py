@@ -43,9 +43,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     image_url = models.CharField(default='', max_length=255, blank=True)
-    available_main_skills = ArrayField(models.IntegerField(), default=list())
     selected_main_skills = ArrayField(models.IntegerField(), default=list())
-    available_secondary_skills = ArrayField(models.IntegerField(), default=list())
     selected_secondary_skills = ArrayField(models.IntegerField(), default=list())
     city = models.CharField(default='', max_length=255, blank=True)
     company = models.CharField(default='', max_length=255, blank=True)
@@ -76,6 +74,9 @@ class UserSubscribtions(models.Model):
 
     objects = models.Manager()
 
+    def __str__(self):
+        return str(self.id)
+
 
 class MainSkillsType(models.Model):
     name = models.CharField(max_length=255)
@@ -84,3 +85,18 @@ class MainSkillsType(models.Model):
     checked = models.BooleanField(default=False)
 
     objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+class SecondarySkillsType(models.Model):
+    name = models.CharField(max_length=255)
+    background_color = models.CharField(max_length=255)
+    font_color = models.CharField(max_length=255)
+    checked = models.BooleanField(default=False)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
