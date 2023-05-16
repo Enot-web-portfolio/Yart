@@ -5,12 +5,13 @@ import { useCurrentUserStore } from 'src/core/store/user/store';
 
 
 // TODO: Fix bug with much rerender in useEffect.
-export const useAuthActions = () => {
+export const useAuthState = () => {
   const resetUserStore = useCurrentUserStore(store => store.reset);
   const getCurrentUser = useCurrentUserStore(store => store.getCurrentUser);
   const isUserAuthorized = useAuthStore(store => store.isUserAuthorized);
   const logout = useAuthStore(store => store.logout);
   const login = useAuthStore(store => store.login);
+  const error = useAuthStore(store => store.error)
 
   useEffect(() => {
     if (isUserAuthorized) {
@@ -26,5 +27,6 @@ export const useAuthActions = () => {
     async login(loginData: Login) {
       await login(loginData);
     },
+    error,
   };
 };

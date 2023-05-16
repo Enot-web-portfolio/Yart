@@ -9,6 +9,7 @@ import { UserSecretDto } from '../../dtos/user-secret-dto';
 import { userSecretMapper } from '../mappers/userSecretMapper';
 import { http } from '../http';
 import { UserSecretStorageService } from '../user-secret-storage-service';
+import {CONFIG} from "../config";
 
 /** Auth API. */
 export namespace AuthApi {
@@ -21,7 +22,7 @@ export namespace AuthApi {
    * @param loginData Login data.
    */
   export async function login({ email, password }: Login): Promise<UserSecret> {
-    const userSecretDto = await mockLogin(email, password);
+    const {data:userSecretDto} = await http.post<UserSecretDto>(`${CONFIG.apiUrl}/auth/signin`, {email, password});
     const userSecret = userSecretMapper.fromDto(userSecretDto);
 
     return userSecret;
