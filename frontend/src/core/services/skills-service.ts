@@ -1,15 +1,16 @@
-import { User } from '../models/user';
+import { Skill } from '../models/skill';
 import { isApiError } from '../utils/axios-error-guard';
 
-import { UserApi } from './api/user-api';
+import { SkillsApi } from './api/skills-api';
+
 import { AppErrorMapper } from './mappers/appErrorMapper';
 
-export namespace CurrentUserService {
+export namespace SkillsService {
 
-  /** Get current user. */
-  export async function getCurrentUser(): Promise<User> {
+  /** Get skills. */
+  export async function getSkills(): Promise<Skill[]> {
     try {
-      return await UserApi.getCurrentUser();
+      return await SkillsApi.getSkills();
     } catch (error: unknown) {
       if (isApiError(error)) {
         throw AppErrorMapper.fromDto(error);

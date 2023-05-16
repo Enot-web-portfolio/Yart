@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { CurrentUserService } from 'src/core/services/user-service';
+import { UsersService } from 'src/core/services/users-service';
 
 import { User } from 'src/core/models/user';
 
@@ -14,7 +14,7 @@ export const useCurrentUserStore = create<CurrentUserState & CurrentUserActions>
   async getCurrentUser() {
     try {
       set(() => ({ isLoading: true, user: null, error: null }));
-      const user = await CurrentUserService.getCurrentUser();
+      const user = await UsersService.getCurrentUser();
       set(() => ({ user, error: null, isLoading: false }));
     } catch (error: unknown) {
       if (error instanceof AppError<User>) {

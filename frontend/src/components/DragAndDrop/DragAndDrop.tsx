@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
-
 import { Upload, UploadProps, Typography } from 'antd';
-
 import { typedMemo } from '../../core/utils/typed-memo';
-
 import './DragAndDrop.scss';
 
 const { Dragger } = Upload;
