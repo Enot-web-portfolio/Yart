@@ -7,9 +7,10 @@ import { worksRoutes } from '../features/works/routes';
 const routes: RouteObject[] = [
   {
     path: '*',
-    element: <Navigate to="/" />,
+    element: <Navigate to="/works" />,
   },
-  ...componentsRoutes,
+
+  // ...componentsRoutes,
   ...worksRoutes,
 ];
 
