@@ -1,5 +1,4 @@
 from django.urls import path
-from django.views.decorators.http import require_http_methods
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from . import views
 from djoser.views import UserViewSet

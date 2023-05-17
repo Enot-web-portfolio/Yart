@@ -39,6 +39,7 @@ class UserDetailSerializer(UserSerializer):
                   'image_url',
                   'description',
                   'selected_secondary_skills',
+                  'is_active',
                   )
 
 

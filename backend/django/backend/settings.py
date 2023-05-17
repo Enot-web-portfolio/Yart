@@ -20,7 +20,7 @@ AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
 
 AUTH_USER_MODEL = 'accounts.UserAccount'
 
-ALLOWED_HOSTS = ["enotwebstudio.ru"]
+ALLOWED_HOSTS = ["enotwebstudio.ru", "127.0.0.1", 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -150,19 +150,18 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = env('VK_OAUTH2_SECRET')
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_VK_OAUTH2_EXTRA_DATA = ['first_name', 'last_name']
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.vk.VKOAuth2',
-    'django.contrib.auth.backends.ModelBackend'
-)
+    "django.contrib.auth.backends.AllowAllUsersModelBackend",
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'accounts.auth.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 }
@@ -173,7 +172,9 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_TOKEN_CLASSES': (
         'rest_framework_simplejwt.tokens.AccessToken',
-    )
+    ),
+    "UPDATE_LAST_LOGIN": True,
+    "USER_AUTHENTICATION_RULE": "accounts.auth.default_user_authentication_rule",
 }
 
 SWAGGER_SETTINGS = {
