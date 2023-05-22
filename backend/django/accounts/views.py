@@ -1,28 +1,37 @@
+import uuid
+import boto3
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from backend import settings
 from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer
-from .models import UserSubscribtions, MainSkillsType
+from .models import UserSubscribtions, MainSkillsType, SecondarySkillsType
 
 
 class UserViewSet(viewsets.ModelViewSet):
     User = get_user_model()
     queryset = User.objects.all()
     serializer_class = UserEditSerializer
-    permission_classes = (AllowAny,)
 
-    @action(permission_classes=[IsAuthenticated], detail=True)
+    def get_permissions(self):
+        if self.action == "user_detail" or self.action == 'edit_get' or self.action == 'edit_post':
+            self.permission_classes = (IsAuthenticated,)
+        else:
+            self.permission_classes = (AllowAny,)
+        return tuple(permission() for permission in self.permission_classes)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
     def user_detail(self, request, *args, **kwargs):
         User = get_user_model()
         self.object = get_object_or_404(User, pk=kwargs["id"])
         serializer = UserDetailSerializer(self.object)
         return Response(serializer.data)
 
-    @action(permission_classes=(AllowAny,), detail=True)
+    @action(permission_classes=(AllowAny,), detail=True, url_name='user_search')
     def user_search(self, request, *args, **kwargs):
         User = get_user_model()
         potential_query = []
@@ -55,26 +64,45 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(paginator)
         return Response(paginator.page(int(request.GET.get("page", 1))).object_list)
 
-    @action(permission_classes=[IsAuthenticated], detail=True)
+    @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_get(self, request, *args, **kwargs):
         User = get_user_model()
         self.object = get_object_or_404(User, pk=kwargs["id"])
         serializer = UserEditSerializer(self.object)
         return Response(serializer.data)
 
-    @action(permission_classes=[IsAuthenticated], detail=True)
+    @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        data = request.data
+        image_file = data['image_url']
+        session = boto3.session.Session()
+        s3 = session.client(
+            service_name='s3',
+            endpoint_url='https://hb.bizmrg.com',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        )
+        id = uuid.uuid4()
+        key = f'useravatar_{kwargs["id"]}_{id}.' + image_file.rsplit('.', 1)[1].lower()
+        s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/users/{kwargs["id"]}/{key}')
+        data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
+        serializer = self.serializer_class(data=data, partial=True)
         if serializer.is_valid():
-            serializer.update(instance=request.user, validated_data=request.data)
+            serializer.update(instance=request.user, validated_data=data)
             return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class SubscribtionViewSet(viewsets.ViewSet):
+    def get_permissions(self):
+        if self.action == "user_subs" or self.action == 'subscribe' or self.action == 'unsubscribe':
+            self.permission_classes = (IsAuthenticated,)
+        else:
+            self.permission_classes = (AllowAny,)
+        return tuple(permission() for permission in self.permission_classes)
 
-    @action(permission_classes=[IsAuthenticated], detail=True)
+    @action(permission_classes=(IsAuthenticated,), detail=True)
     def user_subs(self, request, *args, **kwargs):
         List = UserSubscribtions
         self.object = get_object_or_404(List, pk=kwargs["id"])
@@ -83,7 +111,7 @@ class SubscribtionViewSet(viewsets.ViewSet):
             r_list.append(UserShortSerializer(get_object_or_404(get_user_model(), pk=i)).data)
         return Response(r_list, content_type="application/json")
 
-    @action(permission_classes=[IsAuthenticated], detail=True)
+    @action(permission_classes=(IsAuthenticated,), detail=True)
     def subscribe(self, request, *args, **kwargs):
         self.object, is_created = UserSubscribtions.objects.get_or_create(pk=request.user.id)
         if kwargs["id"] != request.user.id:
@@ -92,7 +120,7 @@ class SubscribtionViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_409_CONFLICT)
 
-    @action(permission_classes=[IsAuthenticated], detail=True)
+    @action(permission_classes=(IsAuthenticated,), detail=True)
     def unsubscribe(self, request, *args, **kwargs):
         self.object = get_object_or_404(UserSubscribtions, pk=request.user.id)
         if kwargs["id"] != request.user.id:
@@ -106,7 +134,12 @@ class SubscribtionViewSet(viewsets.ViewSet):
 
 
 class SkillsViewSet(viewsets.ViewSet):
-    permission_classes = (AllowAny,)
+    def get_permissions(self):
+        if self.action == "user_subs" or self.action == 'subscribe' or self.action == 'unsubscribe':
+            self.permission_classes = (IsAuthenticated,)
+        else:
+            self.permission_classes = (AllowAny,)
+        return tuple(permission() for permission in self.permission_classes)
 
     @action(permission_classes=(AllowAny,), detail=True)
     def skills_list(self, request, *args, **kwargs):
@@ -119,3 +152,16 @@ class SkillsViewSet(viewsets.ViewSet):
                 continue
             skills_list.append(skill.data)
         return Response(skills_list, content_type="application/json")
+
+    @action(permission_classes=(AllowAny,), detail=True)
+    def secondary_skills_list(self, request, *args, **kwargs):
+        List = SecondarySkillsType
+        skills_list = []
+        for i in range(SecondarySkillsType.objects.all().count()):
+            try:
+                skill = SkillsSerializer(List.objects.get(pk=i))
+            except SecondarySkillsType.DoesNotExist:
+                continue
+            skills_list.append(skill.data)
+        return Response(skills_list, content_type="application/json")
+

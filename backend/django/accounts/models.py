@@ -22,8 +22,8 @@ class UserAccountManager(BaseUserManager):
         if not email:
             raise ValueError('Required.')
 
-        extra_fields.is_staff = True
-        extra_fields.is_superuser = True
+        extra_fields['is_staff'] = True
+        extra_fields['is_superuser'] = True
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
@@ -43,16 +43,14 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     image_url = models.CharField(default='', max_length=255, blank=True)
-    available_main_skills = ArrayField(models.IntegerField(), default=list())
-    selected_main_skills = ArrayField(models.IntegerField(), default=list())
-    available_secondary_skills = ArrayField(models.IntegerField(), default=list())
-    selected_secondary_skills = ArrayField(models.IntegerField(), default=list())
+    selected_main_skills = ArrayField(models.IntegerField(), default=list, blank=True)
+    selected_secondary_skills = ArrayField(models.IntegerField(), default=list, blank=True)
     city = models.CharField(default='', max_length=255, blank=True)
     company = models.CharField(default='', max_length=255, blank=True)
     subscribers_count = models.IntegerField(default=0, blank=True)
     works_count = models.IntegerField(default=0, blank=True)
     phone = models.IntegerField(default=0, blank=True)
-    additional_links = ArrayField(models.CharField(max_length=255, default=''), default=list())
+    additional_links = ArrayField(models.CharField(max_length=255, default=''), default=list, blank=True)
     description = models.CharField(max_length=255, default='', blank=True)
 
     objects = UserAccountManager()
@@ -66,15 +64,24 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.first_name
 
+    def has_perm(*args, **kwargs):
+        return True
+
+    def has_module_perms(*args, **kwargs):
+        return True
+
     def __str__(self):
         return self.email
 
 
 class UserSubscribtions(models.Model):
     id = models.IntegerField(primary_key=True)
-    subs_list = ArrayField(models.IntegerField(), default=list())
+    subs_list = ArrayField(models.IntegerField(), default=list)
 
     objects = models.Manager()
+
+    def __str__(self):
+        return str(self.id)
 
 
 class MainSkillsType(models.Model):
@@ -84,3 +91,18 @@ class MainSkillsType(models.Model):
     checked = models.BooleanField(default=False)
 
     objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+class SecondarySkillsType(models.Model):
+    name = models.CharField(max_length=255)
+    background_color = models.CharField(max_length=255)
+    font_color = models.CharField(max_length=255)
+    checked = models.BooleanField(default=False)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name

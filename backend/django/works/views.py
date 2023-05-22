@@ -3,23 +3,31 @@ import uuid
 import boto3
 from django.core.paginator import Paginator
 from rest_framework import viewsets
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import UserSubscribtions
 from backend import settings
 from .models import UserWorks, UserComments, WorksFiles
 from .serializers import WorksShortSerializer, WorksSerializer, WorksLikeSerializer, UserCommentsSerializer, EditingWorkSerializer, WorkFilesSerializer
+from accounts.models import UserAccount
 
 
 class WorksViewSet(viewsets.ViewSet):
-    permission_classes = (AllowAny,)
+    def get_permissions(self):
+        if self.action == "like_work" or self.action == 'unlike_work' or self.action == 'comment_work' \
+                or self.action == 'edit_comment_work' or self.action == 'delete_comment_work' \
+                or self.action == 'edit_work' or self.action == 'work_fileedit':
+            self.permission_classes = (IsAuthenticated,)
+        else:
+            self.permission_classes = (AllowAny,)
+        return tuple(permission() for permission in self.permission_classes)
 
     @action(permission_classes=(AllowAny,), detail=True)
     def get_works(self, request, *args, **kwargs):
         Works = UserWorks
 
-        if request.GET.get("onlySubscriptions", None) is not None:
+        if request.GET.get("onlySubscriptions", 'false') != 'false':
             List = UserSubscribtions
             query_subs = List.objects.get(pk=request.user.id)
             query = []
@@ -166,7 +174,10 @@ class WorksViewSet(viewsets.ViewSet):
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_work(self, request, *args, **kwargs):
         Works = UserWorks
-        work = Works.objects.get(pk=kwargs['id'])
+        work = Works.objects.get_or_create(pk=kwargs['id'])
+        User = UserAccount
+        user = User.objects.get(pk=request.user.id)
+        user.works_count += 1
         serializer = EditingWorkSerializer()
         EditingWorkSerializer.update(self=serializer, instance=work, validated_data=request.data)
         return Response(EditingWorkSerializer(work).data)
