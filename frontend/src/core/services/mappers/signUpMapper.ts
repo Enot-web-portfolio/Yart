@@ -1,7 +1,7 @@
-import {SignUpDto} from "../../dtos/signup-dto";
-import {SignUp} from "../../models/signup-data";
+import { SignUpDto } from '../../dtos/signup-dto';
+import { SignUp } from '../../models/signup-data';
 
-import { IMapperToDto} from './mappers';
+import { IMapperToDto } from './mappers';
 
 /** Login mapper. */
 class SignUpMapper implements IMapperToDto<SignUpDto, SignUp> {
@@ -13,6 +13,7 @@ class SignUpMapper implements IMapperToDto<SignUpDto, SignUp> {
       password: data.password,
       first_name: data.firstName,
       last_name: data.lastName,
+      re_password: data.repeatedPassword,
     };
   }
 }

@@ -1,42 +1,87 @@
-import React, {FC, memo, useState} from 'react';
-import {Form, Formik, ErrorMessage} from "formik";
-import * as Yup from 'yup';
-import {initialSignInState} from "./config";
-import {Login} from "../../core/models/login-data";
+import React, { FC, memo, useState } from 'react';
+import { Form, Formik, ErrorMessage } from 'formik';
+
+import { Button, Input, Typography } from 'antd';
+
+import { useAuthState } from '../../core/services/hooks/useAuthState';
+
+import { initialSignUpState, SignUpSchema } from './config';
 import classes from './AuthModal.module.scss';
-import {Button, Input} from "antd";
+
+const { Text } = Typography;
 
 const SignUpFormComponent: FC = () => {
-  const submit = (data: Login) => {
-
-  }
+  const [repeatedPasswordError, setRepeatedPassword] = useState<string | null>(null);
+  const { signUp } = useAuthState();
 
   return (
-    <Formik initialValues={initialSignInState}
-            validationSchema={{
-              email: Yup.string()
-                .required('Введите почту')
-                .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Некорректный адрес'),
-              password: Yup.string()
-                .required('Введите пароль')
-            }}
-            validateOnBlur
-            onSubmit={submit}>{
-      ({setFieldValue, errors, values}) => (
-        <Form>
-          <div className={`${classes['auth-modal__form_field']}`}>
-            <Input value={values.email} onChange={(value) => setFieldValue('email', value)}/>
-            <ErrorMessage name={'email'}/>
-          </div>
-          <div className={`${classes['auth-modal__form_field']}`}>
-            <Input value={values.password} onChange={(value) => setFieldValue('password', value)}/>
-            <ErrorMessage name={'password'}/>
-          </div>
-          <Button type={'primary'}>За работу</Button>
-        </Form>
-      )
-    }
-    </Formik>)
-}
+    <Formik initialValues={initialSignUpState}
+      validationSchema={SignUpSchema}
+      validateOnBlur
+      onSubmit={signUp}>{
+        ({ setFieldValue, errors, values, setFieldError }) => (
+          <Form className={`${classes['auth-modal__form']}`}>
+            <div className={`${classes['auth-modal__form_field']} ${classes['auth-modal__form_field__name']}`}>
+              <div>
+                <Input value={values.firstName}
+                  placeholder={'Имя'}
+                  onChange={event => setFieldValue('firstName', event.target.value)}/>
+                <Text type={'warning'} className={`${classes['auth-modal__form_field__error']}`}>
+                  <ErrorMessage name={'firstName'}/>
+                </Text>
+              </div>
+              <div>
+                <Input value={values.lastName}
+                  placeholder={'Фамилия'}
+                  onChange={event => setFieldValue('lastName', event.target.value)}/>
+                <Text type={'warning'} className={`${classes['auth-modal__form_field__error']}`}>
+                  <ErrorMessage name={'lastName'}/>
+                </Text>
+              </div>
+            </div>
+            <div className={`${classes['auth-modal__form_field']}`}>
+              <Input value={values.email}
+                prefix={'Почта:'}
+                onChange={event => setFieldValue('email', event.target.value)}/>
+              <Text type={'warning'} className={`${classes['auth-modal__form_field__error']}`}>
+                <ErrorMessage name={'email'}/>
+              </Text>
+            </div>
+            <div className={`${classes['auth-modal__form_field']}`}>
+              <Input value={values.password}
+                prefix={'Пароль:'}
+                onChange={event => {
+                     setFieldValue('password', event.target.value);
+                     if (event.target.value === values.repeatedPassword) {
+                       setRepeatedPassword(null);
+                     } else {
+                       setRepeatedPassword('Пароли не совпадают!');
+                     }
+                   }}/>
+              <Text type={'warning'} className={`${classes['auth-modal__form_field__error']}`}>
+                <ErrorMessage name={'password'}/>
+              </Text>
+            </div>
+            <div className={`${classes['auth-modal__form_field']}`}>
+              <Input value={values.repeatedPassword}
+                prefix={'Пароль х2:'}
+                onChange={event => {
+                     setFieldValue('repeatedPassword', event.target.value);
+                     if (event.target.value === values.password) {
+                       setRepeatedPassword(null);
+                     } else {
+                       setRepeatedPassword('Пароли не совпадают!');
+                     }
+                   }}/>
+              <Text type={'warning'} className={`${classes['auth-modal__form_field__error']}`}>
+                {errors.repeatedPassword ?? repeatedPasswordError}
+              </Text>
+            </div>
+            <Button type={'primary'} htmlType={'submit'}>За работу</Button>
+          </Form>
+        )
+      }
+    </Formik>);
+};
 
 export const SignUpForm = memo(SignUpFormComponent);

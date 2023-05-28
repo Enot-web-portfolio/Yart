@@ -1,6 +1,5 @@
 import React, { FC, memo } from 'react';
-import {AuthModal} from "../../../../components/AuthModal";
 
-const ComponentsPageComponents: FC = () => <AuthModal isOpen={true} setIsOpen={()=>{}}/>;
+const ComponentsPageComponents: FC = () => null;
 
 export const ComponentsPage = memo(ComponentsPageComponents);

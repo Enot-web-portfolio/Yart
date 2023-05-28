@@ -2,14 +2,14 @@ import { AxiosError } from 'axios';
 import { UserSecret } from 'src/core/models/user-secret';
 import { Login } from 'src/core/models/login-data';
 
-import { LoginDto } from '../../dtos/login-dto';
-import { ApiErrorDto } from '../../dtos/validation-error-dto';
+import { SignUp } from '../../models/signup-data';
 
 import { UserSecretDto } from '../../dtos/user-secret-dto';
 import { userSecretMapper } from '../mappers/userSecretMapper';
 import { http } from '../http';
 import { UserSecretStorageService } from '../user-secret-storage-service';
-import {CONFIG} from "../config";
+import { CONFIG } from '../config';
+import { signUpMapper } from '../mappers/signUpMapper';
 
 /** Auth API. */
 export namespace AuthApi {
@@ -21,8 +21,19 @@ export namespace AuthApi {
    * Logs a user in with email and password.
    * @param loginData Login data.
    */
-  export async function login({ email, password }: Login): Promise<UserSecret> {
-    const {data:userSecretDto} = await http.post<UserSecretDto>(`${CONFIG.apiUrl}/auth/signin`, {email, password});
+  export async function login(loginData: Login): Promise<UserSecret> {
+    const { data: userSecretDto } = await http.post<UserSecretDto>(`${CONFIG.apiUrl}/auth/signin`, loginData);
+    const userSecret = userSecretMapper.fromDto(userSecretDto);
+
+    return userSecret;
+  }
+
+  /**
+   * Logs a user in with email and password.
+   * @param signUpData Login data.
+   */
+  export async function signUp(signUpData: SignUp): Promise<UserSecret> {
+    const { data: userSecretDto } = await http.post<UserSecretDto>(`${CONFIG.apiUrl}/auth/signup`, signUpMapper.toDto(signUpData));
     const userSecret = userSecretMapper.fromDto(userSecretDto);
 
     return userSecret;
@@ -44,48 +55,5 @@ export namespace AuthApi {
     );
 
     return userSecretMapper.fromDto(newSecretDto);
-  }
-
-  // TODO (template preparation): This function was made for template. Remove it from your project.
-  /**
-   * Mocks user login.
-   * @param email Email.
-   * @param password Password.
-   */
-  async function mockLogin(email: string, password: string): Promise<UserSecret> {
-    try {
-      return await http.post(loginUrl, {
-        email, password,
-      });
-    } catch (error: unknown) {
-      const axiosMockError = error as AxiosError<ApiErrorDto<LoginDto>>;
-      if (!email) {
-        axiosMockError.message = 'No login provided';
-        throw axiosMockError;
-      }
-
-      if (!password || password.length < 5) {
-        axiosMockError.message = 'Incorrect password';
-
-        axiosMockError.response = {
-          config: {},
-          data: {
-            data: {
-              password: ['Minimum password length 5 characters'],
-            },
-            detail: 'Incorrect password',
-          },
-          headers: {},
-          status: 400,
-          statusText: 'Validation error.',
-        };
-
-        throw axiosMockError;
-      }
-
-      return {
-        token: 'fake-token',
-      };
-    }
   }
 }

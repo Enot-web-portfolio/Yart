@@ -7,6 +7,9 @@ export type SignUpDto = Readonly<{
   /** Password. */
   password: string;
 
+  /** Repeated password. */
+  re_password: string;
+
   /** User name. */
   first_name: string;
 

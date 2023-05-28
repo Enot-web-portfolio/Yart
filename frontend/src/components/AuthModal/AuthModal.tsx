@@ -1,44 +1,54 @@
-import React, {Dispatch, FC, useState} from 'react';
+import React, { FC, useState, useRef, useEffect } from 'react';
+
+import { Typography } from 'antd';
+
+import { typedMemo } from '../../core/utils/typed-memo';
+
+import { useAuthState } from '../../core/services/hooks/useAuthState';
+
+import { useModalActivityState } from '../../core/services/hooks/useModalActivityState';
+
 import classes from './AuthModal.module.scss';
-import {Typography} from "antd";
-import {AuthType} from "./types";
-import {SignInForm} from "./SignInForm";
-import {SignUpForm} from "./SignUpForm";
-import {typedMemo} from "../../core/utils/typed-memo";
-import {SetState} from "zustand";
+import { AuthType } from './types';
+import { SignInForm } from './SignInForm';
+import { SignUpForm } from './SignUpForm';
 
-const {Link, Text} = Typography;
+const { Link, Text } = Typography;
 
-type Props = Readonly<{
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetState<boolean>>;
-}>
-
-const AuthModalComponent: FC<Props> = (props) => {
+const AuthModalComponent: FC = () => {
+  const { isOpenAuth, closeAuthModal } = useAuthState();
   const [authType, setAuthType] = useState(AuthType.SignIn);
+  const authModalRef = useRef<HTMLDivElement>(null);
+  const { setIsActive } = useModalActivityState([authModalRef.current], closeAuthModal);
+
+  useEffect(() => {
+     setIsActive(isOpenAuth);
+  }, [isOpenAuth]);
 
   const toggleAuthType = () => {
     setAuthType(curAuthType =>
       curAuthType === AuthType.SignUp ? AuthType.SignIn : AuthType.SignUp);
-  }
+  };
 
   return (
-    <div className={`${classes['auth-modal']}`}>
-      <div className={`${classes['auth-modal__close']}`}>
-        <img src="/src/assets/icons/plus.svg" alt="close authentificate modal"/>
+    <div className={`${classes['auth-modal__wrapper']} ${isOpenAuth ? classes['auth-modal_active'] : ''}`}>
+      <div className={`${classes['auth-modal']}`} ref={authModalRef}>
+        <div className={`${classes['auth-modal__close']}`} onClick={closeAuthModal}>
+          <img src="/src/assets/icons/plus.svg" alt="close authentificate modal"/>
+        </div>
+        <Text className={`${classes['auth-modal__header']}`}>
+          {authType === AuthType.SignIn ? 'С возвращением!' : 'Добро пожаловать!'}
+        </Text>
+        {authType === AuthType.SignIn ? <SignInForm/> : <SignUpForm/>}
+        <Text className={`${classes['auth-modal__toggle-auth']}`}>
+          {authType === AuthType.SignIn ? 'Ты еще не с нами?' : 'Уже творишь с Yart?'}
+          <Link className={`${classes.active}`} onClick={toggleAuthType}>
+            {authType === AuthType.SignIn ? 'Регистрация' : 'Войти'}
+          </Link>
+        </Text>
       </div>
-      <Text className={`${classes['auth-modal__header']}`}>
-        {authType === AuthType.SignIn ? 'С возвращением!' : 'Добро пожаловать!'}
-      </Text>
-      {authType === AuthType.SignIn ? <SignInForm/> : <SignUpForm/>}
-      <Text className={`${classes['auth-modal__toggle-auth']}`}>
-        {authType === AuthType.SignIn ? 'Ты еще не с нами?' : 'Уже творишь с Yart?'}
-        <Link className={`${classes.active}`} onClick={toggleAuthType}>
-          {authType === AuthType.SignIn ? 'Регистрация' : 'Войти'}
-        </Link>
-      </Text>
     </div>
-  )
-}
+  );
+};
 
 export const AuthModal = typedMemo(AuthModalComponent);

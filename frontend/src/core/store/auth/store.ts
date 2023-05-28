@@ -19,9 +19,23 @@ export const useAuthStore = create<AuthState & AuthActions>(set => ({
         isLoading: false,
       }));
     } catch (e: unknown) {
-      if (!(e instanceof AppError<Login>)) {
-        throw e;
-      }
+      set(() => ({
+        isLoading: false,
+        isUserAuthorized: false,
+        error: e as AppError<Login>,
+      }));
+    }
+  },
+  async signUp(signUpData) {
+    try {
+      set(() => ({ isLoading: true }));
+      await AuthService.signUp(signUpData);
+      set(() => ({
+        isUserAuthorized: true,
+        error: null,
+        isLoading: false,
+      }));
+    } catch (e: unknown) {
       set(() => ({
         isLoading: false,
         isUserAuthorized: false,
@@ -35,5 +49,11 @@ export const useAuthStore = create<AuthState & AuthActions>(set => ({
   },
   reset() {
     set(() => ({ ...initialState }));
+  },
+  openAuthModal() {
+    set(() => ({ isOpenAuth: true }));
+  },
+  closeAuthModal() {
+    set(() => ({ isOpenAuth: false }));
   },
 }));
