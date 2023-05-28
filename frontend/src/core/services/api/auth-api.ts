@@ -14,15 +14,16 @@ import { signUpMapper } from '../mappers/signUpMapper';
 /** Auth API. */
 export namespace AuthApi {
 
-  const loginUrl = 'auth/login/';
-  const refreshSecretUrl = 'auth/token/refresh/';
+  const signInUrl = `${CONFIG.apiUrl}/auth/signin`;
+  const signUpUrl = `${CONFIG.apiUrl}/auth/signup`;
+  const refreshSecretUrl = `${CONFIG.apiUrl}/auth/refresh/`;
 
   /**
    * Logs a user in with email and password.
    * @param loginData Login data.
    */
   export async function login(loginData: Login): Promise<UserSecret> {
-    const { data: userSecretDto } = await http.post<UserSecretDto>(`${CONFIG.apiUrl}/auth/signin`, loginData);
+    const { data: userSecretDto } = await http.post<UserSecretDto>(signInUrl, loginData);
     const userSecret = userSecretMapper.fromDto(userSecretDto);
 
     return userSecret;
@@ -33,7 +34,7 @@ export namespace AuthApi {
    * @param signUpData Login data.
    */
   export async function signUp(signUpData: SignUp): Promise<UserSecret> {
-    const { data: userSecretDto } = await http.post<UserSecretDto>(`${CONFIG.apiUrl}/auth/signup`, signUpMapper.toDto(signUpData));
+    const { data: userSecretDto } = await http.post<UserSecretDto>(signUpUrl, signUpMapper.toDto(signUpData));
     const userSecret = userSecretMapper.fromDto(userSecretDto);
 
     return userSecret;

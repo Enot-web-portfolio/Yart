@@ -7,7 +7,7 @@ import classes from './Header.module.scss';
 
 // Компонент Хедер сайта
 const HeaderComponent: FC = () => {
-  const { openAuthModal, isUserAuthorized, closeAuthModal, isOpenAuth } = useAuthState();
+  const { openAuthModal, isUserAuthorized } = useAuthState();
 
   return (
     <header className={`${classes.header}`} id={'header'}>

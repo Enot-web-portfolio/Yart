@@ -17,6 +17,7 @@ export const useAuthStore = create<AuthState & AuthActions>(set => ({
         isUserAuthorized: true,
         error: null,
         isLoading: false,
+        isOpenAuth: false,
       }));
     } catch (e: unknown) {
       set(() => ({
