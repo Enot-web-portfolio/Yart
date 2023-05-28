@@ -18,13 +18,13 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserEditSerializer
 
     def get_permissions(self):
-        if self.action == "user_detail" or self.action == 'edit_get' or self.action == 'edit_post':
+        if self.action == 'edit_get' or self.action == 'edit_post':
             self.permission_classes = (IsAuthenticated,)
         else:
             self.permission_classes = (AllowAny,)
         return tuple(permission() for permission in self.permission_classes)
 
-    @action(permission_classes=(IsAuthenticated,), detail=True)
+    @action(permission_classes=(AllowAny,), detail=True)
     def user_detail(self, request, *args, **kwargs):
         User = get_user_model()
         self.object = get_object_or_404(User, pk=kwargs["id"])
