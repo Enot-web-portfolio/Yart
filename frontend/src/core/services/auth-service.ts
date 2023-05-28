@@ -46,9 +46,14 @@ export namespace AuthService {
     } catch (error: unknown) {
       const { response } = error as AxiosError<SignUpErrors>;
       if (response) {
-        const { data: { password } } = response;
+        const { data: { password, detail, email } } = response;
+        console.log(response);
         if (password) {
           toast.error(password.join('\n'));
+        } else if (email) {
+          toast.error(email.join(', '));
+        } else if (detail) {
+          toast.error(detail);
         }
       }
       if (isApiError(error)) {

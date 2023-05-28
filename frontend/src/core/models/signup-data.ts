@@ -25,4 +25,7 @@ export type SignUpErrors = Readonly<{
 
   /** Password. */
   password?: string[];
+
+  /** Detail/ */
+  detail?: string;
 }>;
