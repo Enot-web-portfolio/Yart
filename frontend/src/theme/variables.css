@@ -44,5 +44,11 @@
   --header-height: calc(var(--space-s) * 4 + var(--middle-text-fs) * var(--line-height));
 
   /* Background color */
-  --modal-wrapper-background: rgba(0, 0, 0, 0.3);
+  --modal-wrapper-background: rgb(0 0 0 / 30%);
+
+  /* Icons size */
+  --icon-large: 35px;
+  --icon-medium: 30px;
+  --icon-small: 20px;
+  --icon-very-small: 15px;
 }

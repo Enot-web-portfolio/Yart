@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import { UserSecret } from 'src/core/models/user-secret';
 import { Login } from 'src/core/models/login-data';
 
