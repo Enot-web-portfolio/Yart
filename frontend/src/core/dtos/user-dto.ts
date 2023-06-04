@@ -4,7 +4,7 @@ export type UserDto = Readonly<{
   /** Id. */
   id: number;
 
-  /** First Name. */
+  /** Full Name. */
   first_name: string;
 
   /** Last name. */

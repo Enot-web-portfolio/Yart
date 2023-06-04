@@ -4,7 +4,7 @@ export type User = Readonly<{
   /** Id. */
   userId: number;
 
-  /** First Name. */
+  /** Full Name. */
   userFullName: string;
 
   /** Email. */

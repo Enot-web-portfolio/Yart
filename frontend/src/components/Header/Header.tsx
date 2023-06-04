@@ -6,7 +6,7 @@ import { Button, Typography } from 'antd';
 import { useAuthState } from '../../core/services/hooks/useAuthState';
 
 import { useCurrentUserStore } from '../../core/store/user/store';
-import { toAbout, toUser, toWorks, toUsers } from '../../core/services/route-links';
+import { toAbout, toUser, toWorks, toUsers, toWorkEditor } from '../../routes/route-links';
 
 import classes from './Header.module.scss';
 
@@ -25,7 +25,7 @@ const HeaderComponent: FC = () => {
     <header className={`${classes.header}`} id={'header'}>
       <img src="/src/assets/logo.svg" alt="Yart - portfolio" className={`${classes.header__logo}`}/>
       <nav className={`${classes.navbar}`}>
-        <NavLink to={'/work/editor'} className={`${classes.navbar__group} ${classes.navbar__element}`}>
+        <NavLink to={toWorkEditor()} className={`${classes.navbar__group} ${classes.navbar__element}`}>
           <img src="/src/assets/icons/plus.svg" alt="add work" className={`${classes['header__work-btn']}`}/>
         </NavLink>
         <div className={`${classes.navbar__group}`}>
