@@ -19,7 +19,7 @@ function shouldInterceptSecret(config: AxiosRequestConfig): boolean {
  * @param secret User secret.
  */
 function getAuthorizationHeaderValue(secret: UserSecret): string {
-  return `Bearer ${secret.token}`;
+  return `Bearer ${secret.access}`;
 }
 
 /**

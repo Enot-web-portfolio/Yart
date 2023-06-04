@@ -43,6 +43,7 @@ export namespace AuthService {
     try {
       const userSecret = await AuthApi.signUp(signUpData);
       UserSecretStorageService.save(userSecret);
+      await AuthApi.login({ email: signUpData.email, password: signUpData.password });
     } catch (error: unknown) {
       const { response } = error as AxiosError<SignUpErrors>;
       if (response) {
