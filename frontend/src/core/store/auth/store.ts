@@ -9,6 +9,9 @@ import { initialState } from './state';
 
 export const useAuthStore = create<AuthState & AuthActions>(set => ({
   ...initialState,
+  setIsUserAuthorized(isUserAuthorized: boolean) {
+    set(() => ({ isUserAuthorized }));
+  },
   async login(loginData) {
     try {
       set(() => ({ isLoading: true }));

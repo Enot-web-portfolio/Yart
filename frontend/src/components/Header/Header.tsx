@@ -1,4 +1,4 @@
-import { FC, memo, useRef } from 'react';
+import { FC, memo, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { useAuthState } from '../../core/services/hooks/useAuthState';
@@ -7,7 +7,11 @@ import classes from './Header.module.scss';
 
 // Компонент Хедер сайта
 const HeaderComponent: FC = () => {
-  const { openAuthModal, isUserAuthorized } = useAuthState();
+  const { openAuthModal, isUserAuthorized, authBySecret } = useAuthState();
+
+  useEffect(() => {
+    authBySecret();
+  }, []);
 
   return (
     <header className={`${classes.header}`} id={'header'}>

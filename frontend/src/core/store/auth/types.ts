@@ -39,4 +39,7 @@ export interface AuthActions {
 
   /** Close auth modal. */
   closeAuthModal(): void;
+
+  /** Set is authorized. */
+  setIsUserAuthorized(isUserAuthorized: boolean): void;
 }
