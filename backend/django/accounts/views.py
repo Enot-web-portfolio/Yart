@@ -30,6 +30,14 @@ class UserViewSet(viewsets.ModelViewSet):
         self.object = get_object_or_404(User, pk=kwargs["id"])
         serializer = UserDetailSerializer(self.object)
         return Response(serializer.data)
+    
+    @action(permission_classes=(AllowAny,), detail=True)
+    def user_me(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            serializer = UserDetailSerializer(request.user)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     @action(permission_classes=(AllowAny,), detail=True, url_name='user_search')
     def user_search(self, request, *args, **kwargs):
