@@ -1,35 +1,24 @@
-import {User} from 'src/core/models/user';
+import { User } from 'src/core/models/user';
 
-import {AxiosError} from 'axios';
+import { AxiosError } from 'axios';
 
-import {UserDto} from '../../dtos/user-dto';
-import {userMapper} from '../mappers/userMapper';
-import {UserSecretStorageService} from '../user-secret-storage-service';
-import {CONFIG} from '../config';
-import {ShortUserDto} from '../../dtos/short-user-dto';
-import {ShortUser} from '../../models/short-user';
-import {shortUserMapper} from '../mappers/shortUserMapper';
+import { UserDto } from '../../dtos/user-dto';
+import { userMapper } from '../mappers/userMapper';
+import { UserSecretStorageService } from '../user-secret-storage-service';
+import { CONFIG } from '../config';
+import { ShortUserDto } from '../../dtos/short-user-dto';
+import { ShortUser } from '../../models/short-user';
+import { shortUserMapper } from '../mappers/shortUserMapper';
 
-import {http} from "../http";
+import { http } from '../http';
 
 export namespace UsersApi {
 
-  /** Get mock user. */
-  async function getMockUser(): Promise<UserDto> {
-    const isUserSecretInStorage = await UserSecretStorageService.isValid();
-    if (!isUserSecretInStorage) {
-      throw new AxiosError<User>('Error', '400');
-    }
-    return new Promise(resolve => {
-      const userDto: UserDto = {email: 'mockemail@gg.com', id: 1, name: 'Mock User'};
-      resolve(userDto);
-    });
-  }
-
   /** Get current user. */
   export async function getCurrentUser(): Promise<User> {
-    const userDto = await getMockUser();
-    return userMapper.fromDto(userDto);
+    const url = `${CONFIG.apiUrl}/users/me`;
+    const { data } = await http.get<UserDto>(url);
+    return userMapper.fromDto(data);
   }
 
   /**
@@ -46,7 +35,7 @@ export namespace UsersApi {
     &only_subscriptions=${onlySubscriptions}
     ${search !== undefined ? `&search=${search}` : ''}
     ${mainSkills !== undefined ? `&main_skills=${mainSkills.join(', ')}` : ''}`;
-    const {data: users} = await http.get<ShortUserDto[]>(url);
+    const { data: users } = await http.get<ShortUserDto[]>(url);
 
     return users.map(userDto => shortUserMapper.fromDto(userDto));
   }

@@ -10,7 +10,7 @@ const routes: RouteObject[] = [
     element: <Navigate to="/works" />,
   },
 
-  // ...componentsRoutes,
+  ...componentsRoutes,
   ...worksRoutes,
 ];
 

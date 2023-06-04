@@ -10,14 +10,16 @@ class UserSecretMapper implements IMapper<UserSecretDto, UserSecret> {
   /** @inheritdoc */
   public toDto(data: UserSecret): UserSecretDto {
     return {
-      token: data.token,
+      access: data.access,
+      refresh: data.refresh,
     };
   }
 
   /** @inheritdoc */
   public fromDto(dto: UserSecretDto): UserSecret {
     return {
-      token: dto.token,
+      access: dto.access,
+      refresh: dto.refresh,
     };
   }
 }

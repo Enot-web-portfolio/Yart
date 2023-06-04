@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
 
-const ComponentsPageComponents: FC = () => <p>Components</p>;
+const ComponentsPageComponents: FC = () => null;
 
 export const ComponentsPage = memo(ComponentsPageComponents);
