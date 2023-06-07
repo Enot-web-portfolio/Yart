@@ -28,7 +28,7 @@
       gap: var(--space-vs);
 
       .user-card__info_actions__action {
-        color: #000;
+        color: var(--button-primary-color);
         max-width: 100%;
         font-size: var(--micro-text-fs);
         padding: var(--space-vs);

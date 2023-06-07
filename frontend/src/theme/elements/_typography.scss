@@ -1,0 +1,18 @@
+.ant-typography {
+  line-height: var(--line-height);
+  display: inline-block;
+}
+
+h1.ant-typography{
+  font-size: var(--big-title-fs);
+  font-weight: var(--light-fw);
+}
+
+h2.ant-typography{
+  font-size: var(--middle-title-fs);
+  font-weight: var(--light-fw);
+}
+
+h3.ant-typography{
+  font-size: var(--small-title-fs);
+}

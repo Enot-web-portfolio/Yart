@@ -38,4 +38,17 @@ export namespace UsersService {
       throw error;
     }
   }
+
+  /**
+   * Subscribe on user.
+   * @param userId - Id пользователя, на которого подписываются.
+   */
+  export async function postSubscribeUser(userId: number | string): Promise<boolean> {
+    try {
+      await UsersApi.postSubscribe(userId);
+      return true;
+    } catch (error: unknown) {
+      return false;
+    }
+  }
 }

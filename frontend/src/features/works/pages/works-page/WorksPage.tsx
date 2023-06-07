@@ -1,22 +1,25 @@
-import React, {FC, memo, useState, useEffect} from 'react';
+import React, { FC, memo, useState, useEffect } from 'react';
 
-import {SkillsSelect} from '../../../../components/SkillsSelect';
+import { Spin, Typography } from 'antd';
 
-import {Work} from '../../../../core/models/work';
+import { SkillsSelect } from '../../../../components/SkillsSelect';
 
-import {WorksService} from '../../../../core/services/works-service';
+import { Work } from '../../../../core/models/work';
 
-import {WorkCard} from '../../../../components/WorkCard';
+import { WorksService } from '../../../../core/services/works-service';
 
-import {Spin, Typography} from "antd";
+import { WorkCard } from '../../../../components/WorkCard';
+
+import { UserFolderTabs } from '../../../../components/UserFolderTabs';
+
+import { AppError } from '../../../../core/models/app-error';
+import { EmptyResult } from '../../../../components/EmptyResult';
+import { ErrorResult } from '../../../../components/ErrorResult';
 
 import classes from './WorksPage.module.scss';
-import {UserFolderTabs} from "../../../../components/UserFolderTabs";
-import {AppError} from "../../../../core/models/app-error";
-import {EmptyResult} from "../../../../components/EmptyResult";
-import {ErrorResult} from "../../../../components/ErrorResult";
 
-const {Text} = Typography;
+const { Text } = Typography;
+
 // TODO ф-ция открывания чтения статьи
 // TODO ф-ция для расчета кол-ва колонок работ(стили)
 
@@ -24,10 +27,13 @@ const {Text} = Typography;
 const WorksPageComponents: FC = () => {
   /** Выбранные категории.*/
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+
   /** Работы. */
   const [works, setWorks] = useState<Work[] | null>(null);
+
   /** Загружаются ли работы. */
   const [loading, setLoading] = useState(true);
+
   /** Ошибка при загрузке работ. */
   const [error, setError] = useState<AppError<Work[]> | null>(null);
 
@@ -37,7 +43,7 @@ const WorksPageComponents: FC = () => {
     getWorks();
   }, [selectedSkills]);
 
-  const getWorks = async () => {
+  const getWorks = async() => {
     setLoading(true);
     try {
       const newWorks = await WorksService.getWorks(page, 10, false, undefined, selectedSkills);
@@ -63,8 +69,7 @@ const WorksPageComponents: FC = () => {
               <div className={`${classes['works-page__works_grid']}`}>
                 {works.map((work, i) =>
                   <WorkCard key={i} {...work} onWorkClick={() => {
-                  }}/>
-                )}
+                  }}/>)}
               </div> :
             <ErrorResult/>}
       </div>

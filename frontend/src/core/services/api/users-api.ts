@@ -32,11 +32,20 @@ export namespace UsersApi {
   export async function getUsers(page: number, count: number, onlySubscriptions: boolean, search?: string, mainSkills?: number[] | string[]): Promise<ShortUser[]> {
     const url = `${CONFIG.apiUrl}/users?page=${page}
     &count=${count}
-    &only_subscriptions=${onlySubscriptions}
+    &onlySubscriptions=${onlySubscriptions}
     ${search !== undefined ? `&search=${search}` : ''}
-    ${mainSkills !== undefined ? `&main_skills=${mainSkills.join(', ')}` : ''}`;
+    ${mainSkills !== undefined && mainSkills.length > 0 ? `&mainSkills=${mainSkills.join(', ')}` : ''}`;
     const { data: users } = await http.get<ShortUserDto[]>(url);
 
     return users.map(userDto => shortUserMapper.fromDto(userDto));
+  }
+
+  /**
+   * Subscribe on user.
+   * @param userId - Id пользователя, на которого подписываются.
+   */
+  export async function postSubscribe(userId: number | string) {
+    const url = `${CONFIG.apiUrl}/users/${userId}/subscribe`;
+    await http.post(url);
   }
 }
