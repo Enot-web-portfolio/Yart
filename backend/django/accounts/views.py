@@ -53,12 +53,12 @@ class UserViewSet(viewsets.ModelViewSet):
                 for i in potential_query.subs_list:
                     try:
                         query.append(UserShortSerializer(User.objects.get(
-                            pk=int(i), selected_main_skills=request.GET.get("mainSkills", []))).data)
+                            pk=int(i), selected_main_skills=list(map(int, request.GET.get("mainSkills", "").split(","))))))
                     except:
                         pass
             else:
                 potential_query = User.objects.filter(
-                    selected_main_skills__contains=request.GET.get("mainSkills", [])[1:-1].split(', '),
+                    selected_main_skills__contains=list(map(int, request.GET.get("mainSkills", "").split(","))),
                     first_name__contains=search)
                 for i in potential_query:
                     query.append(UserShortSerializer(i).data)
