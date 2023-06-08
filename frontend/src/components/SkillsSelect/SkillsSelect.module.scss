@@ -12,6 +12,7 @@
     padding: var(--space-s) var(--space-m);
     border-radius: var(--skill-border-radius);
     border: 1px solid transparent;
+    margin: -1px;
 
     &:hover, &.checked {
       border-color: var(--secondary-text-color);

@@ -28,7 +28,7 @@
       gap: var(--space-vs);
 
       .user-card__info_actions__action {
-        color: #000;
+        color: var(--button-primary-color);
         max-width: 100%;
         font-size: var(--micro-text-fs);
         padding: var(--space-vs);
@@ -37,13 +37,24 @@
         &.circle {
           width: calc(var(--micro-text-fs) + 2 * var(--space-vs));
           height: calc(var(--micro-text-fs) + 2 * var(--space-vs));
+          border-radius: var(--border-radius-s);
+        }
+
+        svg{
+          stroke: var(--button-primary-color);
         }
 
         &:hover {
           color: var(--button-primary-color);
 
-          svg {
-            stroke: var(--button-primary-color);
+          &.circle{
+            box-shadow: var(--box-shadow);
+          }
+        }
+
+        &.unsubscribe{
+          svg{
+            stroke: var(--dark-pink-color);
           }
         }
       }

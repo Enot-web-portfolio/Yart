@@ -1,3 +1,5 @@
+import { CanceledError } from 'axios';
+
 import { User } from '../models/user';
 import { isApiError } from '../utils/axios-error-guard';
 
@@ -36,6 +38,32 @@ export namespace UsersService {
         throw AppErrorMapper.fromDto(error);
       }
       throw error;
+    }
+  }
+
+  /**
+   * Subscribe on user.
+   * @param userId - Id пользователя, на которого подписываются.
+   */
+  export async function postSubscribeUser(userId: number | string): Promise<boolean> {
+    try {
+      await UsersApi.postSubscribe(userId);
+      return true;
+    } catch (error: unknown) {
+      return false;
+    }
+  }
+
+  /**
+   * Unsubscribe on user.
+   * @param userId - Id пользователя, от которого отписываются.
+   */
+  export async function postUnsubscribeUser(userId: number | string): Promise<boolean> {
+    try {
+      await UsersApi.postUnsubscribe(userId);
+      return true;
+    } catch (error: unknown) {
+      return false;
     }
   }
 }

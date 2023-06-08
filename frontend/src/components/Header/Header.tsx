@@ -6,7 +6,7 @@ import { Button, Typography } from 'antd';
 import { useAuthState } from '../../core/services/hooks/useAuthState';
 
 import { useCurrentUserStore } from '../../core/store/user/store';
-import { toAbout, toUser, toWorks, toUsers, toWorkEditor } from '../../routes/route-links';
+import { toAbout, toWorks, toUsers, toWorkEditor, toUserWorks } from '../../routes/route-links';
 
 import classes from './Header.module.scss';
 
@@ -45,7 +45,7 @@ const HeaderComponent: FC = () => {
             <div className={`${classes.navbar__user_panel}`}>
               <div className={`${classes.navbar__user_info}`}>
                 <Text className={`${classes.navbar__user_info__name}`}>{user.userFullName}</Text>
-                <NavLink to={toUser(user.userId)}>
+                <NavLink to={toUserWorks(user.userId)}>
                   <Button type={'link'} className={`${classes.navbar__user_info__btn}`}>Профиль</Button>
                 </NavLink>
                 <Button type={'link'} onClick={logout} className={`${classes.navbar__user_info__btn} ${classes.navbar__user_info__btn_logout}`}>Выйти</Button>
