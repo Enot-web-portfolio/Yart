@@ -28,9 +28,21 @@ class UserViewSet(viewsets.ModelViewSet):
     def user_detail(self, request, *args, **kwargs):
         User = get_user_model()
         self.object = get_object_or_404(User, pk=kwargs["id"])
-        serializer = UserDetailSerializer(self.object)
-        return Response(serializer.data)
-    
+        serializer = UserDetailSerializer(self.object).data
+        if request.user.id:
+            try:
+                slist = UserSubscribtions.objects.get(id=int(request.user.id))
+                for user in serializer:
+                    if int(user["id"]) in slist.subs_list:
+                        user["isSubscribe"] = True
+            except:
+                for user in serializer:
+                    user["isSubscribe"] = False
+        if not request.user.id:
+            for user in serializer:
+                user["isSubscribe"] = False
+        return Response(serializer)
+
     @action(permission_classes=(AllowAny,), detail=True)
     def user_me(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -76,6 +88,19 @@ class UserViewSet(viewsets.ModelViewSet):
             potential_query = User.objects.filter(first_name__contains=search)
             for i in potential_query:
                 query.append(UserShortSerializer(i).data)
+        if request.user.id:
+            try:
+                slist = UserSubscribtions.objects.get(id=int(request.user.id))
+                for user in query:
+                    if int(user["id"]) in slist.subs_list:
+                        user["isSubscribe"] = True
+            except:
+                for user in query:
+                    user["isSubscribe"] = False
+        if not request.user.id:
+            for user in query:
+                user["isSubscribe"] = False
+
         paginator = Paginator(query, int(request.GET.get("count", 10)))
         if int(request.GET.get("page", 1)) not in paginator.page_range:
             paginator = []
