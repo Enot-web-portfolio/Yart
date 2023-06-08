@@ -5,6 +5,10 @@ import { toUser, toUserAbout, toUserSettings, toUserSubscribe, toUserWorks } fro
 
 const UsersPage = lazy(() => import('./pages/users-page').then(module => ({ default: module.UsersPage })));
 const UserPage = lazy(() => import('./pages/user-page').then(module => ({ default: module.UserPage })));
+const UserAboutPage = lazy(() => import('./pages/user-page/detailed/user-about-page').then(module => ({ default: module.UserAboutPage })));
+const UserSubscribePage = lazy(() => import('./pages/user-page/detailed/user-subscribe-page').then(module => ({ default: module.UserSubscribePage })));
+const UserSettingsPage = lazy(() => import('./pages/user-page/detailed/user-settings-page').then(module => ({ default: module.UserSettingsPage })));
+const UserWorksPage = lazy(() => import('./pages/user-page/detailed/user-works-page').then(module => ({ default: module.UserWorksPage })));
 
 export const usersRoutes: RouteObject[] = [
   {
@@ -17,19 +21,19 @@ export const usersRoutes: RouteObject[] = [
     children: [
       {
         path: toUserWorks(':id'),
-        element: null,
+        element: <UserWorksPage/>,
       },
       {
         path: toUserAbout(':id'),
-        element: null,
+        element: <UserAboutPage/>,
       },
       {
         path: toUserSettings(':id'),
-        element: null,
+        element: <UserSettingsPage/>,
       },
       {
         path: toUserSubscribe(':id'),
-        element: null,
+        element: <UserSubscribePage/>,
       },
     ],
   },

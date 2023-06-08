@@ -55,8 +55,9 @@ export namespace UsersApi {
     const url = `${CONFIG.apiUrl}/users/${id}`;
     const { data } = await http.get<UserDto>(url);
     return userMapper.fromDto(data);
+  }
 
-   * Unubscribe on user.
+  /** Unubscribe on user.
    * @param userId - Id пользователя, от которого отписываются.
    */
   export async function postUnsubscribe(userId: number | string) {

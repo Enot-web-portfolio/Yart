@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { Spin, Tabs, Typography } from 'antd';
 
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import { Outlet } from '@mui/icons-material';
 
@@ -18,6 +18,10 @@ import { AuthGuard } from '../../../../routes/guards/AuthGuard';
 
 import classes from './UserPage.module.scss';
 import { useUserState } from './useUserState';
+import { UserWorksPage } from './detailed/user-works-page';
+import { UserSettingsPage } from './detailed/user-settings-page';
+import { UserSubscribePage } from './detailed/user-subscribe-page';
+import { UserAboutPage } from './detailed/user-about-page';
 
 const { Title, Text } = Typography;
 
@@ -39,7 +43,7 @@ const UserPageComponent: FC = () => {
 
         </div>
         <div className={`${classes['user-page__main__info']}`}>
-          <Title level={2} className={`${classes['user-page__main__name']}`}>{user.userFullName}</Title>
+          <Text className={`${classes['user-page__main__name']}`}>{user.userFullName}</Text>
           <Text className={`${classes['user-page__main__info_skills']}`}>
             {user.userSelectedMainSkills.join(', ')}
           </Text>
@@ -69,7 +73,13 @@ const UserPageComponent: FC = () => {
           { key: '/about', label: 'О себе' },
         ]}/>
 
-      <Outlet/>
+      <Routes>
+        <Route path={''} element={<Navigate to={toUserWorks(id ?? '')}/>}/>
+        <Route path={'works'} element={<UserWorksPage/>}/>
+        <Route path={'about'} element={<UserAboutPage/>}/>
+        <Route path={'settings'} element={<UserSettingsPage/>}/>
+        <Route path={'subscribe'} element={<UserSubscribePage/>}/>
+      </Routes>
     </div>
   );
 };

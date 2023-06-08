@@ -14,7 +14,7 @@ export namespace WorksApi {
    * @param userId - Работы пользователя с данным id.
    * @param mainSkills - Выбранные категории.
    */
-  export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number, mainSkills?: number[]): Promise<Work[]> {
+  export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number | string, mainSkills?: number[] | string[]): Promise<Work[]> {
     const url = `${CONFIG.apiUrl}/works?page=${page}&count=${count}&only_subscriptions=${onlySubscriptions}${userId !== undefined ? `&user_id=${userId}` : ''}${mainSkills !== undefined ? `&main_skills=${mainSkills.join(', ')}` : ''}`;
     const { data: works } = await http.get<WorkDto[]>(url);
 
