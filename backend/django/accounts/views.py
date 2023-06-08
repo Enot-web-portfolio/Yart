@@ -48,20 +48,30 @@ class UserViewSet(viewsets.ModelViewSet):
         if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
             potential_query = List.objects.get(pk=request.user.id, first_name__contains=search)
-        if request.GET.get("mainSkills", None) is not None:
+        if request.GET.get("mainSkills", "") != "":
             if potential_query:
+                obj = []
                 for i in potential_query.subs_list:
                     try:
-                        query.append(UserShortSerializer(User.objects.get(
-                            pk=int(i), selected_main_skills=list(map(int, request.GET.get("mainSkills", "").split(","))))))
+                        for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
+                            user = User.objects.get(
+                                    pk=int(i), selected_main_skills__contains=[item])
+                            for j in user:
+                                if j.id not in obj:
+                                    query.append(UserShortSerializer(user).data)
+                                    obj.append(j.id)
                     except:
                         pass
             else:
-                potential_query = User.objects.filter(
-                    selected_main_skills__contains=list(map(int, request.GET.get("mainSkills", "").split(","))),
-                    first_name__contains=search)
-                for i in potential_query:
-                    query.append(UserShortSerializer(i).data)
+                obj = []
+                for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
+                    user = User.objects.filter(
+                            selected_main_skills__contains=[item],
+                            first_name__contains=search)
+                    for j in user:
+                        if j.id not in obj:
+                            query.append(UserShortSerializer(j).data)
+                            obj.append(j.id)
         elif request.GET.get("onlySubscriptions", 'false') == 'false':
             potential_query = User.objects.filter(first_name__contains=search)
             for i in potential_query:
