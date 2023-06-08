@@ -50,4 +50,14 @@ export namespace UsersApi {
     const url = `${CONFIG.apiUrl}/users/${userId}/subscribe`;
     await http.post(url);
   }
+
+  /**
+   * Get current user.
+   * @param id - Id user.
+   */
+  export async function getUser(id: string | number): Promise<User> {
+    const url = `${CONFIG.apiUrl}/users/${id}`;
+    const { data } = await http.get<UserDto>(url);
+    return userMapper.fromDto(data);
+  }
 }

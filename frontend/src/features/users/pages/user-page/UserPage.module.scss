@@ -1,0 +1,64 @@
+.user-page {
+  flex: 1;
+  background-color: var(--background-color);
+  padding: var(--space-l);
+
+  .user-page__main {
+    width: 100%;
+    background-color: #fff;
+    padding: var(--space-m);
+    border-radius: var(--border-radius-s);
+    display: flex;
+    gap: var(--space-m);
+    margin-bottom: var(--space-m);
+
+    .user-page__main__image {
+      --avatar-size: calc(var(--big-text-fs) * 8);
+
+      height: var(--avatar-size);
+      width: var(--avatar-size);
+      border-radius: var(--border-radius-s);
+      background-color: var(--secondary-element-color);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .user-page__main__info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-s);
+
+      .user-page__main__name {
+        margin: 0;
+        font-weight: var(--regular-fw);
+        margin-bottom: var(--space-vs);
+      }
+
+      .user-page__main__info_skills {
+        color: var(--inactive-element-color);
+      }
+
+      .user-page__main__info_detailed {
+        display: flex;
+        align-items: center;
+        gap: var(--space-s);
+
+        .user-page__main__info_detailed__item {
+          display: flex;
+          align-items: center;
+
+          .user-page__main__info_detailed__item_icon {
+            width: var(--icon-medium);
+            height: var(--icon-medium);
+            margin-right: var(--space-vs);
+          }
+
+          .user-page__main__info_detailed__item_text {
+            color: var(--inactive-element-color);
+          }
+        }
+      }
+    }
+  }
+}

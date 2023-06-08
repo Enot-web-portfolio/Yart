@@ -11,7 +11,7 @@
 
     .user-card__info_name {
       font-size: var(--middle-text-fs);
-      font-weight: 600;
+      font-weight: var(--medium-fw);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -60,5 +60,8 @@
     height: calc(var(--middle-text-fs) * var(--line-height) + var(--space-vs) + var(--small-text-fs) * var(--line-height));
     background-color: var(--secondary-element-color);
     border-radius: var(--border-radius-m);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
 }

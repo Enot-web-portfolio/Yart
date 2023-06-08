@@ -23,6 +23,21 @@ export namespace UsersService {
   }
 
   /**
+   * Get current user.
+   * @param id - User id.
+   */
+  export async function getUser(id: string | number): Promise<User> {
+    try {
+      return await UsersApi.getUser(id);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
    * Get users.
    * @param page - Номер страницы.
    * @param count - Кол-во элементов на странице.
