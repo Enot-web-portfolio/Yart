@@ -77,8 +77,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 obj = []
                 for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
                     user = User.objects.filter(
-                            selected_main_skills__icontains=[item],
-                            first_name__contains=search)
+                            selected_main_skills__contains=[item],
+                            first_name__icontains=search)
                     for j in user:
                         if j.id not in obj:
                             query.append(UserShortSerializer(j).data)
