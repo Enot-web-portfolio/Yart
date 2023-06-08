@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Spin, Tabs } from 'antd';
 
 import { Tab } from 'rc-tabs/lib/interface';
@@ -21,7 +21,11 @@ const UserFolderTabsComponents: FC = () => {
   const [activeSkill, setActiveSkill] = useState<string[]>([]);
 
   /** Пользователи с выбранным скиллом. */
-  const { users, isLoading: isLoadingUsers } = useUsersState(activeSkill);
+  const { users, isLoading: isLoadingUsers, getUsers } = useUsersState();
+
+  useEffect(() => {
+    getUsers(activeSkill);
+  }, [activeSkill]);
 
   /**
    * Ф-ция маппинга Skill в Tab.

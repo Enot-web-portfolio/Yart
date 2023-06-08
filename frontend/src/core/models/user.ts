@@ -7,6 +7,9 @@ export type User = Readonly<{
   /** Full Name. */
   userFullName: string;
 
+  /** Is subscribe. */
+  isSubscribe: boolean;
+
   /** Email. */
   userEmail: string;
 

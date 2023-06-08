@@ -1,4 +1,4 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 
 import { Input, Typography, Spin } from 'antd';
 
@@ -23,9 +23,13 @@ const UsersPageComponent: FC = () => {
   /** Выбранные категории.*/
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
 
-  const { users, isLoading } = useUsersState(selectedSkills);
+  const { users, isLoading, getUsers } = useUsersState();
 
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    getUsers(selectedSkills, search);
+  }, [selectedSkills, search]);
 
   return (
     <div className={`${classes['users-page']}`}>
@@ -52,7 +56,6 @@ const UsersPageComponent: FC = () => {
                     }}/>)}
               </div>}
       </div>
-      <ToastContainer/>
     </div>
   );
 };

@@ -22,6 +22,7 @@ class UserMapper implements IMapperFromDto<UserDto, User> {
       userSubscribersCount: dto.subscribers_count,
       userImageUrl: dto.image_url || null,
       userSelectedSecondarySkills: dto.selected_secondary_skills,
+      isSubscribe: dto.isSubscribe,
     };
   }
 }

@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { Typography } from 'antd';
+import React, { FC, useState } from 'react';
+import { Tooltip, Typography } from 'antd';
 
 import { NavLink } from 'react-router-dom';
 
@@ -11,9 +11,13 @@ import { UserAddIcon } from '../Icons';
 
 import { useAuthStore } from '../../core/store/auth/store';
 
-import { toUser } from '../../routes/route-links';
+import { toUserWorks } from '../../routes/route-links';
 
 import { UsersService } from '../../core/services/users-service';
+
+import { UnsubscribeIcon } from '../Icons/UnsubscribeIcon';
+
+import { useCurrentUserStore } from '../../core/store/user/store';
 
 import classes from './UserCard.module.scss';
 
@@ -37,9 +41,20 @@ type Props = Readonly<ShortUser & {
  */
 const UserCardComponents: FC<Props> = (props: Props) => {
   const isUserAuthorized = useAuthStore(store => store.isUserAuthorized);
+  const currentUser = useCurrentUserStore(store => store.user);
+  const [isSubscribe, setIsSubscribe] = useState(props.isSubscribe);
 
+  /** Toggle subscribe. */
   async function onSubscribe() {
-    await UsersService.postSubscribeUser(props.userId);
+    const res = isSubscribe ?
+      await UsersService.postUnsubscribeUser(props.userId) :
+      await UsersService.postSubscribeUser(props.userId);
+
+    if (res) {
+      setIsSubscribe(curIsSubscribe => !curIsSubscribe);
+    } else {
+      toast.error('Произошла ошибка');
+    }
   }
 
   return (
@@ -49,12 +64,16 @@ const UserCardComponents: FC<Props> = (props: Props) => {
         <Text
           className={`${classes['user-card__info_works']} ${props.classes?.works ?? ''}`}>Работы: {props.worksCount}</Text>
         <div className={`${classes['user-card__info_actions']} ${props.classes?.actions ?? ''}`}>
-          {isUserAuthorized &&
-            <div onClick={onSubscribe}
-              className={`${classes['user-card__info_actions__action']} ${classes.circle} ${props.classes?.action ?? ''}`}>
-              <UserAddIcon size={15}/>
-            </div>}
-          <NavLink to={toUser(props.userId)}>
+          {isUserAuthorized && currentUser && currentUser.userId !== props.userId &&
+            <Tooltip title={isSubscribe ? 'Отписаться' : 'Подписаться'}>
+              <div onClick={onSubscribe}
+                className={`${classes['user-card__info_actions__action']} ${classes.circle} ${props.classes?.action ?? ''} ${isSubscribe ? classes.unsubscribe : ''}`}>
+                {isSubscribe ?
+                  <UnsubscribeIcon size={15}/> :
+                  <UserAddIcon size={15}/>}
+              </div>
+            </Tooltip>}
+          <NavLink to={toUserWorks(props.userId)}>
             <div className={`${classes['user-card__info_actions__action']} ${props.classes?.action ?? ''}`}>
               Профиль
             </div>

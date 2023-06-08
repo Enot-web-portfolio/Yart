@@ -7,6 +7,9 @@ export type UserDto = Readonly<{
   /** Full Name. */
   first_name: string;
 
+  /** Is subscribe. */
+  isSubscribe: boolean;
+
   /** Last name. */
   last_name: string;
 

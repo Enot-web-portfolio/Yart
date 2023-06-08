@@ -46,7 +46,7 @@ const WorksPageComponents: FC = () => {
   const getWorks = async() => {
     setLoading(true);
     try {
-      const newWorks = await WorksService.getWorks(page, 10, false, undefined, selectedSkills);
+      const newWorks = await WorksService.getWorks(page, 100, false, undefined, selectedSkills);
       setWorks(currentWorks => currentWorks ? currentWorks.concat(newWorks) : newWorks);
       setPage(currentPage => currentPage + 1);
     } catch (error: unknown) {
@@ -78,7 +78,6 @@ const WorksPageComponents: FC = () => {
         <Text className={`${classes['works-page__popular-users__header']}`}>Популярные пользователи</Text>
         <UserFolderTabs/>
       </div>
-
     </div>
   );
 };

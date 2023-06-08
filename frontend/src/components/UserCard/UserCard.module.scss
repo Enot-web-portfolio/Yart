@@ -51,6 +51,12 @@
             box-shadow: var(--box-shadow);
           }
         }
+
+        &.unsubscribe{
+          svg{
+            stroke: var(--dark-pink-color);
+          }
+        }
       }
     }
   }

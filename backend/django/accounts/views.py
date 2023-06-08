@@ -28,9 +28,20 @@ class UserViewSet(viewsets.ModelViewSet):
     def user_detail(self, request, *args, **kwargs):
         User = get_user_model()
         self.object = get_object_or_404(User, pk=kwargs["id"])
-        serializer = UserDetailSerializer(self.object)
-        return Response(serializer.data)
-    
+        serializer = UserDetailSerializer(self.object).data
+        if request.user.id:
+            try:
+                slist = UserSubscribtions.objects.get(id=int(request.user.id))
+                if int(serializer["id"]) in slist.subs_list:
+                    serializer["isSubscribe"] = True
+                else:
+                    serializer["isSubscribe"] = False
+            except:
+                serializer["isSubscribe"] = False
+        if not request.user.id:
+            serializer["isSubscribe"] = False
+        return Response(serializer)
+
     @action(permission_classes=(AllowAny,), detail=True)
     def user_me(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -47,25 +58,50 @@ class UserViewSet(viewsets.ModelViewSet):
         search = str(request.GET.get("search", '')).strip()
         if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
-            potential_query = List.objects.get(pk=request.user.id, first_name__contains=search)
-        if request.GET.get("mainSkills", None) is not None:
+            potential_query = List.objects.get(pk=request.user.id, first_name__icontains=search)
+        if request.GET.get("mainSkills", "") != "":
             if potential_query:
+                obj = []
                 for i in potential_query.subs_list:
                     try:
-                        query.append(UserShortSerializer(User.objects.get(
-                            pk=int(i), selected_main_skills=list(map(int, request.GET.get("mainSkills", "").split(","))))))
+                        for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
+                            user = User.objects.get(
+                                    pk=int(i), selected_main_skills__contains=[item])
+                            for j in user:
+                                if j.id not in obj:
+                                    query.append(UserShortSerializer(user).data)
+                                    obj.append(j.id)
                     except:
                         pass
             else:
-                potential_query = User.objects.filter(
-                    selected_main_skills__contains=list(map(int, request.GET.get("mainSkills", "").split(","))),
-                    first_name__contains=search)
-                for i in potential_query:
-                    query.append(UserShortSerializer(i).data)
+                obj = []
+                for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
+                    user = User.objects.filter(
+                            selected_main_skills__contains=[item],
+                            first_name__icontains=search)
+                    for j in user:
+                        if j.id not in obj:
+                            query.append(UserShortSerializer(j).data)
+                            obj.append(j.id)
         elif request.GET.get("onlySubscriptions", 'false') == 'false':
-            potential_query = User.objects.filter(first_name__contains=search)
+            potential_query = User.objects.filter(first_name__icontains=search)
             for i in potential_query:
                 query.append(UserShortSerializer(i).data)
+        if request.user.id:
+            try:
+                slist = UserSubscribtions.objects.get(id=int(request.user.id))
+                for user in query:
+                    if int(user["id"]) in slist.subs_list:
+                        user["isSubscribe"] = True
+                    else:
+                        user["isSubscribe"] = False
+            except:
+                for user in query:
+                    user["isSubscribe"] = False
+        if not request.user.id:
+            for user in query:
+                user["isSubscribe"] = False
+
         paginator = Paginator(query, int(request.GET.get("count", 10)))
         if int(request.GET.get("page", 1)) not in paginator.page_range:
             paginator = []
