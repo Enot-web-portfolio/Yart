@@ -32,15 +32,14 @@ class UserViewSet(viewsets.ModelViewSet):
         if request.user.id:
             try:
                 slist = UserSubscribtions.objects.get(id=int(request.user.id))
-                for user in serializer:
-                    if int(user["id"]) in slist.subs_list:
-                        user["isSubscribe"] = True
+                if int(serializer["id"]) in slist.subs_list:
+                    serializer["isSubscribe"] = True
+                else:
+                    serializer["isSubscribe"] = False
             except:
-                for user in serializer:
-                    user["isSubscribe"] = False
+                serializer["isSubscribe"] = False
         if not request.user.id:
-            for user in serializer:
-                user["isSubscribe"] = False
+            serializer["isSubscribe"] = False
         return Response(serializer)
 
     @action(permission_classes=(AllowAny,), detail=True)
@@ -94,6 +93,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 for user in query:
                     if int(user["id"]) in slist.subs_list:
                         user["isSubscribe"] = True
+                    else:
+                        user["isSubscribe"] = False
             except:
                 for user in query:
                     user["isSubscribe"] = False
