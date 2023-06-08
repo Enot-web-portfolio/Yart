@@ -32,11 +32,7 @@ export namespace UsersApi {
     usersController.abort();
     usersController = new AbortController();
 
-    const url = `${CONFIG.apiUrl}/users?page=${page}
-    &count=${count}
-    &onlySubscriptions=${onlySubscriptions}
-    ${search !== undefined ? `&search=${search}` : ''}
-    ${mainSkills !== undefined && mainSkills.length > 0 ? `&mainSkills=${mainSkills.join(', ')}` : ''}`;
+    const url = `${CONFIG.apiUrl}/users?page=${page}&count=${count}&onlySubscriptions=${onlySubscriptions}${search !== undefined && search.length > 0 ? `&search=${search}` : ''}${mainSkills !== undefined && mainSkills.length > 0 ? `&mainSkills=${mainSkills.join(', ')}` : ''}`;
     const { data: users } = await http.get<ShortUserDto[]>(url, { signal: usersController.signal });
 
     return users.map(userDto => shortUserMapper.fromDto(userDto));
@@ -48,6 +44,15 @@ export namespace UsersApi {
    */
   export async function postSubscribe(userId: number | string) {
     const url = `${CONFIG.apiUrl}/users/${userId}/subscribe`;
+    await http.post(url);
+  }
+
+  /**
+   * Unubscribe on user.
+   * @param userId - Id пользователя, от которого отписываются.
+   */
+  export async function postUnsubscribe(userId: number | string) {
+    const url = `${CONFIG.apiUrl}/users/${userId}/unsubscribe`;
     await http.post(url);
   }
 }

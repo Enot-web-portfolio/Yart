@@ -53,4 +53,17 @@ export namespace UsersService {
       return false;
     }
   }
+
+  /**
+   * Unsubscribe on user.
+   * @param userId - Id пользователя, от которого отписываются.
+   */
+  export async function postUnsubscribeUser(userId: number | string): Promise<boolean> {
+    try {
+      await UsersApi.postUnsubscribe(userId);
+      return true;
+    } catch (error: unknown) {
+      return false;
+    }
+  }
 }
