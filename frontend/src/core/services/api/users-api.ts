@@ -1,10 +1,7 @@
 import { User } from 'src/core/models/user';
 
-import { AxiosError } from 'axios';
-
 import { UserDto } from '../../dtos/user-dto';
 import { userMapper } from '../mappers/userMapper';
-import { UserSecretStorageService } from '../user-secret-storage-service';
 import { CONFIG } from '../config';
 import { ShortUserDto } from '../../dtos/short-user-dto';
 import { ShortUser } from '../../models/short-user';
@@ -13,6 +10,8 @@ import { shortUserMapper } from '../mappers/shortUserMapper';
 import { http } from '../http';
 
 export namespace UsersApi {
+
+  let usersController = new AbortController();
 
   /** Get current user. */
   export async function getCurrentUser(): Promise<User> {
@@ -30,12 +29,15 @@ export namespace UsersApi {
    * @param mainSkills - Выбранные категории.
    */
   export async function getUsers(page: number, count: number, onlySubscriptions: boolean, search?: string, mainSkills?: number[] | string[]): Promise<ShortUser[]> {
+    usersController.abort();
+    usersController = new AbortController();
+
     const url = `${CONFIG.apiUrl}/users?page=${page}
     &count=${count}
     &onlySubscriptions=${onlySubscriptions}
     ${search !== undefined ? `&search=${search}` : ''}
     ${mainSkills !== undefined && mainSkills.length > 0 ? `&mainSkills=${mainSkills.join(', ')}` : ''}`;
-    const { data: users } = await http.get<ShortUserDto[]>(url);
+    const { data: users } = await http.get<ShortUserDto[]>(url, { signal: usersController.signal });
 
     return users.map(userDto => shortUserMapper.fromDto(userDto));
   }

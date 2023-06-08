@@ -12,6 +12,8 @@ import { ErrorResult } from '../../../../components/ErrorResult';
 
 import { UserCard } from '../../../../components/UserCard';
 
+import { EmptyResult } from '../../../../components/EmptyResult';
+
 import classes from './UsersPage.module.scss';
 
 const { Title } = Typography;
@@ -39,11 +41,16 @@ const UsersPageComponent: FC = () => {
           <Spin/> :
           users === null ?
             <ErrorResult/> :
-            <div className={`${classes['users-page__users']}`}>
-              {users.map((user, i) =>
-                <UserCard {...user} key={i}
-                  classes={{ container: classes['users-page__user-card'] }}/>)}
-            </div>}
+            users.length == 0 ?
+              <EmptyResult/> :
+              <div className={`${classes['users-page__users']}`}>
+                {users.map((user, i) =>
+                  <UserCard {...user} key={i}
+                    classes={{
+                              container: classes['users-page__user-card'],
+                              action: classes['users-page__user-card__action'],
+                    }}/>)}
+              </div>}
       </div>
       <ToastContainer/>
     </div>

@@ -1,3 +1,5 @@
+import { CanceledError } from 'axios';
+
 import { User } from '../models/user';
 import { isApiError } from '../utils/axios-error-guard';
 

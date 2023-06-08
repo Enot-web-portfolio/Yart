@@ -19,12 +19,15 @@ export const useUsersState = (skillIds: string[] | number[]) => {
     try {
       const newUsers = await UsersService.getUsers(1, 6, false, undefined, currSkillsIds);
       setUsers(newUsers);
+      setIsLoading(false);
     } catch (error: unknown) {
       if (error instanceof AppError<ShortUser[]>) {
         setError(error);
+        if (error.message !== 'canceled') {
+          setIsLoading(false);
+        }
       }
     }
-    setIsLoading(false);
   };
 
   return {
