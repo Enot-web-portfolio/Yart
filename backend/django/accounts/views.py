@@ -29,6 +29,14 @@ class UserViewSet(viewsets.ModelViewSet):
         User = get_user_model()
         self.object = get_object_or_404(User, pk=kwargs["id"])
         serializer = UserDetailSerializer(self.object).data
+        skills = []
+        for i in serializer["selected_main_skills"]:
+            skills.append(SkillsSerializer(MainSkillsType.objects.get(id=i)).data["name"])
+        serializer["selected_main_skills"] = skills
+        skills = []
+        for i in serializer["selected_secondary_skills"]:
+            skills.append(SkillsSerializer(SecondarySkillsType.objects.get(id=i)).data["name"])
+        serializer["selected_secondary_skills"] = skills
         if request.user.id:
             try:
                 slist = UserSubscribtions.objects.get(id=int(request.user.id))
