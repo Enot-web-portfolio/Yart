@@ -1,4 +1,4 @@
-import React, {FC, memo, useState} from 'react';
+import React, {FC, memo, useContext, useState} from 'react';
 
 import {Spin, Typography} from "antd";
 
@@ -7,6 +7,7 @@ import {useLocation} from "react-router-dom";
 import {useUserState} from "../../useUserState";
 import {ErrorResult} from "../../../../../../components/ErrorResult";
 import {EmptyResult} from "../../../../../../components/EmptyResult";
+import {UserContext} from "../../context";
 
 const {Text} = Typography;
 
@@ -16,9 +17,8 @@ type LocationState = {
 }
 
 const UserAboutPageComponent: FC = () => {
-  const {user, id, isLoading} = useUserState();
+  const user = useContext(UserContext);
 
-  if (isLoading) return <Spin/>
   if (user === null) return <ErrorResult/>
   return (
     <div className={`${classes['user-about']}`}>

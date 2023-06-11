@@ -1,14 +1,19 @@
-import React, { FC, memo } from 'react';
+import React, {FC, memo, useContext} from 'react';
 
 import classes from './UserSettingsPage.module.scss';
 import {ErrorMessage, Form, Formik} from "formik";
 import {Button, Input, Typography} from "antd";
 import {InputWithError} from "../../../../../../components/InputWithError";
+import {UserContext} from "../../context";
+import {ErrorResult} from "../../../../../../components/ErrorResult";
+import {User} from "../../../../../../core/models/user";
 
 const {Text} = Typography;
 
 const UserSettingsPageComponent: FC = () => {
-  const submit = () => {
+  const user = useContext(UserContext);
+
+  const submit = (user: User) => {
 
   }
 
@@ -17,56 +22,60 @@ const UserSettingsPageComponent: FC = () => {
   }
 
   const changeLink = (order: number, links: string[], value: string) => {
-    return links.map((link, i) => i === order ? value: link)
+    return links.map((link, i) => i === order ? value : link)
   }
 
-  return(
+  console.log(user)
+  if (user === null) return <ErrorResult/>
+  return (
     <div className={`${classes['user-settings']}`}>
-      {/*<Formik initialValues={} onSubmit={}>
+      <Formik initialValues={{...user}} onSubmit={submit}>
         {({values, setFieldValue, errors}) => (
           <Form>
-          <div className={`${classes['user-settings__info-settings']}`}>
-            <div className={`${classes['user-settings__main-settings']}`}>
-              <div className={`${classes['user-settings__avatar']}`}>
+            <div className={`${classes['user-settings__info-settings']}`}>
+              <div className={`${classes['user-settings__main-settings']}`}>
+                <div className={`${classes['user-settings__avatar']}`}>
 
+                </div>
+                <InputWithError value={values.userFirstName}
+                                placeholder={'Имя'}
+                                error={errors.userFirstName}
+                                setValue={(value) => setFieldValue('userFirstName', value)}/>
+                <InputWithError value={values.userLastName}
+                                placeholder={'Фамилия'}
+                                error={errors.userLastName}
+                                setValue={(value) => setFieldValue('userLastName', value)}/>
+                <div className={`${classes['user-settings__email']}`}>
+                  <Text className={`${classes['user-settings__email_label']}`}>Почта:</Text>
+                  <Text className={`${classes['user-settings__email_value']}`}>{user.userEmail}</Text>
+                  <Button type={'text'} className={`${classes['user-settings__email_activate']}`}>Подтвердить</Button>
+                  <Button type={'text'} className={`${classes['user-settings__email_change']}`}>Изменить</Button>
+                </div>
               </div>
-              <InputWithError value={values.firstName}
-                              placeholder={'Имя'}
-                              error={errors.firstName}
-                              setValue={(value)=>setFieldValue('firstName', value)}/>
-              <InputWithError value={values.lastName}
-                              placeholder={'Фамилия'}
-                              error={errors.lastName}
-                              setValue={(value)=>setFieldValue('lastName', value)}/>
-              <div className={`${classes['user-settings__email']}`}>
-                <Text className={`${classes['user-settings__email_label']}`}>Почта:</Text>
-                <Text className={`${classes['user-settings__email_value']}`}>test@test.ru</Text>
-                <Button type={'text'} className={`${classes['user-settings__email_activate']}`}>Подтвердить</Button>
-                <Button type={'text'} className={`${classes['user-settings__email_change']}`}>Изменить</Button>
-              </div>
-            </div>
-            <div className={`${classes['user-settings__contact']}`}>
-              <Text className={`${classes['user-settings__contact_header']}`}>Контакты</Text>
-              <InputWithError value={values.city}
-                              placeholder={'Город'}
-                              error={errors.city}
-                              setValue={(value)=>setFieldValue('city', value)}/>
-              <Input value={values.city}
+              <div className={`${classes['user-settings__contact']}`}>
+                <Text className={`${classes['user-settings__contact_header']}`}>Контакты</Text>
+                <InputWithError value={values.userCity ?? ''}
+                                placeholder={'Город'}
+                                error={errors.userCity}
+                                setValue={(value) => setFieldValue('userCity', value)}/>
+                <Input value={values.userCompany ?? ''}
                        placeholder={'Компания'}
-                       onChange={event => setFieldValue('firstName', event.target.value)}/>
-              <InputWithError value={values.phone}
-                              placeholder={'Телефон'}
-                              error={errors.phone}
-                              setValue={(value)=>setFieldValue('phone', value)}/>
-              <Text className={`${classes['user-settings__contact_links__header']}`}>Ссылки</Text>
-              <div className={`${classes['user-settings__contact_links']}`}>
-                {values.links.map((link, i) =>
-                  <Input value={values.city}
-                        placeholder={'Ссылка'}
-                        onChange={event => setFieldValue('firstName', event.target.value)}/>)}
+                       onChange={event => setFieldValue('userCompany', event.target.value)}/>
+                <InputWithError value={values.userPhone ?? ''}
+                                placeholder={'Телефон'}
+                                error={errors.userPhone}
+                                setValue={(value) => setFieldValue('userPhone', value)}/>
+                <Text className={`${classes['user-settings__contact_links__header']}`}>Ссылки</Text>
+                <div className={`${classes['user-settings__contact_links']}`}>
+                  {values.userAdditionalLinks.map((link, i) =>
+                    <Input value={link}
+                           key={i}
+                           placeholder={'Ссылка'}
+                           onChange={event =>
+                             setFieldValue('userAdditionalLinks', changeLink(i, values.userAdditionalLinks, event.target.value))}/>)}
+                </div>
               </div>
             </div>
-          </div>
             <div className={`${classes['user-settings__additional']}`}>
               <Text className={`${classes['user-settings__main-skills_header']}`}>Основные навыки:</Text>
               <Text className={`${classes['user-settings__secondary-skills_header']}`}>Вторичные навыки:</Text>
@@ -74,7 +83,7 @@ const UserSettingsPageComponent: FC = () => {
             <Button type={'primary'} htmlType={'submit'}>Сохранить</Button>
           </Form>
         )}
-      </Formik>*/}
+      </Formik>
     </div>
   )
 };

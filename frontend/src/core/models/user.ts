@@ -4,8 +4,11 @@ export type User = Readonly<{
   /** Id. */
   userId: number;
 
-  /** Full Name. */
-  userFullName: string;
+  /** First Name. */
+  userFirstName: string;
+
+  /** Last Name. */
+  userLastName: string;
 
   /** Is subscribe. */
   isSubscribe?: boolean;
