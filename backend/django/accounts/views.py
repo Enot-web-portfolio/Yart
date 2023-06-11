@@ -73,7 +73,7 @@ class UserViewSet(viewsets.ModelViewSet):
             potential_query = List.objects.get(id=request.user.id)
             for i in potential_query.subs_list:
                 try:
-                    queue.append(UserShortSerializer(User.objects.get(id=int(i))).data)
+                    queue.append(UserShortSerializer(User.objects.get(id=int(i), first_name__icontains=search)).data)
                 except:
                     pass
             paginator = Paginator(queue, int(request.GET.get("count", 10)))
