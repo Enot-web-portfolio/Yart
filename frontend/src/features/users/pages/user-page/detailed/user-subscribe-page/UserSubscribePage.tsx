@@ -10,25 +10,26 @@ import {EmptyResult} from "../../../../../../components/EmptyResult";
 
 // TODO добавить в getUsers userId
 const UserSubscribePageComponent: FC = () => {
-  const {id} = useParams<{id: string}>();
+  const {id} = useParams<{ id: string }>();
   const [search, setSearch] = useState('');
-  const {users, isLoading} = useUsersState({page:1, count: 100, userId: id, search, onlySubscriptions: true});
+  const {users, isLoading} = useUsersState({page: 1, count: 100, userId: id, search, onlySubscriptions: true});
 
   return (
     <div className={`${classes['user-subscribe']}`}>
       <Input value={search}
              onChange={e => setSearch(e.target.value)}
              placeholder={'Поиск'}/>
-      <div className={`${classes['user-subscribe__users']} ${users && users.length > 0 ? 'filled' : ''}`}>
+      <div className={`${classes['user-subscribe__users']} ${users && users.length > 0 ? classes['filled'] : ''}`}>
         {isLoading ?
           <Spin/> :
           users && users.length > 0 ?
             users.map((user, i) => <UserCard {...user}
+                                             isSubscribe={true}
                                              classes={{
-                                               container: 'user-subscribe__users_item',
+                                               container: classes['user-subscribe__users_item'],
                                              }}
                                              key={i}/>) :
-            <EmptyResult iconColor={'#fff'} className={'folder-tabs__empty'}/>}
+            <EmptyResult/>}
       </div>
     </div>
   )
