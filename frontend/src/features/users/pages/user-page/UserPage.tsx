@@ -35,9 +35,7 @@ const UserPageComponent: FC = () => {
   return (
     <div className={`${classes['user-page']}`}>
       <div className={`${classes['user-page__main']}`}>
-        <div className={`${classes['user-page__main__image']}`}>
-
-        </div>
+        <div className={`${classes['user-page__main__image']}`} style={{backgroundImage: `url('${user.userImageUrl}')`}}/>
         <div className={`${classes['user-page__main__info']}`}>
           <Text className={`${classes['user-page__main__name']}`}>{user.userFullName}</Text>
           {user.userSelectedMainSkills.length > 0 &&

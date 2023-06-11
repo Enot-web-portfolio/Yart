@@ -8,7 +8,7 @@ export type User = Readonly<{
   userFullName: string;
 
   /** Is subscribe. */
-  isSubscribe: boolean;
+  isSubscribe?: boolean;
 
   /** Email. */
   userEmail: string;
@@ -41,5 +41,5 @@ export type User = Readonly<{
   userDescription: string | null;
 
   /** Is active mail. */
-  userIsActive: boolean;
+  userIsActive?: boolean;
 }>;
