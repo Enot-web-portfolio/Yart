@@ -66,7 +66,7 @@ class UserViewSet(viewsets.ModelViewSet):
         search = str(request.GET.get("search", '')).strip()
         if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
-            potential_query = List.objects.get(pk=request.user.id, first_name__icontains=search)
+            potential_query = List.objects.get(id=request.user.id)
         if request.GET.get("mainSkills", "") != "":
             if potential_query:
                 obj = []
@@ -74,7 +74,7 @@ class UserViewSet(viewsets.ModelViewSet):
                     try:
                         for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
                             user = User.objects.get(
-                                    pk=int(i), selected_main_skills__contains=[item])
+                                    pk=int(i), selected_main_skills__contains=[item], first_name__icontains=search)
                             for j in user:
                                 if j.id not in obj:
                                     query.append(UserShortSerializer(user).data)
