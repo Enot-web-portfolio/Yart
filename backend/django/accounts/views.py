@@ -67,6 +67,7 @@ class UserViewSet(viewsets.ModelViewSet):
         queue = []
         query = []
         search = str(request.GET.get("search", '')).strip()
+        paginator = Paginator(queue, int(request.GET.get("count", 10)))
         if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
             potential_query = List.objects.get(id=request.user.id)
