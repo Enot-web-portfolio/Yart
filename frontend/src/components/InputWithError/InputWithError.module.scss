@@ -1,0 +1,10 @@
+.import-with-error {
+  position: absolute;
+  margin-bottom: calc(var(--space-s) * 1.5);
+
+  .input-with-error__error {
+    position: absolute;
+    bottom: 0;
+    font-size: var(--middle-text-fs);
+  }
+}

@@ -17,11 +17,13 @@ export const useUserState = () => {
 
   useEffect(() => {
     onUserGet();
-  }, []);
+  }, [id]);
 
   /** Get user data. */
   async function onUserGet() {
     try {
+      setIsLoading(true);
+      setUser(null);
       const currUser = await UsersService.getUser(id ?? '');
       setUser(currUser);
     } catch (error: unknown) {

@@ -1,19 +1,32 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 
-import { UsersService } from '../users-service';
-import { ShortUser } from '../../models/short-user';
-import { AppError } from '../../models/app-error';
+import {UsersService} from '../users-service';
+import {ShortUser} from '../../models/short-user';
+import {AppError} from '../../models/app-error';
 
-export const useUsersState = () => {
+type Props = Readonly<{
+  page: number;
+  count: number;
+  skillIds?: string[] | number[];
+  search?: string;
+  userId?: number | string;
+  onlySubscriptions?: boolean;
+}>
+
+export const useUsersState = (props: Props) => {
   const [users, setUsers] = useState<Readonly<ShortUser[]> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<AppError<ShortUser[]> | null>(null);
 
-  const getUsers = async(skillIds: string[] | number[], search?: string) => {
+  useEffect(() => {
+    getUsers();
+  }, [props.page, props.count, props.userId, props.search, props.skillIds, props.onlySubscriptions])
+
+  const getUsers = async () => {
     setIsLoading(true);
     setUsers(null);
     try {
-      const newUsers = await UsersService.getUsers(1, 100, false, search, skillIds);
+      const newUsers = await UsersService.getUsers(props.page, props.count, props.onlySubscriptions || false, props.search, props.skillIds);
       setUsers(newUsers);
       setIsLoading(false);
     } catch (error: unknown) {
@@ -27,6 +40,6 @@ export const useUsersState = () => {
   };
 
   return {
-    users, isLoading, error, getUsers,
+    users, isLoading, error,
   };
 };

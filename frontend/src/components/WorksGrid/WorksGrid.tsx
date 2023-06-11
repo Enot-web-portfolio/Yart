@@ -36,7 +36,7 @@ const WorksGridComponent: FC<Props> = props => {
             <EmptyResult/> :
             <div className={`${classes['works-grid']}`}>
               {works.map((work, i) =>
-                <WorkCard key={i} {...work} onWorkClick={() => {
+                <WorkCard key={i} {...work} pageUserId={props.userId} onWorkClick={() => {
                 }}/>)}
             </div>
       }

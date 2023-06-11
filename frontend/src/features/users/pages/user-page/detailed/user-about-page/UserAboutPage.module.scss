@@ -1,0 +1,28 @@
+.user-about{
+  background-color: #fff;
+  border-radius: var(--border-radius-s);
+  padding: var(--space-m);
+
+  .user-about__description{
+    margin-bottom: var(--space-l);
+  }
+
+  .user-about__skills_wrapper{
+    .user-about__skills_header{
+      font-size: var(--big-text-fs);
+    }
+
+    .user-about__skills{
+      display: flex;
+      gap: var(--space-vs);
+      flex-wrap: wrap;
+
+      .user-about__skills_item{
+        background-color:var(--background-color);
+        border-radius: var(--border-radius-s);
+        padding: var(--space-vs);
+        font-size: var(--small-text-fs);
+      }
+    }
+  }
+}

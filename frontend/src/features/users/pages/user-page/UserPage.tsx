@@ -1,32 +1,33 @@
-import React, { FC, memo } from 'react';
+import React, {FC, memo} from 'react';
 
-import { ToastContainer } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 
-import { Spin, Tabs, Typography } from 'antd';
+import {Spin, Tabs, Typography} from 'antd';
 
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import {Navigate, Route, Routes, useNavigate} from 'react-router-dom';
 
-import { Outlet } from '@mui/icons-material';
+import {Outlet} from '@mui/icons-material';
 
-import { toUser, toUserAbout, toUserWorks } from '../../../../routes/route-links';
+import {toUser, toUserAbout, toUserWorks} from '../../../../routes/route-links';
 
-import { ErrorResult } from '../../../../components/ErrorResult';
+import {ErrorResult} from '../../../../components/ErrorResult';
 
-import { useCurrentUserStore } from '../../../../core/store/user/store';
+import {useCurrentUserStore} from '../../../../core/store/user/store';
 
-import { AuthGuard } from '../../../../routes/guards/AuthGuard';
+import {AuthGuard} from '../../../../routes/guards/AuthGuard';
 
 import classes from './UserPage.module.scss';
-import { useUserState } from './useUserState';
-import { UserWorksPage } from './detailed/user-works-page';
-import { UserSettingsPage } from './detailed/user-settings-page';
-import { UserSubscribePage } from './detailed/user-subscribe-page';
-import { UserAboutPage } from './detailed/user-about-page';
+import {useUserState} from './useUserState';
+import {UserWorksPage} from './detailed/user-works-page';
+import {UserSettingsPage} from './detailed/user-settings-page';
+import {UserSubscribePage} from './detailed/user-subscribe-page';
+import {UserAboutPage} from './detailed/user-about-page';
+import {currentUserNavOptions, userNavOptions} from "./nav-options";
 
-const { Title, Text } = Typography;
+const {Title, Text} = Typography;
 
 const UserPageComponent: FC = () => {
-  const { user, id, isLoading } = useUserState();
+  const {user, id, isLoading} = useUserState();
   const currentUserId = useCurrentUserStore(store => store.user ? store.user.userId : null);
   const navigator = useNavigate();
 
@@ -36,6 +37,8 @@ const UserPageComponent: FC = () => {
   if (user === null) {
     return <ErrorResult/>;
   }
+
+  const isCurrentUser = id !== undefined && currentUserId === +id;
   return (
     <div className={`${classes['user-page']}`}>
       <div className={`${classes['user-page__main']}`}>
@@ -51,28 +54,24 @@ const UserPageComponent: FC = () => {
             {user.userCity &&
               <div className={`${classes['user-page__main__info_detailed__item']}`}>
                 <img src="/src/assets/icons/location.svg" alt="user work place"
-                  className={`${classes['user-page__main__info_detailed__item_icon']}`}/>
+                     className={`${classes['user-page__main__info_detailed__item_icon']}`}/>
                 <Text className={`${classes['user-page__main__info_detailed__item_text']}`}>{user.userCity}</Text>
               </div>}
             {user.userCompany &&
               <div className={`${classes['user-page__main__info_detailed__item']}`}>
                 <img src="/src/assets/icons/suitcase.svg" alt="user work place"
-                  className={`${classes['user-page__main__info_detailed__item_icon']}`}/>
+                     className={`${classes['user-page__main__info_detailed__item_icon']}`}/>
                 <Text className={`${classes['user-page__main__info_detailed__item_text']}`}>{user.userCompany}</Text>
               </div>}
           </div>
-          {id !== undefined && currentUserId === +id &&
-            <Text>Подписчики: 60</Text>}
+          {isCurrentUser &&
+            <Text>Подписчики: {user.userSubscribersCount}</Text>}
         </div>
       </div>
 
       <Tabs type={'card'}
-        onChange={key => navigator(toUser(id ?? '') + key)}
-        items={[
-          { key: '/works', label: 'Работы' },
-          { key: '/about', label: 'О себе' },
-        ]}/>
-
+            onChange={key => navigator(toUser(id ?? '') + key)}
+            items={isCurrentUser ? currentUserNavOptions : userNavOptions}/>
       <Routes>
         <Route path={''} element={<Navigate to={toUserWorks(id ?? '')}/>}/>
         <Route path={'works'} element={<UserWorksPage/>}/>
