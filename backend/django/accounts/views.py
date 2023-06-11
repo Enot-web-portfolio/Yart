@@ -7,6 +7,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action, permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+
+import accounts.models
 from backend import settings
 from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer
 from .models import UserSubscribtions, MainSkillsType, SecondarySkillsType
@@ -62,25 +64,39 @@ class UserViewSet(viewsets.ModelViewSet):
     def user_search(self, request, *args, **kwargs):
         User = get_user_model()
         potential_query = []
+        queue = []
         query = []
         search = str(request.GET.get("search", '')).strip()
         if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
             potential_query = List.objects.get(id=request.user.id)
+            for i in potential_query.subs_list:
+                try:
+                    queue.append(UserShortSerializer(User.objects.get(id=int(i))).data)
+                except:
+                    pass
+            paginator = Paginator(queue, int(request.GET.get("count", 10)))
         if request.GET.get("mainSkills", "") != "":
-            if potential_query:
+            if queue:
                 obj = []
-                for i in potential_query.subs_list:
+                for i in queue:
                     try:
                         for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
                             user = User.objects.get(
-                                    pk=int(i), selected_main_skills__contains=[item], first_name__icontains=search)
-                            for j in user:
-                                if j.id not in obj:
+                                    pk=int(i["id"]), selected_main_skills__contains=[item], first_name__icontains=search)
+                            if type(user) is accounts.models.UserAccount:
+                                if user.id not in obj:
                                     query.append(UserShortSerializer(user).data)
-                                    obj.append(j.id)
+                                    obj.append(user.id)
+                            else:
+                                for j in user:
+                                    if j.id not in obj:
+                                        query.append(UserShortSerializer(user).data)
+                                        obj.append(j.id)
+                        queue = []
                     except:
                         pass
+                paginator = Paginator(query, int(request.GET.get("count", 10)))
             else:
                 obj = []
                 for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
@@ -91,10 +107,12 @@ class UserViewSet(viewsets.ModelViewSet):
                         if j.id not in obj:
                             query.append(UserShortSerializer(j).data)
                             obj.append(j.id)
+                paginator = Paginator(query, int(request.GET.get("count", 10)))
         elif request.GET.get("onlySubscriptions", 'false') == 'false':
             potential_query = User.objects.filter(first_name__icontains=search)
             for i in potential_query:
                 query.append(UserShortSerializer(i).data)
+            paginator = Paginator(query, int(request.GET.get("count", 10)))
         if request.user.id:
             try:
                 slist = UserSubscribtions.objects.get(id=int(request.user.id))
@@ -110,7 +128,6 @@ class UserViewSet(viewsets.ModelViewSet):
             for user in query:
                 user["isSubscribe"] = False
 
-        paginator = Paginator(query, int(request.GET.get("count", 10)))
         if int(request.GET.get("page", 1)) not in paginator.page_range:
             paginator = []
             return Response(paginator)
