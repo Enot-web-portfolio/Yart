@@ -40,6 +40,7 @@ class UserDetailSerializer(UserSerializer):
                   'description',
                   'selected_secondary_skills',
                   'is_active',
+                  'additional_links',
                   )
 
 
