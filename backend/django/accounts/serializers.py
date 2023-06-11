@@ -66,6 +66,8 @@ class UserEditSerializer(UserSerializer):
                   'company',
                   'image_url',
                   'id',
+                  'selected_main_skills',
+                  'selected_secondary_skills',
                   )
 
 
