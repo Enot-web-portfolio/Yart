@@ -49,7 +49,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     company = models.CharField(default='', max_length=255, blank=True)
     subscribers_count = models.IntegerField(default=0, blank=True)
     works_count = models.IntegerField(default=0, blank=True)
-    phone = models.IntegerField(default=0, blank=True)
+    phone = models.CharField(default='', max_length=255, blank=True)
     additional_links = ArrayField(models.CharField(max_length=255, default=''), default=list, blank=True)
     description = models.CharField(max_length=255, default='', blank=True)
 
