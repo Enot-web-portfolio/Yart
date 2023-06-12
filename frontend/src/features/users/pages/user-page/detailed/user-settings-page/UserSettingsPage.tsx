@@ -28,6 +28,7 @@ import classes from './UserSettingsPage.module.scss';
 import { LinksEditor } from './LinksEditor';
 import { AvatarUpload } from './AvatarUpload';
 import { validationSchema } from './validationSchema';
+import { EmailEditor } from './EmailEditor';
 
 const { Text, Link } = Typography;
 
@@ -100,13 +101,10 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
                   placeholder={'Фамилия'}
                   error={errors.userLastName}
                   setValue={value => setFieldValue('userLastName', value)}/>
-                <div className={`${classes['user-settings__email']}`}>
-                  <Text className={`${classes['user-settings__email_label']}`}>Почта:</Text>
-                  <Text className={`${classes['user-settings__email_value']}`}>{editorUser.userEmail}</Text>
-                  {!currentUser.userIsActive &&
-                    <Link className={`${classes['user-settings__email_activate']}`}>Подтвердить</Link>}
-                  <Link className={`${classes['user-settings__email_change']}`}>Изменить</Link>
-                </div>
+                <EmailEditor value={values.userEmail}
+                  setValue={value => setFieldValue('userEmail', value)}
+                  className={`${classes['user-settings__email']}`}
+                  isActive={currentUser.userIsActive ?? false}/>
               </div>
               <div className={`${classes['user-settings__contact']}`}>
                 <Text className={`${classes['user-settings__contact_header']}`}>Контакты</Text>
