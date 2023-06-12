@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import MainSkillsType
+from .models import MainSkillsType, SecondarySkillsType
 
 User = get_user_model()
 
