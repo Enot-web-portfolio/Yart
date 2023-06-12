@@ -14,7 +14,7 @@ export type IconProps = Readonly<{
   className?: string;
 
   /** Ф-ция клика. */
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 }>;
 
 /** Размер иконки. */

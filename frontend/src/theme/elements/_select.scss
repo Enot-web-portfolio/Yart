@@ -54,6 +54,7 @@
 
       &.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
         background-color: var(--selected-background-color);
+        font-weight: var(--regular-fw);
       }
     }
   }

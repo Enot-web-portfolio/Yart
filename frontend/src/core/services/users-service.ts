@@ -5,9 +5,10 @@ import { isApiError } from '../utils/axios-error-guard';
 
 import { ShortUser } from '../models/short-user';
 
+import { EditorUser } from '../models/editor-user';
+
 import { UsersApi } from './api/users-api';
 import { AppErrorMapper } from './mappers/appErrorMapper';
-import {EditorUser} from "../models/editor-user";
 
 export namespace UsersService {
 
@@ -45,6 +46,22 @@ export namespace UsersService {
   export async function getUserEdit(id: string | number): Promise<EditorUser> {
     try {
       return await UsersApi.getUserEdit(id);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Post user edit.
+   * @param id - User id.
+   * @param user
+   */
+  export async function postUserEdit(id: string | number, user: EditorUser) {
+    try {
+      await UsersApi.postUserEdit(id, user);
     } catch (error: unknown) {
       if (isApiError(error)) {
         throw AppErrorMapper.fromDto(error);

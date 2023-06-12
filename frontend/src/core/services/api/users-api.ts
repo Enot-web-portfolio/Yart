@@ -8,9 +8,9 @@ import { ShortUser } from '../../models/short-user';
 import { shortUserMapper } from '../mappers/shortUserMapper';
 
 import { http } from '../http';
-import {EditorUserDto} from "../../dtos/editor-user-dto";
-import {EditorUser} from "../../models/editor-user";
-import {editorUserMapper} from "../mappers/editorUserMapper";
+import { EditorUserDto } from '../../dtos/editor-user-dto';
+import { EditorUser } from '../../models/editor-user';
+import { editorUserMapper } from '../mappers/editorUserMapper';
 
 export namespace UsersApi {
 
@@ -68,6 +68,16 @@ export namespace UsersApi {
     const url = `${CONFIG.apiUrl}/users/${id}/edit`;
     const { data } = await http.get<EditorUserDto>(url);
     return editorUserMapper.fromDto(data);
+  }
+
+  /**
+   * Post user edit.
+   * @param id - Id user.
+   * @param user
+   */
+  export async function postUserEdit(id: string | number, user: EditorUser) {
+    const url = `${CONFIG.apiUrl}/users/${id}/edit`;
+    await http.post<EditorUserDto>(url, editorUserMapper.toDto(user));
   }
 
   /** Unubscribe on user.
