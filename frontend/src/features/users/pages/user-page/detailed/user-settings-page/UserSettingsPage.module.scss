@@ -10,6 +10,7 @@
       display: grid;
       grid-template-columns: 200px 1fr 1fr;
       grid-gap: var(--space-m);
+      margin-bottom: var(--space-m);
 
       .user-settings__avatar {
         grid-row: 1/3;
@@ -54,6 +55,7 @@
 
       .user-settings__contact_header {
         font-size: var(--big-text-fs);
+        grid-column: 1/4;
       }
 
       .user-settings__contact_city {
@@ -65,11 +67,30 @@
       }
 
       .user-settings__contact_links__header {
-
+        grid-column: 1/4;
       }
 
-      .user-settings__contact_links {
+      .user-settings__contact_links__delete{
+        stroke: var(--dark-pink-color);
+        width: var(--icon-small);
+        height: var(--icon-small);
+        cursor: pointer;
+      }
 
+      .user-settings__contact_links__add {
+        --button-size: calc(var(--icon-medium) + 2 * var(--space-s));
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius-m);
+        width: var(--button-size);
+        height: var(--button-size);
+
+        .user-settings__contact_links__add_icon {
+          width: var(--icon-medium);
+          height: var(--icon-medium);
+        }
       }
     }
   }

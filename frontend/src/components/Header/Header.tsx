@@ -44,7 +44,7 @@ const HeaderComponent: FC = () => {
           {user !== null &&
             <div className={`${classes.navbar__user_panel}`}>
               <div className={`${classes.navbar__user_info}`}>
-                <Text className={`${classes.navbar__user_info__name}`}>{user.userFirstName} {user.userLastName}</Text>
+                <Text className={`${classes.navbar__user_info__name}`}>{user.userFullName}</Text>
                 <NavLink to={toUserWorks(user.userId)}>
                   <Button type={'link'} className={`${classes.navbar__user_info__btn}`}>Профиль</Button>
                 </NavLink>

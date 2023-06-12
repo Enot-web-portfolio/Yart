@@ -8,6 +8,9 @@ import { ShortUser } from '../../models/short-user';
 import { shortUserMapper } from '../mappers/shortUserMapper';
 
 import { http } from '../http';
+import {EditorUserDto} from "../../dtos/editor-user-dto";
+import {EditorUser} from "../../models/editor-user";
+import {editorUserMapper} from "../mappers/editorUserMapper";
 
 export namespace UsersApi {
 
@@ -55,6 +58,16 @@ export namespace UsersApi {
     const url = `${CONFIG.apiUrl}/users/${id}`;
     const { data } = await http.get<UserDto>(url);
     return userMapper.fromDto(data);
+  }
+
+  /**
+   * Get editor user.
+   * @param id - Id user.
+   */
+  export async function getUserEdit(id: string | number): Promise<EditorUser> {
+    const url = `${CONFIG.apiUrl}/users/${id}/edit`;
+    const { data } = await http.get<EditorUserDto>(url);
+    return editorUserMapper.fromDto(data);
   }
 
   /** Unubscribe on user.

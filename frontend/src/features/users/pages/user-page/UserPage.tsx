@@ -40,7 +40,7 @@ const UserPageComponent: FC = () => {
           <div className={`${classes['user-page__main__image']}`}
                style={{backgroundImage: `url('${user.userImageUrl}')`}}/>
           <div className={`${classes['user-page__main__info']}`}>
-            <Text className={`${classes['user-page__main__name']}`}>{user.userFirstName} {user.userLastName}</Text>
+            <Text className={`${classes['user-page__main__name']}`}>{user.userFullName}</Text>
             {user.userSelectedMainSkills.length > 0 &&
               <Text className={`${classes['user-page__main__info_skills']}`}>
                 {user.userSelectedMainSkills.join(', ')}
@@ -91,8 +91,10 @@ const UserPageComponent: FC = () => {
           <Route path={''} element={<Navigate to={toUserWorks(id ?? '')}/>}/>
           <Route path={'works'} element={<UserWorksPage/>}/>
           <Route path={'about'} element={<UserAboutPage/>}/>
-          <Route path={'settings'} element={<UserSettingsPage/>}/>
-          <Route path={'subscribe'} element={<UserSubscribePage/>}/>
+          <Route path={'settings'}
+                 element={isCurrentUser ? <UserSettingsPage/> : <Navigate to={toUserWorks(id ?? '')}/>}/>
+          <Route path={'subscribe'}
+                 element={isCurrentUser ? <UserSubscribePage/> : <Navigate to={toUserWorks(id ?? '')}/>}/>
         </Routes>
       </UserContext.Provider>
     </div>

@@ -1,20 +1,20 @@
 /** User. */
-export type User = Readonly<{
+export type EditorUser = Readonly<{
 
   /** Id. */
   userId: number;
 
-  /** Full Name. */
-  userFullName: string
+  /** First Name. */
+  userFirstName: string;
 
-  /** Is subscribe. */
-  isSubscribe?: boolean;
+  /** Last Name. */
+  userLastName: string;
 
   /** Email. */
   userEmail: string;
 
   /** Phone. */
-  userPhone: number | null;
+  userPhone: string | null;
 
   /** Additional links. */
   userAdditionalLinks: string[];
@@ -27,9 +27,6 @@ export type User = Readonly<{
 
   /** Image url. */
   userImageUrl: string | null;
-
-  /** Count of subscribe. */
-  userSubscribersCount: number;
 
   /** Selected main skills. */
   userSelectedMainSkills: string[];

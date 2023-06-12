@@ -7,6 +7,7 @@ import { ShortUser } from '../models/short-user';
 
 import { UsersApi } from './api/users-api';
 import { AppErrorMapper } from './mappers/appErrorMapper';
+import {EditorUser} from "../models/editor-user";
 
 export namespace UsersService {
 
@@ -29,6 +30,21 @@ export namespace UsersService {
   export async function getUser(id: string | number): Promise<User> {
     try {
       return await UsersApi.getUser(id);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get editor user.
+   * @param id - User id.
+   */
+  export async function getUserEdit(id: string | number): Promise<EditorUser> {
+    try {
+      return await UsersApi.getUserEdit(id);
     } catch (error: unknown) {
       if (isApiError(error)) {
         throw AppErrorMapper.fromDto(error);
