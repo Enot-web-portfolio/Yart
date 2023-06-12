@@ -69,6 +69,7 @@ class UserEditSerializer(UserSerializer):
                   'id',
                   'selected_main_skills',
                   'selected_secondary_skills',
+                  'description',
                   )
 
 
