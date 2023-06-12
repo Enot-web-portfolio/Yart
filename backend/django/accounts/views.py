@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 import accounts.models
 from backend import settings
-from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer
+from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer, SecondarySkillsSerializer
 from .models import UserSubscribtions, MainSkillsType, SecondarySkillsType
 
 
