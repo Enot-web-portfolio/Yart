@@ -145,17 +145,18 @@ class UserViewSet(viewsets.ModelViewSet):
     def edit_post(self, request, *args, **kwargs):
         data = request.data
         image_file = data['image_url']
-        session = boto3.session.Session()
-        s3 = session.client(
-            service_name='s3',
-            endpoint_url='https://hb.bizmrg.com',
-            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-        )
-        id = uuid.uuid4()
-        key = f'useravatar_{kwargs["id"]}_{id}.' + image_file.rsplit('.', 1)[1].lower()
-        s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/users/{kwargs["id"]}/{key}')
-        data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
+        if image_file != "" and image_file is not None:
+            session = boto3.session.Session()
+            s3 = session.client(
+                service_name='s3',
+                endpoint_url='https://hb.bizmrg.com',
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            )
+            id = uuid.uuid4()
+            key = f'useravatar_{kwargs["id"]}_{id}.' + image_file.rsplit('.', 1)[1].lower()
+            s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/users/{kwargs["id"]}/{key}')
+            data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
         serializer = self.serializer_class(data=data, partial=True)
         if serializer.is_valid():
             serializer.update(instance=request.user, validated_data=data)
