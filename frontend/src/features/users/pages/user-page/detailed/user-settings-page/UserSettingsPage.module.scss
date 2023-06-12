@@ -56,6 +56,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       grid-gap: var(--space-m);
+      align-items: flex-start;
 
       .user-settings__contact_header {
         font-size: var(--big-text-fs);
@@ -92,17 +93,29 @@
         color: var(--dark-pink-color);
         font-size: var(--small-text-fs);
       }
+      .user-settings__main-skills_header {
+        margin-bottom: var(--space-s);
+      }
     }
 
-    .user-settings__main-skills_header {
-
+    .user-settings__additional__desc{
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--space-s);
+      gap: var(--space-s);
     }
 
-    .user-settings__secondary-skills_header {
-      .user-settings__secondary-skills_header_max {
-        font-size: var(--small-text-fs);
-        color: var(--inactive-element-color);
-        margin: 0 var(--space-vs);
+    .user-settings__secondary_skills{
+      display:flex;
+      flex-direction: column;
+      gap: var(--space-s);
+
+      .user-settings__secondary-skills_header {
+        .user-settings__secondary-skills_header_max {
+          font-size: var(--small-text-fs);
+          color: var(--inactive-element-color);
+          margin: 0 var(--space-vs);
+        }
       }
     }
   }

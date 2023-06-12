@@ -29,10 +29,10 @@ export type EditorUser = Readonly<{
   userImageUrl: string | null;
 
   /** Selected main skills. */
-  userSelectedMainSkills: string[];
+  userSelectedMainSkills: number[];
 
   /** Selected secondary skills. */
-  userSelectedSecondarySkills: string[];
+  userSelectedSecondarySkills: number[];
 
   /** Description user. */
   userDescription: string | null;

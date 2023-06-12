@@ -43,5 +43,7 @@ export const useUserState = () => {
 
     /** Is loading user data. */
     isLoading,
+
+    onUserGet,
   };
 };

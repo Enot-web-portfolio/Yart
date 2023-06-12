@@ -15,7 +15,7 @@ export namespace AuthApi {
 
   const signInUrl = `${CONFIG.apiUrl}/auth/signin`;
   const signUpUrl = `${CONFIG.apiUrl}/auth/signup`;
-  const refreshSecretUrl = `${CONFIG.apiUrl}/auth/refresh/`;
+  const refreshSecretUrl = `${CONFIG.apiUrl}/auth/refresh`;
 
   /**
    * Logs a user in with email and password.

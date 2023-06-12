@@ -29,10 +29,10 @@ export type EditorUserDto = Readonly<{
   image_url: string;
 
   /** Selected main skills. */
-  selected_main_skills: string[];
+  selected_main_skills: number[];
 
   /** Selected secondary skills. */
-  selected_secondary_skills: string[];
+  selected_secondary_skills: number[];
 
   /** Description user. */
   description: string;

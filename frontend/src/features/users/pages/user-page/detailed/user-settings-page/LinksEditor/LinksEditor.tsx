@@ -37,7 +37,7 @@ const LinksEditorComponent: FC<Props> = ({ links, setLinks, className }) => {
       {links.map((link, i) =>
         <Input value={link}
           key={i}
-          suffix={i !== 0 && <CrossIcon size={IconSize.Middle}
+          suffix={links.length > 1 && <CrossIcon size={IconSize.Middle}
             onClick={() => deleteLink(i)}
             className={`${classes['links-editor__delete']}`}/>}
           placeholder={'Ссылка'}

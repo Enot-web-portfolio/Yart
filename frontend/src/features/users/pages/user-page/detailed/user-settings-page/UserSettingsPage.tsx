@@ -31,9 +31,16 @@ import { validationSchema } from './validationSchema';
 
 const { Text, Link } = Typography;
 
-const UserSettingsPageComponent: FC = () => {
+const { TextArea } = Input;
+
+type Props = Readonly<{
+  updateUser?: () => void;
+}>;
+
+const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
   const { editorUser, isLoading } = useEditorUserState();
   const currentUser = useCurrentUserStore(store => store.user);
+  const updateCurrentUser = useCurrentUserStore(store => store.getCurrentUser);
   const [links, setLinks] = useState<string[]>(['']);
 
   /** Категории для выбора в панели. */
@@ -60,8 +67,10 @@ const UserSettingsPageComponent: FC = () => {
     }
     try {
       const parsedLinks = links.map(link => link.trim()).filter(link => link.length > 0);
-      setLinks(parsedLinks.length > 0 ? [''] : []);
+      setLinks(parsedLinks.length > 0 ? parsedLinks : ['']);
       await UsersService.postUserEdit(currentUser.userId, { ...user, userAdditionalLinks: parsedLinks });
+      await updateCurrentUser();
+      updateUser?.();
       toast.success('Данные сохранены');
     } catch (error: unknown) {
       toast.error('Произошла ошибка');
@@ -108,35 +117,46 @@ const UserSettingsPageComponent: FC = () => {
                 <Input value={values.userCompany ?? ''}
                   placeholder={'Компания'}
                   onChange={event => setFieldValue('userCompany', event.target.value)}/>
-                <InputWithError value={values.userPhone ?? ''}
+                {/* <InputWithError
                   placeholder={'Телефон'}
-                  error={errors.userPhone}
-                  setValue={value => setFieldValue('userPhone', value)}/>
+                  error={errors.userPhone}/>*/}
                 <LinksEditor links={links} setLinks={setLinks}
                   className={`${classes['user-settings__contact_links']}`}/>
               </div>
             </div>
             <div className={`${classes['user-settings__additional']}`}>
+              <div className={`${classes['user-settings__additional__desc']}`}>
+                <Text className={`${classes['user-settings__main-skills_header']}`}>О себе:</Text>
+                <TextArea value={values.userDescription ?? ''}
+                  autoSize
+                  onChange={e => setFieldValue('userDescription', e.target.value)}/>
+              </div>
               <div className={`${classes['user-settings__additional__main_skills']}`}>
                 <Text className={`${classes['user-settings__main-skills_header']}`}>Категории навыков:</Text>
                 <Select options={skills}
                   onChange={(value: string[]) => setFieldValue('userSelectedMainSkills', value)}
                   mode="multiple"
+                  defaultValue={editorUser.userSelectedMainSkills}
                   placeholder="Что умеешь?"/>
                 <Text type={'warning'} className={`${classes['user-settings__additional__main_skills_error']}`}>
                   <ErrorMessage name={'userSelectedMainSkills'}/>
                 </Text>
               </div>
-
-              <Text className={`${classes['user-settings__secondary-skills_header']}`}>
+              <div className={`${classes['user-settings__secondary_skills']}`}>
+                <Text className={`${classes['user-settings__secondary-skills_header']}`}>
                 Ключевые навыки
-                <Text className={`${classes['user-settings__secondary-skills_header_max']}`}>(макс 20)</Text>
+                  <Text className={`${classes['user-settings__secondary-skills_header_max']}`}>(макс 20)</Text>
                 :
-              </Text>
-              <Select options={secondarySkills}
-                onChange={(value: string[]) => setFieldValue('userSelectedSecondarySkills', value)}
-                mode="multiple"
-                placeholder="А что именно? Уточни"/>
+                </Text>
+                <Select options={secondarySkills}
+                  onChange={(value: string[]) => setFieldValue('userSelectedSecondarySkills', value)}
+                  mode="multiple"
+                  defaultValue={editorUser.userSelectedSecondarySkills}
+                  placeholder="А что именно? Уточни"/>
+                <Text type={'warning'} className={`${classes['user-settings__secondary-skills_error']}`}>
+                  <ErrorMessage name={'userSelectedSecondarySkills'}/>
+                </Text>
+              </div>
             </div>
             <Button className={`${classes['user-settings__submit']}`}
               type={'primary'}

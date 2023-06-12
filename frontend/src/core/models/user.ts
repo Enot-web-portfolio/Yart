@@ -5,7 +5,7 @@ export type User = Readonly<{
   userId: number;
 
   /** Full Name. */
-  userFullName: string
+  userFullName: string;
 
   /** Is subscribe. */
   isSubscribe?: boolean;
@@ -32,10 +32,10 @@ export type User = Readonly<{
   userSubscribersCount: number;
 
   /** Selected main skills. */
-  userSelectedMainSkills: string[];
+  userSelectedMainSkills: number[];
 
   /** Selected secondary skills. */
-  userSelectedSecondarySkills: string[];
+  userSelectedSecondarySkills: number[];
 
   /** Description user. */
   userDescription: string | null;

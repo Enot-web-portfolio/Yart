@@ -1,25 +1,24 @@
-import React, {FC, memo, useContext, useState} from 'react';
+import React, { FC, memo } from 'react';
 
-import {Spin, Typography} from "antd";
+import { Typography } from 'antd';
+
+import { EmptyResult } from '../../../../../../components/EmptyResult';
+import { User } from '../../../../../../core/models/user';
+
+import { ErrorResult } from '../../../../../../components/ErrorResult';
 
 import classes from './UserAboutPage.module.scss';
-import {useLocation} from "react-router-dom";
-import {useUserState} from "../../useUserState";
-import {ErrorResult} from "../../../../../../components/ErrorResult";
-import {EmptyResult} from "../../../../../../components/EmptyResult";
-import {UserContext} from "../../context";
 
-const {Text} = Typography;
+const { Text } = Typography;
 
-type LocationState = {
-  userDescription: string | null;
-  userSelectedSecondarySkills: string[];
-}
+type Props = Readonly<{
+  user?: User;
+}>;
 
-const UserAboutPageComponent: FC = () => {
-  const user = useContext(UserContext);
-
-  if (user === null) return <ErrorResult/>
+const UserAboutPageComponent: FC<Props> = ({ user }) => {
+  if (!user) {
+    return <ErrorResult/>;
+  }
   return (
     <div className={`${classes['user-about']}`}>
       {user.userDescription &&
@@ -30,12 +29,12 @@ const UserAboutPageComponent: FC = () => {
           {user.userSelectedSecondarySkills.length === 0 ?
             <EmptyResult/> :
             user.userSelectedSecondarySkills.map((skill, i) => (
-              <Text className={`${classes['user-about_skills_item']}`}>{skill}</Text>
+              <Text className={`${classes['user-about_skills_item']}`} key={i}>{skill}</Text>
             ))}
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export const UserAboutPage = memo(UserAboutPageComponent);
