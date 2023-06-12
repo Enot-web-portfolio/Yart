@@ -229,7 +229,7 @@ class SkillsViewSet(viewsets.ViewSet):
         skills_list = []
         for i in range(SecondarySkillsType.objects.all().count()):
             try:
-                skill = SkillsSerializer(List.objects.get(pk=i))
+                skill = SecondarySkillsSerializer(List.objects.get(pk=i))
             except SecondarySkillsType.DoesNotExist:
                 continue
             skills_list.append(skill.data)
