@@ -25,7 +25,6 @@ const AvatarUploadComponent: FC<Props> = ({ url, setUrl }) => {
     if (file.originFileObj === undefined) {
       return null;
     }
-    console.log(file.originFileObj);
     setAvatar(file.originFileObj || null);
     return URL.createObjectURL(file.originFileObj as Blob);
   };

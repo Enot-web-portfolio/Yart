@@ -60,7 +60,7 @@ const UserSettingsPageComponent: FC = () => {
     }
     try {
       const parsedLinks = links.map(link => link.trim()).filter(link => link.length > 0);
-      setLinks(parsedLinks);
+      setLinks(parsedLinks.length > 0 ? [''] : []);
       await UsersService.postUserEdit(currentUser.userId, { ...user, userAdditionalLinks: parsedLinks });
       toast.success('Данные сохранены');
     } catch (error: unknown) {
