@@ -76,3 +76,9 @@ class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainSkillsType
         fields = '__all__'
+        
+        
+class SecondarySkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SecondarySkillsType
+        fields = ('id', 'name')
