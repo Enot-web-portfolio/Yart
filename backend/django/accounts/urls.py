@@ -22,5 +22,7 @@ urlpatterns = [
     path("reset/reset-password/", UserViewSet.as_view({"post": "reset_password"}), name="reset_password"),
     path("reset/reset-password-confirm/<str:uid>/<str:token>/", UserViewSet.as_view({"post": "reset_password_confirm"}),
          name="reset_password_confirm"),
+    path("reset/reset-email", UserViewSet.as_view({"post": "reset_username"}), name="reset_email"),
+    path("reset/reset-email-confirm/<str:uid>/<str:token>", UserViewSet.as_view({"post": "reset_username_confirm"}), name="reset_email_confirm"),
 ]
 
