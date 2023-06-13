@@ -143,7 +143,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_post(self, request, *args, **kwargs):
-         if request.user.id and kwargs['id'] == request.user.id:
+        if request.user.id and kwargs['id'] == request.user.id:
             data = request.data
             image_file = data['image_url']
             if image_file != "" and image_file is not None:
