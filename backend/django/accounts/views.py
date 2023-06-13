@@ -143,24 +143,27 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_post(self, request, *args, **kwargs):
-        data = request.data
-        image_file = data['image_url']
-        if image_file != "" and image_file is not None:
-            session = boto3.session.Session()
-            s3 = session.client(
-                service_name='s3',
-                endpoint_url='https://hb.bizmrg.com',
-                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-            )
-            id = uuid.uuid4()
-            key = f'useravatar_{kwargs["id"]}_{id}.' + image_file.rsplit('.', 1)[1].lower()
-            s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/users/{kwargs["id"]}/{key}')
-            data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
-        serializer = self.serializer_class(data=data, partial=True)
-        if serializer.is_valid():
-            serializer.update(instance=request.user, validated_data=data)
-            return Response(status=status.HTTP_201_CREATED)
+         if request.user.id and kwargs['id'] == request.user.id:
+            data = request.data
+            image_file = data['image_url']
+            if image_file != "" and image_file is not None:
+                session = boto3.session.Session()
+                s3 = session.client(
+                    service_name='s3',
+                    endpoint_url='https://hb.bizmrg.com',
+                    aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                )
+                id = uuid.uuid4()
+                key = f'useravatar_{kwargs["id"]}_{id}.' + image_file.rsplit('.', 1)[1].lower()
+                s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/users/{kwargs["id"]}/{key}')
+                data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
+            serializer = self.serializer_class(data=data, partial=True)
+            if serializer.is_valid():
+                serializer.update(instance=request.user, validated_data=data)
+                return Response(status=status.HTTP_201_CREATED)
+            else:
+                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
 
