@@ -1,20 +1,23 @@
-import React, {FC, useState} from 'react';
-import {Work} from 'src/core/models/work';
-import {Typography} from 'antd';
+import React, { FC, useState } from 'react';
+import { Work } from 'src/core/models/work';
+import { Typography } from 'antd';
 
-import {typedMemo} from '../../core/utils/typed-memo';
-import {HeartFillIcon, HeartLineIcon} from '../Icons';
-import {Tag} from '../Tag';
-import {useCurrentUserStore} from '../../core/store/user/store';
-import {useAuthStore} from '../../core/store/auth/store';
-import {WorksService} from '../../core/services/works-service';
+import { NavLink } from 'react-router-dom';
+
+import { toast } from 'react-toastify';
+
+import { typedMemo } from '../../core/utils/typed-memo';
+import { HeartFillIcon, HeartLineIcon } from '../Icons';
+import { Tag } from '../Tag';
+import { useCurrentUserStore } from '../../core/store/user/store';
+import { useAuthStore } from '../../core/store/auth/store';
+import { WorksService } from '../../core/services/works-service';
+
+import { toUserWorks } from '../../routes/route-links';
 
 import classes from './WorkCard.module.scss';
-import {NavLink} from "react-router-dom";
-import {toUserWorks} from "../../routes/route-links";
-import {toast} from "react-toastify";
 
-const {Text} = Typography;
+const { Text } = Typography;
 
 type Props = Readonly<Work & {
 
@@ -30,8 +33,14 @@ type Props = Readonly<Work & {
  * @param props
  */
 const WorkCardComponent: FC<Props> = props => {
-  const {isUserAuthorized} = useAuthStore();
-  const {user} = useCurrentUserStore();
+
+  /** Авторизован ли пользователь. */
+  const { isUserAuthorized } = useAuthStore();
+
+  /** Текущий авторизованный пользователь. */
+  const { user } = useCurrentUserStore();
+
+  /** Отмечена ли работа как понравившаяся. */
   const [isLike, setIsLike] = useState(props.workIsLike);
 
   /** Ф-ция лайка работы. */
@@ -39,29 +48,28 @@ const WorkCardComponent: FC<Props> = props => {
     if (!isUserAuthorized || !user) {
       return null;
     }
-    try{
+    try {
       if (props.workIsLike) {
         WorksService.postWorkUnlike(props.workId, user.userId);
       } else {
         WorksService.postWorkLike(props.workId, user.userId);
       }
       setIsLike(curIsLike => !curIsLike);
-    } catch(error){
-      toast.error('Произошла ошибка')
+    } catch (error: unknown) {
+      toast.error('Произошла ошибка');
     }
-
   };
 
   return (
     <div className={`${classes['work-card']}`}
-         onClick={() => props.onWorkClick(props.workId)}>
+      onClick={() => props.onWorkClick(props.workId)}>
       {props.workImageUrl == null ?
         <div className={`${classes['work-card__content']} ${classes['work-card_textual']}`}>
           <Text className={`${classes['work-card__content_name']}`}>{props.workName}</Text>
           <Text className={`${classes['work-card__content_text']}`}>{props.workStartText}</Text>
         </div> :
         <div className={`${classes['work-card__content']} ${classes['work-card_picture']}`}
-             style={{backgroundImage: `url('${props.workImageUrl}')`}}>
+          style={{ backgroundImage: `url('${props.workImageUrl}')` }}>
           <div className={`${classes['work-card__content_hover']}`}>
             <Text className={`${classes['work-card__content_name']}`}>{props.workName}</Text>
           </div>
@@ -72,7 +80,7 @@ const WorkCardComponent: FC<Props> = props => {
           <NavLink to={toUserWorks(props.userId)}>
             <div className={`${classes['work-card__user-info']}`}>
               <div className={`${classes['work-card_user-img']}`}
-                   style={{backgroundImage: `url('${props.userImageUrl}')`}}/>
+                style={{ backgroundImage: `url('${props.userImageUrl}')` }}/>
               <Text className={`${classes['work-card_user-full-name']}`}>
                 {props.userFirstName} {props.userLastName}
               </Text>

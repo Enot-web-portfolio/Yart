@@ -19,8 +19,11 @@ import { UserAboutPage } from './detailed/user-about-page';
 
 const { Text } = Typography;
 
+/** Страница Пользователь. */
 const UserPageComponent: FC = () => {
   const { user, id, isLoading, onUserGet } = useUserState();
+
+  /** Id авторизованного пользователя. */
   const currentUserId = useCurrentUserStore(store => store.user ? store.user.userId : null);
 
   if (isLoading) {
@@ -30,7 +33,9 @@ const UserPageComponent: FC = () => {
     return <ErrorResult/>;
   }
 
+  /** Является ли данный пользователем текущим авторизованным. */
   const isCurrentUser = id !== undefined && currentUserId === +id;
+
   return (
     <div className={`${classes['user-page']}`}>
       <div className={`${classes['user-page__main']}`}>

@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 
 import { WorksGrid } from '../../../../../../components/WorksGrid';
 
-import classes from './UserWorksPage.module.scss';
-
+/** Компонент Работы (Пользователь). */
 const UserWorksPageComponent: FC = () => {
+
+  /** Id пользователя. */
   const { id } = useParams<{ id: string; }>();
 
   return (

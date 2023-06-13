@@ -35,13 +35,23 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 type Props = Readonly<{
+
+  /** Ф-ция обновления текущего пользователя. */
   updateUser?: () => void;
 }>;
 
+/** Компонент Настройки (Пользователь). */
 const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
+
   const { editorUser, isLoading } = useEditorUserState();
+
+  /** Текущий авторизованный пользователь. */
   const currentUser = useCurrentUserStore(store => store.user);
+
+  /** Ф-ция обновления авторизованного пользователя. */
   const updateCurrentUser = useCurrentUserStore(store => store.getCurrentUser);
+
+  /** Дополнительные ссылки пользователя. */
   const [links, setLinks] = useState<string[]>(['']);
 
   /** Категории для выбора в панели. */
@@ -62,6 +72,10 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
     }
   }, [editorUser]);
 
+  /**
+   * Ф-ция отправки формы.
+   * @param user
+   */
   const submit = async(user: EditorUser) => {
     if (currentUser === null || editorUser === null) {
       return;
@@ -88,7 +102,6 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
   if (editorUser === null || skills === null || secondarySkills === null || currentUser === null) {
     return <ErrorResult/>;
   }
-
   return (
     <div className={`${classes['user-settings']}`}>
       <Formik initialValues={{ ...editorUser }} onSubmit={submit} validationSchema={validationSchema}>

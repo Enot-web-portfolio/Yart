@@ -1,37 +1,39 @@
-import React, {FC, memo, useState} from 'react';
+import React, { FC, memo, useState } from 'react';
 
-import {Input, Typography, Spin} from 'antd';
+import { Input, Typography, Spin } from 'antd';
 
-import {SkillsSelect} from '../../../../components/SkillsSelect';
+import { SkillsSelect } from '../../../../components/SkillsSelect';
 
-import {useUsersState} from '../../../../core/services/hooks/useUsersState';
+import { useUsersState } from '../../../../core/services/hooks/useUsersState';
 
-import {ErrorResult} from '../../../../components/ErrorResult';
+import { ErrorResult } from '../../../../components/ErrorResult';
 
-import {UserCard} from '../../../../components/UserCard';
+import { UserCard } from '../../../../components/UserCard';
 
-import {EmptyResult} from '../../../../components/EmptyResult';
+import { EmptyResult } from '../../../../components/EmptyResult';
 
 import classes from './UsersPage.module.scss';
 
-const {Title} = Typography;
+const { Title } = Typography;
 
+/** Страница Пользователи. */
 const UsersPageComponent: FC = () => {
 
   /** Выбранные категории.*/
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
 
+  /** Поиск пользователей. */
   const [search, setSearch] = useState('');
 
-  const {users, isLoading} = useUsersState({page: 1, count: 100, skillIds: selectedSkills, search: search});
+  const { users, isLoading } = useUsersState({ page: 1, count: 100, skillIds: selectedSkills, search });
 
   return (
     <div className={`${classes['users-page']}`}>
       <div className={`${classes['users-page__search-block']}`}>
         <Title level={2}>Пользователи</Title>
         <Input value={search}
-               onChange={e => setSearch(e.target.value)}
-               placeholder={'Поиск'}/>
+          onChange={e => setSearch(e.target.value)}
+          placeholder={'Поиск'}/>
       </div>
       <div className={`${classes['users-page__users-block']}`}>
         <SkillsSelect onChange={setSelectedSkills}/>
@@ -44,10 +46,10 @@ const UsersPageComponent: FC = () => {
               <div className={`${classes['users-page__users']}`}>
                 {users.map((user, i) =>
                   <UserCard {...user} key={i}
-                            classes={{
+                    classes={{
                               container: classes['users-page__user-card'],
                               action: classes['users-page__user-card__action'],
-                            }}/>)}
+                    }}/>)}
               </div>}
       </div>
     </div>

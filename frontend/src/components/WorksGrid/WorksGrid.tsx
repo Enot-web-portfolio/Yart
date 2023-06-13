@@ -12,35 +12,52 @@ import { typedMemo } from '../../core/utils/typed-memo';
 import classes from './WorksGrid.module.scss';
 
 type Props = Readonly<{
+
+  /** Выбранные основные скиллы. */
   selectedMainSkills?: number[] | string[];
+
+  /** Id пользователя, чьи работы ищутся. */
   userId?: number | string;
+
+  /** Кол-во работ на странице. */
   count: number;
+
+  /** Значение поиска работ. */
   search?: string;
 }>;
 
+/**
+ * Компонетн Сетка работ.
+ * @param props
+ */
 const WorksGridComponent: FC<Props> = props => {
+
+  /** Текущая страница работ. */
   const [page, setPage] = useState(1);
+
   const { works, isLoading } = useWorksState({ page, count: props.count, search: props.search });
 
   useEffect(() => {
     setPage(1);
   }, [props.selectedMainSkills, props.userId, props.count, props.search]);
 
+  if (isLoading && works === null) {
+    return <Spin/>;
+  }
+  if (works === null) {
+    return <ErrorResult/>;
+  }
+  if (works.length === 0) {
+    return <EmptyResult/>;
+  }
   return (
     <div className={`${classes['works-grid__wrapper']}`}>
-      {isLoading && works === null ?
-        <Spin/> :
-        works == null ?
-          <ErrorResult/> :
-          works.length === 0 ?
-            <EmptyResult/> :
-            <div className={`${classes['works-grid']}`}>
-              {works.map((work, i) =>
-                <WorkCard key={i} {...work} pageUserId={props.userId} onWorkClick={() => {
-                }}/>)}
-            </div>
-      }
-      {isLoading && works !== null && <Spin/>}
+      <div className={`${classes['works-grid']}`}>
+        {works.map((work, i) =>
+          <WorkCard key={i} {...work} pageUserId={props.userId} onWorkClick={() => {
+          }}/>)}
+      </div>
+      {isLoading && <Spin/>}
     </div>
   );
 };

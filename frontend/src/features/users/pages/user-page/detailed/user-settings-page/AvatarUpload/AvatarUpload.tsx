@@ -12,16 +12,30 @@ import { typedMemo } from '../../../../../../../core/utils/typed-memo';
 import classes from './AvatarUpload.module.scss';
 
 type Props = Readonly<{
+
+  /** Ссылка на аватар. */
   url: string | null;
+
+  /** Ф-ция сохранения ссылки. */
   setUrl: (url: string | null) => void;
+
+  /** Класс для редактора аватарки. */
   className: string;
 }>;
 
+/** Компонент Редактор аватарки Пользователя. */
 const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
+
+  /** Файл аватарки. */
   const [avatar, setAvatar] = useState<File | null>(null);
 
-  /** Accept format for cover. */
+  /** Доступные форматы аватарки. */
   const accept = useRef(['jpg', 'png', 'webp']);
+
+  /**
+   * Ф-ция загрузки аватарки.
+   * @param file
+   */
   const uploadImage = (file: UploadFile): string | null => {
     if (file.originFileObj === undefined) {
       return null;
@@ -31,8 +45,8 @@ const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
   };
 
   /**
-   * Check file before upload.
-   * @param file
+   * Ф-ция проверки файла перед загрузкой.
+   * @param file - Файл аватарки.
    */
   function beforeUpload(file: File) {
     const pathName = file.name.split('.');

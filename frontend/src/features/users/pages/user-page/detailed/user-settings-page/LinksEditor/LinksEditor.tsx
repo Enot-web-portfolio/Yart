@@ -11,21 +11,39 @@ import classes from './LinksEditor.module.scss';
 const { Text } = Typography;
 
 type Props = Readonly<{
+
+  /** Дополнительныее ссылки. */
   links: string[];
+
+  /** Ф-ция сохранения ссылок. */
   setLinks: Dispatch<SetStateAction<string[]>>;
+
+  /** Класс для редактора ссылок. */
   className: string;
 }>;
 
+/** Компонент Редактор дополнительных ссылок Пользователя. */
 const LinksEditorComponent: FC<Props> = ({ links, setLinks, className }) => {
+
+  /**
+   * Ф-ция удаления ссылки.
+   * @param order - Порядковый номер ссылки.
+   */
   const deleteLink = (order: number) => {
     setLinks(curLinks =>
       curLinks.filter((_, i) => i !== order));
   };
 
+  /** Ф-ция добавления ссылки. */
   const addLink = () => {
     setLinks(curLinks => [...curLinks, '']);
   };
 
+  /**
+   * Ф-ция изменения ссылки.
+   * @param order - Порядковый номер ссылки.
+   * @param value - Значение ссылки.
+   */
   const changeLink = (order: number, value: string) => {
     setLinks(curLinks =>
       curLinks.map((link, i) => i === order ? value : link));

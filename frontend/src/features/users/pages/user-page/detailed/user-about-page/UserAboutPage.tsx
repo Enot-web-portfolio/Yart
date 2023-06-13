@@ -12,14 +12,15 @@ import classes from './UserAboutPage.module.scss';
 const { Text } = Typography;
 
 type Props = Readonly<{
+
+  /** Текущий пользователь. */
   user?: User;
 }>;
 
-const UserAboutPageComponent: FC<Props> = ({ user }) => {
-  if (!user) {
-    return <ErrorResult/>;
-  }
-  return (
+/** Компонент О себе (Пользователь). */
+const UserAboutPageComponent: FC<Props> = ({ user }) => (
+  user === undefined ?
+    <ErrorResult/> :
     <div className={`${classes['user-about']}`}>
       {user.userDescription &&
         <Text className={`${classes['user-about__description']}`}>{user.userDescription}</Text>}
@@ -34,7 +35,6 @@ const UserAboutPageComponent: FC<Props> = ({ user }) => {
         </div>
       </div>
     </div>
-  );
-};
+);
 
 export const UserAboutPage = memo(UserAboutPageComponent);
