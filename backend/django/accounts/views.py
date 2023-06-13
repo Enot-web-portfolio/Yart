@@ -155,8 +155,8 @@ class UserViewSet(viewsets.ModelViewSet):
                     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                 )
                 id = uuid.uuid4()
-                key = f'useravatar_{kwargs["id"]}_{id}.' + image_file.rsplit('.', 1)[1].lower()
-                s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/users/{kwargs["id"]}/{key}')
+                key = f'useravatar_{kwargs["id"]}_{id}.png'
+                s3.put_object(Body=image_file, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/users/{kwargs["id"]}/{key}')
                 data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
             serializer = self.serializer_class(data=data, partial=True)
             if serializer.is_valid():
