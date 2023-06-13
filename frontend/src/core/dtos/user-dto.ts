@@ -8,7 +8,7 @@ export type UserDto = Readonly<{
   first_name: string;
 
   /** Is subscribe. */
-  isSubscribe: boolean;
+  isSubscribe?: boolean;
 
   /** Last name. */
   last_name: string;
@@ -35,14 +35,14 @@ export type UserDto = Readonly<{
   subscribers_count: number;
 
   /** Selected main skills. */
-  selected_main_skills: string[];
+  selected_main_skills: number[];
 
   /** Selected secondary skills. */
-  selected_secondary_skills: string[];
+  selected_secondary_skills: number[];
 
   /** Description user. */
   description: string;
 
   /** Is active mail. */
-  is_active: boolean;
+  is_active?: boolean;
 }>

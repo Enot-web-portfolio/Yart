@@ -1,8 +1,6 @@
-import React, { FC, memo, useEffect, useState } from 'react';
+import React, { FC, memo, useState } from 'react';
 
 import { Input, Typography, Spin } from 'antd';
-
-import { ToastContainer } from 'react-toastify';
 
 import { SkillsSelect } from '../../../../components/SkillsSelect';
 
@@ -18,18 +16,16 @@ import classes from './UsersPage.module.scss';
 
 const { Title } = Typography;
 
+/** Страница Пользователи. */
 const UsersPageComponent: FC = () => {
 
   /** Выбранные категории.*/
   const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
 
-  const { users, isLoading, getUsers } = useUsersState();
-
+  /** Поиск пользователей. */
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    getUsers(selectedSkills, search);
-  }, [selectedSkills, search]);
+  const { users, isLoading } = useUsersState({ page: 1, count: 100, skillIds: selectedSkills, search });
 
   return (
     <div className={`${classes['users-page']}`}>

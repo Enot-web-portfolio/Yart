@@ -13,7 +13,7 @@ export const useCurrentUserStore = create<CurrentUserState & CurrentUserActions>
   ...initialState,
   async getCurrentUser() {
     try {
-      set(() => ({ isLoading: true, user: null, error: null }));
+      set(() => ({ isLoading: true, error: null }));
       const user = await UsersService.getCurrentUser();
       set(() => ({ user, error: null, isLoading: false }));
     } catch (error: unknown) {

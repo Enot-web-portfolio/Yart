@@ -1,0 +1,14 @@
+.works-grid__wrapper{
+  .works-grid{
+    display: grid;
+    grid-gap: var(--space-m);
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+
+@media(max-width: 1300px) {
+  .works-grid__wrapper .works-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

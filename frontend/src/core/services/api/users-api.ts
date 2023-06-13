@@ -8,6 +8,9 @@ import { ShortUser } from '../../models/short-user';
 import { shortUserMapper } from '../mappers/shortUserMapper';
 
 import { http } from '../http';
+import { EditorUserDto } from '../../dtos/editor-user-dto';
+import { EditorUser } from '../../models/editor-user';
+import { editorUserMapper } from '../mappers/editorUserMapper';
 
 export namespace UsersApi {
 
@@ -48,7 +51,45 @@ export namespace UsersApi {
   }
 
   /**
-   * Unubscribe on user.
+   * Activation email resend.
+   * @param email - Почта для подтверждения.
+   */
+  export async function postActivationResend(email: string) {
+    const url = `${CONFIG.apiUrl}/activation/resend-activation/`;
+    await http.post(url, { email });
+  }
+
+  /**
+   * Get current user.
+   * @param id - Id user.
+   */
+  export async function getUser(id: string | number): Promise<User> {
+    const url = `${CONFIG.apiUrl}/users/${id}`;
+    const { data } = await http.get<UserDto>(url);
+    return userMapper.fromDto(data);
+  }
+
+  /**
+   * Get editor user.
+   * @param id - Id user.
+   */
+  export async function getUserEdit(id: string | number): Promise<EditorUser> {
+    const url = `${CONFIG.apiUrl}/users/${id}/edit`;
+    const { data } = await http.get<EditorUserDto>(url);
+    return editorUserMapper.fromDto(data);
+  }
+
+  /**
+   * Post user edit.
+   * @param id - Id user.
+   * @param user
+   */
+  export async function postUserEdit(id: string | number, user: EditorUser) {
+    const url = `${CONFIG.apiUrl}/users/${id}/edit`;
+    await http.post<EditorUserDto>(url, editorUserMapper.toDto(user));
+  }
+
+  /** Unubscribe on user.
    * @param userId - Id пользователя, от которого отписываются.
    */
   export async function postUnsubscribe(userId: number | string) {

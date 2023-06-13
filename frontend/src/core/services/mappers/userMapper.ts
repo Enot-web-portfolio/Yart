@@ -1,8 +1,8 @@
-import { User } from 'src/core/models/user';
+import {User} from 'src/core/models/user';
 
-import { UserDto } from '../../dtos/user-dto';
+import {UserDto} from '../../dtos/user-dto';
 
-import { IMapperFromDto } from './mappers';
+import {IMapperFromDto} from './mappers';
 
 /** User mapper. */
 class UserMapper implements IMapperFromDto<UserDto, User> {

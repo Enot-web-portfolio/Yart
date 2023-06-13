@@ -21,11 +21,13 @@ const UserFolderTabsComponents: FC = () => {
   const [activeSkill, setActiveSkill] = useState<string[]>([]);
 
   /** Пользователи с выбранным скиллом. */
-  const { users, isLoading: isLoadingUsers, getUsers } = useUsersState();
+  const { users, isLoading: isLoadingUsers } = useUsersState({ page: 1, count: 8, skillIds: activeSkill });
 
   useEffect(() => {
-    getUsers(activeSkill);
-  }, [activeSkill]);
+    if (skills) {
+      setActiveSkill([skills[0].key]);
+    }
+  }, [skills]);
 
   /**
    * Ф-ция маппинга Skill в Tab.

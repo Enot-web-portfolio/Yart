@@ -15,6 +15,7 @@ export const App: FC = () => (
       theme={{
         token: {
           fontSize: 25,
+          fontFamily: 'Montserrat, sans-serif',
         },
       }}>
       <Suspense fallback={<Spin/>}>
