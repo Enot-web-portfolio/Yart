@@ -3,7 +3,6 @@ import React, { FC, useRef, useState } from 'react';
 import { Upload } from 'antd';
 import { UploadFile } from 'antd/es/upload/interface';
 import { toast } from 'react-toastify';
-import { PlusOutlined } from '@ant-design/icons';
 
 import { CrossIcon } from '../../../../../../../components/Icons';
 
@@ -94,7 +93,7 @@ const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
           </div>
         </div> :
         <div className={`${classes['avatar-upload__desc']}`}>
-          <PlusOutlined rev/>
+          <CrossIcon className={`${classes['avatar-upload__add_icon']}`}/>
           <p>Загрузи аватарку<br/> (jpg или png)</p>
         </div>}
     </Upload>

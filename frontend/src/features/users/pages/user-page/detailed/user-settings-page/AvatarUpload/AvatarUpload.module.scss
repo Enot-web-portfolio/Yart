@@ -35,5 +35,12 @@
 
   .avatar-upload__desc {
     font-size: var(--micro-text-fs);
+
+    .avatar-upload__add_icon{
+      transform: rotate(45deg);
+      width: var(--icon-small);
+      height: var(--icon-small);
+      stroke: #000;
+    }
   }
 }
