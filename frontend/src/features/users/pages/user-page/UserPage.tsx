@@ -1,10 +1,10 @@
 import React, { FC, memo } from 'react';
 
-import { Spin, Typography } from 'antd';
+import { Spin, Typography, Button } from 'antd';
 
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 
-import { toUserAbout, toUserSettings, toUserSubscribe, toUserWorks } from '../../../../routes/route-links';
+import { toUserAbout, toUserSettings, toUserSubscribe, toUserWorks, toWorkEditor } from '../../../../routes/route-links';
 
 import { ErrorResult } from '../../../../components/ErrorResult';
 
@@ -62,6 +62,9 @@ const UserPageComponent: FC = () => {
               <Text>Подписчики: {user.userSubscribersCount}</Text>}
         </div>
       </div>
+      {isCurrentUser && <NavLink to={toWorkEditor()}>
+        <Button type={'primary'}>Создать работу</Button>
+      </NavLink>}
 
       <div className={`${classes['user-page__nav']}`}>
         <NavLink to={toUserWorks(id ?? '')}

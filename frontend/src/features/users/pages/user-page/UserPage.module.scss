@@ -68,7 +68,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-s);
-    margin-bottom: var(--space-m);
+    margin: var(--space-m) 0;
 
     .user-page__nav_item{
       padding: var(--space-s) var(--space-m);

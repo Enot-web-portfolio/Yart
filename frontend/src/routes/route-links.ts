@@ -12,4 +12,4 @@ export const toUsers = () => '/users';
 
 /** WORKS. */
 export const toWorks = () => '/works';
-export const toWorkEditor = () => '/works/editor';
+export const toWorkEditor = (id: string | number = 'new') => `/works/${id}/editor`;
