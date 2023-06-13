@@ -1,10 +1,11 @@
-import {User} from 'src/core/models/user';
+import { User } from 'src/core/models/user';
 
-import {UserDto} from '../../dtos/user-dto';
+import { UserDto } from '../../dtos/user-dto';
 
-import {IMapper, IMapperFromDto} from './mappers';
-import {EditorUserDto} from "../../dtos/editor-user-dto";
-import {EditorUser} from "../../models/editor-user";
+import { EditorUserDto } from '../../dtos/editor-user-dto';
+import { EditorUser } from '../../models/editor-user';
+
+import { IMapper, IMapperFromDto } from './mappers';
 
 /** User mapper. */
 class EditorUserMapper implements IMapper<EditorUserDto, EditorUser> {
@@ -18,7 +19,6 @@ class EditorUserMapper implements IMapper<EditorUserDto, EditorUser> {
       userCompany: dto.company || null,
       userAdditionalLinks: dto.additional_links,
       userPhone: dto.phone || null,
-      userIsActive: dto.is_active,
       userFirstName: dto.first_name,
       userLastName: dto.last_name,
       userSelectedMainSkills: dto.selected_main_skills,
@@ -37,7 +37,6 @@ class EditorUserMapper implements IMapper<EditorUserDto, EditorUser> {
       company: model.userCompany ?? '',
       additional_links: model.userAdditionalLinks,
       phone: model.userPhone ?? '',
-      is_active: model.userIsActive,
       first_name: model.userFirstName,
       last_name: model.userLastName,
       selected_main_skills: model.userSelectedMainSkills,

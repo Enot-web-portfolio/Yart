@@ -20,14 +20,6 @@
       grid-gap: var(--space-m);
       margin-bottom: var(--space-m);
 
-      .user-settings__first-name {
-
-      }
-
-      .user-settings__last-name {
-
-      }
-
       .user-settings__email {
         grid-column: 2/4;
         display: flex;
@@ -38,16 +30,8 @@
           color: var(--inactive-element-color);
         }
 
-        .user-settings__email_value {
-
-        }
-
         .user-settings__email_activate {
           color: var(--green-color);
-        }
-
-        .user-settings__email_change {
-
         }
       }
     }
@@ -65,14 +49,6 @@
 
       .user-settings__contact_links {
         grid-column: 1/4;
-      }
-
-      .user-settings__contact_city {
-
-      }
-
-      .user-settings__contact_phone {
-
       }
     }
   }
@@ -122,5 +98,61 @@
 
   .user-settings__submit{
     margin: var(--space-m)
+  }
+}
+
+@media (max-width: 1100px){
+  .user-settings .user-settings__info-settings {
+    .user-settings__main-settings {
+      grid-template-columns: 200px 1fr;
+      grid-template-rows: repeat(3, 1fr);
+
+      .user-settings__email {
+        grid-column: 1/3;
+      }
+    }
+
+    .user-settings__contact{
+      grid-template-columns: repeat(2, 1fr);
+
+      .user-settings__contact_links{
+        grid-column: 1/3;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+
+@media (max-width: 800px){
+  .user-settings .user-settings__info-settings {
+    .user-settings__main-settings {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, 1fr);
+
+      .user-settings__avatar{
+        margin: 0 auto;
+      }
+
+      .user-settings__email {
+        grid-column: 1;
+      }
+    }
+
+    .user-settings__contact{
+      grid-template-columns: 1fr;
+
+      .user-settings__contact_header{
+        grid-column: 1;
+      }
+
+      .user-settings__contact_links{
+        grid-column: 1/2;
+        grid-template-columns: 1fr;
+
+        .links-editor__header{
+          grid-column: 1;
+        }
+      }
+    }
   }
 }

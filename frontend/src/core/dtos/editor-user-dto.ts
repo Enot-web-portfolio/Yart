@@ -36,7 +36,4 @@ export type EditorUserDto = Readonly<{
 
   /** Description user. */
   description: string;
-
-  /** Is active mail. */
-  is_active?: boolean;
 }>

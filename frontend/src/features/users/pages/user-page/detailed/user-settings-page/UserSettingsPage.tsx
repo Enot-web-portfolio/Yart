@@ -96,7 +96,9 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
           <Form>
             <div className={`${classes['user-settings__info-settings']}`}>
               <div className={`${classes['user-settings__main-settings']}`}>
-                <AvatarUpload url={values.userImageUrl} setUrl={url => setFieldValue('userImageUrl', url)}/>
+                <AvatarUpload url={values.userImageUrl as string}
+                  className={`${classes['user-settings__avatar']}`}
+                  setUrl={url => setFieldValue('userImageUrl', url)}/>
                 <InputWithError value={values.userFirstName}
                   placeholder={'Имя'}
                   error={errors.userFirstName}

@@ -14,9 +14,10 @@ import classes from './AvatarUpload.module.scss';
 type Props = Readonly<{
   url: string | null;
   setUrl: (url: string | null) => void;
+  className: string;
 }>;
 
-const AvatarUploadComponent: FC<Props> = ({ url, setUrl }) => {
+const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
   const [avatar, setAvatar] = useState<File | null>(null);
 
   /** Accept format for cover. */
@@ -60,7 +61,7 @@ const AvatarUploadComponent: FC<Props> = ({ url, setUrl }) => {
       name="avatar"
       accept={accept.current.reduce((prev, next) => prev += `.${next}, `, '')}
       listType="picture-card"
-      className={`${classes['avatar-upload']}`}
+      className={`${classes['avatar-upload']} ${className}`}
       showUploadList={false}
       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       beforeUpload={beforeUpload}

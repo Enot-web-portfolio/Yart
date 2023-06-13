@@ -5,6 +5,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-s);
+    flex-wrap: wrap;
 
     .email-editor__info_label {
       color: var(--inactive-element-color);
