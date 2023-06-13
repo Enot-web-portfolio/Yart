@@ -51,6 +51,15 @@ export namespace UsersApi {
   }
 
   /**
+   * Activation email resend.
+   * @param email - Почта для подтверждения.
+   */
+  export async function postActivationResend(email: string) {
+    const url = `${CONFIG.apiUrl}/activation/resend-activation/`;
+    await http.post(url, { email });
+  }
+
+  /**
    * Get current user.
    * @param id - Id user.
    */

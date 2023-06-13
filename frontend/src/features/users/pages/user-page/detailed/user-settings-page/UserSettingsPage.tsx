@@ -30,7 +30,7 @@ import { AvatarUpload } from './AvatarUpload';
 import { validationSchema } from './validationSchema';
 import { EmailEditor } from './EmailEditor';
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 const { TextArea } = Input;
 
@@ -63,14 +63,18 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
   }, [editorUser]);
 
   const submit = async(user: EditorUser) => {
-    if (currentUser === null) {
+    if (currentUser === null || editorUser === null) {
       return;
     }
     try {
       const parsedLinks = links.map(link => link.trim()).filter(link => link.length > 0);
       setLinks(parsedLinks.length > 0 ? parsedLinks : ['']);
       await UsersService.postUserEdit(currentUser.userId, { ...user, userAdditionalLinks: parsedLinks });
+      if (editorUser.userEmail !== user.userEmail) {
+        await UsersService.postActivationResend(user.userEmail);
+      }
       await updateCurrentUser();
+
       updateUser?.();
       toast.success('Данные сохранены');
     } catch (error: unknown) {
@@ -142,9 +146,9 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
               </div>
               <div className={`${classes['user-settings__secondary_skills']}`}>
                 <Text className={`${classes['user-settings__secondary-skills_header']}`}>
-                Ключевые навыки
+                  Ключевые навыки
                   <Text className={`${classes['user-settings__secondary-skills_header_max']}`}>(макс 20)</Text>
-                :
+                  :
                 </Text>
                 <Select options={secondarySkills}
                   onChange={(value: string[]) => setFieldValue('userSelectedSecondarySkills', value)}

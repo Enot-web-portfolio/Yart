@@ -55,6 +55,21 @@ export namespace UsersService {
   }
 
   /**
+   * Activation email resend.
+   * @param email - Почта для подтверждения.
+   */
+  export async function postActivationResend(email: string) {
+    try {
+      await UsersApi.postActivationResend(email);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
    * Post user edit.
    * @param id - User id.
    * @param user
