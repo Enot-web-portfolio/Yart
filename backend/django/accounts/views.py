@@ -145,7 +145,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def edit_post(self, request, *args, **kwargs):
         if request.user.id and kwargs['id'] == request.user.id:
             data = request.data
-            image_file = base64.b64decode(data['image_url'])
+            image_file = data['image_url']
             if image_file != "" and image_file is not None:
                 session = boto3.session.Session()
                 s3 = session.client(
