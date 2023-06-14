@@ -7,11 +7,10 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action, permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
-
 import accounts.models
 from backend import settings
-from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer, SecondarySkillsSerializer
-from .models import UserSubscribtions, MainSkillsType, SecondarySkillsType
+from .serializers import *
+from .models import *
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserEditSerializer
 
     def get_permissions(self):
-        if self.action == 'edit_get' or self.action == 'edit_post':
+        if self.action == 'edit_get' or self.action == 'edit_post' or self.action == 'avatar_upload':
             self.permission_classes = (IsAuthenticated,)
         else:
             self.permission_classes = (AllowAny,)
@@ -67,7 +66,6 @@ class UserViewSet(viewsets.ModelViewSet):
         queue = []
         query = []
         search = str(request.GET.get("search", '')).strip()
-        paginator = Paginator(queue, int(request.GET.get("count", 10)))
         if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
             potential_query = List.objects.get(id=request.user.id)
@@ -145,19 +143,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def edit_post(self, request, *args, **kwargs):
         if request.user.id and kwargs['id'] == request.user.id:
             data = request.data
-            image_file = data['image_url']
-            if image_file != "" and image_file is not None:
-                session = boto3.session.Session()
-                s3 = session.client(
-                    service_name='s3',
-                    endpoint_url='https://hb.bizmrg.com',
-                    aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                )
-                id = uuid.uuid4()
-                key = f'useravatar_{kwargs["id"]}_{id}.png'
-                s3.put_object(Body=image_file, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/users/{kwargs["id"]}/{key}')
-                data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
             serializer = self.serializer_class(data=data, partial=True)
             if serializer.is_valid():
                 serializer.update(instance=request.user, validated_data=data)
@@ -166,6 +151,25 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def avatar_upload(self, request, *args, **kwargs):
+        data = request.data
+        img = data['file']
+        session = boto3.session.Session()
+        s3 = session.client(
+            service_name='s3',
+            endpoint_url='https://hb.bizmrg.com',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        )
+        id = uuid.uuid4()
+        key = f'useravatar_{request.user.id}_{id}.png'
+        s3.put_object(Body=img, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/users/{request.user.id}/{key}')
+        image_url = f'https://cloud.enotwebstudio.ru/media/users/{request.user.id}/{key}'
+        userFile = UserFiles
+        userFile.objects.create(file=image_url)
+        return Response(image_url)
 
 
 class SubscribtionViewSet(viewsets.ViewSet):

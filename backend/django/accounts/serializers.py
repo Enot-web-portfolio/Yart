@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import MainSkillsType, SecondarySkillsType
+from .models import MainSkillsType, SecondarySkillsType, UserFiles
 
 User = get_user_model()
 
@@ -77,9 +77,15 @@ class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainSkillsType
         fields = '__all__'
-        
-        
+
+
 class SecondarySkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SecondarySkillsType
         fields = ('id', 'name')
+
+
+class UserFilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFiles
+        fields = ('file',)
