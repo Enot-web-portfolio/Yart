@@ -201,8 +201,8 @@ class WorksViewSet(viewsets.ViewSet):
         )
         id = uuid.uuid4()
         key = f'worksfile_{id}.png'
-        s3.put_object(Body=img, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/user/{request.user.id}/works/{key}')
-        image_url = f'https://cloud.enotwebstudio.ru/media/user/{request.user.id}/works/{key}'
+        s3.put_object(Body=img, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/users/{request.user.id}/works/{key}')
+        image_url = f'https://cloud.enotwebstudio.ru/media/users/{request.user.id}/works/{key}'
         userFile = WorksFiles
         userFile.objects.create(file=image_url)
         return Response(image_url)
