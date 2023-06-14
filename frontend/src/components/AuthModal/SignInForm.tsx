@@ -1,4 +1,4 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo } from 'react';
 import { Form, Formik, ErrorMessage } from 'formik';
 import { Typography, Button, Input } from 'antd';
 
@@ -10,7 +10,7 @@ import { initialSignInState, SignInSchema } from './config';
 const { Text } = Typography;
 
 const SignInFormComponent: FC = () => {
-  const { login } = useAuthState();
+  const { login, isLoading } = useAuthState();
 
   return (
     <Formik initialValues={initialSignInState}
@@ -30,12 +30,13 @@ const SignInFormComponent: FC = () => {
             <div className={`${classes['auth-modal__form_field']}`}>
               <Input value={values.password}
                 prefix={'Пароль:'}
+                type={'password'}
                 onChange={event => setFieldValue('password', event.target.value)}/>
               <Text type={'warning'} className={`${classes['auth-modal__form_field__error']}`}>
                 <ErrorMessage name={'password'}/>
               </Text>
             </div>
-            <Button type={'primary'} htmlType={'submit'}>За работу</Button>
+            <Button type={'primary'} htmlType={'submit'} loading={isLoading} disabled={isLoading}>За работу</Button>
           </Form>
         )}
     </Formik>);

@@ -43,7 +43,8 @@ const HeaderComponent: FC = () => {
                }
                openAuthModal();
              }}>
-          <img src={'/src/assets/icons/user.svg'} alt="add work" className={`${classes['header__work-btn']}`}/>
+          <div style={{ backgroundImage: `url('${user?.userImageUrl ?? '/src/assets/icons/user.svg'}')` }}
+            className={`${classes['header__user-img']} ${user?.userImageUrl ? '' : classes.no_avatar}`}/>
           {user !== null &&
             <div className={`${classes.navbar__user_panel}`}>
               <div className={`${classes.navbar__user_info}`}>
@@ -53,8 +54,8 @@ const HeaderComponent: FC = () => {
                 </NavLink>
                 <Button type={'link'} onClick={logout} className={`${classes.navbar__user_info__btn} ${classes.navbar__user_info__btn_logout}`}>Выйти</Button>
               </div>
-              <img src={user.userImageUrl ?? '/src/assets/icons/user.svg'} alt="add work"
-                className={`${classes.navbar__user_info__img}`}/>
+              <div style={{ backgroundImage: `url('${user.userImageUrl ?? '/src/assets/icons/user.svg'}')` }}
+                className={`${classes.navbar__user_info__img} ${classes['header__user-img']} ${user.userImageUrl ? '' : classes.no_avatar}`}/>
             </div>}
         </div>
       </nav>

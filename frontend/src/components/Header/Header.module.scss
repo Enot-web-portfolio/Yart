@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-s);
+  padding: var(--space-m);
   background-color: #fff;
   width: 100%;
   z-index: 10;
@@ -53,7 +53,25 @@
     }
 
     .navbar__user{
+      --avatar-size: calc(var(--icon-large) + 2 *var(--space-s));
+
       position: relative;
+      padding:0;
+
+      .header__user-img{
+        width: var(--avatar-size);
+        height:  var(--avatar-size);
+        border-radius: var(--border-radius-m);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+
+        &.no_avatar{
+          margin: var(--space-s);
+          width: var(--icon-large);
+          height:  var(--icon-large);
+        }
+      }
 
       .navbar__user_panel {
         opacity: 0;
@@ -63,13 +81,13 @@
         background-color: #fff;
         box-shadow: var(--box-shadow);
         border-radius: var(--border-radius-s);
-        padding: var(--space-s);
-        right: -1px;
-        top:-1px;
-        grid-template-columns: 1fr var(--icon-large);
+        right: calc(-1 * var(--space-s));
+        top: calc(-1 * var(--space-s));
+        grid-template-columns: 1fr var(--avatar-size);
         grid-gap: var(--space-l);
         max-width: 500px;
         min-width: 300px;
+        padding: var(--space-s);
 
         .navbar__user_info {
           display: flex;
@@ -92,9 +110,10 @@
         }
 
         .navbar__user_info__img{
-          margin:1px -1px;
-          height: var(--icon-large);
-          width: var(--icon-large);
+          margin:-1px;
+          border: 1px solid var(--secondary-text-color);
+          width: calc(var(--avatar-size) + 2px);
+          height: calc(var(--avatar-size) + 2px);
         }
       }
 
