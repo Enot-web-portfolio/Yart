@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-import { toUser, toUserAbout, toUserSettings, toUserSubscribe, toUserWorks } from '../../routes/route-links';
+import { toUser, toUserAbout, toUsers, toUserSettings, toUserSubscribe, toUserWorks } from '../../routes/route-links';
 
 const UsersPage = lazy(() => import('./pages/users-page').then(module => ({ default: module.UsersPage })));
 const UserPage = lazy(() => import('./pages/user-page').then(module => ({ default: module.UserPage })));
@@ -12,7 +12,7 @@ const UserWorksPage = lazy(() => import('./pages/user-page/detailed/user-works-p
 
 export const usersRoutes: RouteObject[] = [
   {
-    path: '/users',
+    path: toUsers(),
     element: <UsersPage/>,
   },
   {

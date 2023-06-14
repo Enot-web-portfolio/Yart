@@ -2,6 +2,8 @@ import { isApiError } from '../utils/axios-error-guard';
 
 import { Work } from '../models/work';
 
+import { EditingWork } from '../models/editing-work';
+
 import { AppErrorMapper } from './mappers/appErrorMapper';
 import { WorksApi } from './api/works-api';
 
@@ -50,6 +52,66 @@ export namespace WorksService {
   export async function postWorkUnlike(workId: number, userId: number) {
     try {
       await WorksApi.postWorkUnlike(workId, userId);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /** Get create work.*/
+  export async function getWorkCreate(): Promise<EditingWork> {
+    try {
+      const data = await WorksApi.getWorkCreate();
+      return data;
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Post create work.
+   * @param work - Editing work data.
+   */
+  export async function postWorkCreate(work: EditingWork) {
+    try {
+      await WorksApi.postWorkCreate(work);
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get edit work.
+   * @param id - Work id.
+   */
+  export async function getWorkEdit(id: number | string): Promise<EditingWork> {
+    try {
+      const data = await WorksApi.getWorkEdit(id);
+      return data;
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Post create work.
+   * @param work - Editing work data.
+   * @param id - Work id.
+   */
+  export async function postWorkEdit(work: EditingWork, id: number | string) {
+    try {
+      await WorksApi.postWorkEdit(work, id);
     } catch (error: unknown) {
       if (isApiError(error)) {
         throw AppErrorMapper.fromDto(error);

@@ -3,6 +3,11 @@ import { WorkDto } from '../../dtos/work-dto';
 import { workMapper } from '../mappers/workMapper';
 import { CONFIG } from '../config';
 import { http } from '../http';
+import { isApiError } from '../../utils/axios-error-guard';
+import { AppErrorMapper } from '../mappers/appErrorMapper';
+import { EditingWorkDto } from '../../dtos/editing-work-dto';
+import { EditingWork } from '../../models/editing-work';
+import { editingWorkMapper } from '../mappers/editingWorkMapper';
 
 export namespace WorksApi {
 
@@ -37,5 +42,37 @@ export namespace WorksApi {
    */
   export async function postWorkUnlike(workId: number, userId: number) {
     await http.post(`${CONFIG.apiUrl}/works/${workId}/${userId}/unlike/`);
+  }
+
+  /** Get create work.*/
+  export async function getWorkCreate(): Promise<EditingWork> {
+    const { data } = await http.get<EditingWorkDto>(`${CONFIG.apiUrl}/works/create`);
+    return editingWorkMapper.fromDto(data);
+  }
+
+  /**
+   * Post create work.
+   * @param work - Editing work data.
+   */
+  export async function postWorkCreate(work: EditingWork) {
+    await http.post(`${CONFIG.apiUrl}/works/create`, editingWorkMapper.toDto(work));
+  }
+
+  /**
+   * Get edit work.
+   * @param id - Work id.
+   */
+  export async function getWorkEdit(id: number | string): Promise<EditingWork> {
+    const { data } = await http.get<EditingWorkDto>(`${CONFIG.apiUrl}/works/${id}/edit`);
+    return editingWorkMapper.fromDto(data);
+  }
+
+  /**
+   * Post edit work.
+   * @param work - Editing work data.
+   * @param id - Work id.
+   */
+  export async function postWorkEdit(work: EditingWork, id: number | string) {
+    await http.post(`${CONFIG.apiUrl}/works/${id}/edit`, editingWorkMapper.toDto(work));
   }
 }

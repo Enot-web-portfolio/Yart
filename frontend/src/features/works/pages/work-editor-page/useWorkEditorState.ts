@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
 import { WorksService } from '../../../../core/services/works-service';
+import { EditingWork } from '../../../../core/models/editing-work';
 
 export const useWorkEditorState = () => {
 
@@ -11,7 +12,7 @@ export const useWorkEditorState = () => {
   const { id } = useParams<{ id: string; }>();
 
   /** Редактируемая работа. */
-  const [work, setWork] = useState(null);
+  const [work, setWork] = useState<EditingWork | null>(null);
 
   /** Загружаются ли данные работы. */
   const [isLoading, setIsLoading] = useState(true);
@@ -29,8 +30,8 @@ export const useWorkEditorState = () => {
   /** Ф-ция получения данных редактируемой работы. */
   async function onDataGet() {
     try {
-      const { data } = await WorksService;
-      setWork(data);
+      const workData = id === 'new' ? await WorksService.getWorkCreate() : await WorksService.getWorkEdit(id ?? '');
+      setWork(workData);
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
     } finally {
@@ -40,9 +41,12 @@ export const useWorkEditorState = () => {
 
   /** Ф-ция создания работы. */
   async function onWorkCreate() {
+    if (work === null) {
+      return;
+    }
     try {
       setIsSaving(true);
-      await WorksService;
+      await WorksService.postWorkCreate(work);
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
     } finally {
@@ -52,9 +56,12 @@ export const useWorkEditorState = () => {
 
   /** Ф-ция редактирования работы. */
   async function onWorkEdit() {
+    if (work === null) {
+      return;
+    }
     try {
       setIsSaving(true);
-      await WorksService;
+      await WorksService.postWorkEdit(work, id ?? '');
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
     } finally {
