@@ -16,7 +16,7 @@ import { SignUpForm } from './SignUpForm';
 const { Link, Text } = Typography;
 
 const AuthModalComponent: FC = () => {
-  const { isOpenAuth, closeAuthModal } = useAuthState();
+  const { isOpenAuth, closeAuthModal, isUserAuthorized } = useAuthState();
   const [authType, setAuthType] = useState(AuthType.SignIn);
   const authModalRef = useRef<HTMLDivElement>(null);
   const { setIsActive } = useModalActivityState([authModalRef.current], closeAuthModal);
@@ -24,6 +24,10 @@ const AuthModalComponent: FC = () => {
   useEffect(() => {
      setIsActive(isOpenAuth);
   }, [isOpenAuth]);
+
+  useEffect(() => {
+    isUserAuthorized && setIsActive(false);
+  }, [isUserAuthorized]);
 
   const toggleAuthType = () => {
     setAuthType(curAuthType =>
