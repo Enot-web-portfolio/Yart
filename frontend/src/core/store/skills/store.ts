@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
-import {SkillsService} from "../../services/skills-service";
+import { SkillsService } from '../../services/skills-service';
 
-import { Skill} from "../../models/skill";
+import { Skill } from '../../models/skill';
 
 import { AppError } from '../../models/app-error';
 
