@@ -1,0 +1,18 @@
+.activate-page{
+  flex: 1;
+  background-color: var(--background-color);
+  padding: var(--space-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .activate-page__block{
+    padding: var(--space-m);
+    border-radius: var(--border-radius-s);
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    flex-direction: column;
+  }
+}
