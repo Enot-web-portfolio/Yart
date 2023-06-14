@@ -16,17 +16,14 @@ type Props = Readonly<{
   url: string | null;
 
   /** Ф-ция сохранения ссылки. */
-  setUrl: (url: string | null) => void;
+  setFile: (file: File | null) => void;
 
   /** Класс для редактора аватарки. */
   className: string;
 }>;
 
 /** Компонент Редактор аватарки Пользователя. */
-const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
-
-  /** Файл аватарки. */
-  const [avatar, setAvatar] = useState<File | null>(null);
+const AvatarUploadComponent: FC<Props> = ({ url, setFile, className }) => {
 
   /** Доступные форматы аватарки. */
   const accept = useRef(['jpg', 'png', 'webp']);
@@ -35,12 +32,11 @@ const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
    * Ф-ция загрузки аватарки.
    * @param file
    */
-  const uploadImage = (file: UploadFile): string | null => {
+  const uploadImage = (file: UploadFile) => {
     if (file.originFileObj === undefined) {
       return null;
     }
-    setAvatar(file.originFileObj || null);
-    return URL.createObjectURL(file.originFileObj as Blob);
+    setFile(file.originFileObj || null);
   };
 
   /**
@@ -78,7 +74,7 @@ const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
       showUploadList={false}
       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       beforeUpload={beforeUpload}
-      onChange={({ file }) => setUrl(uploadImage(file))}
+      onChange={({ file }) => uploadImage(file)}
     >
       {url ?
         <div className={`${classes['avatar-upload__file']}`}>
@@ -87,8 +83,7 @@ const AvatarUploadComponent: FC<Props> = ({ url, setUrl, className }) => {
             <CrossIcon className={`${classes['avatar-upload__delete_icon']}`}
               onClick={e => {
                          e.stopPropagation();
-                         setAvatar(null);
-                         setUrl(null);
+                         setFile(null);
                        }}/>
           </div>
         </div> :

@@ -24,5 +24,6 @@ urlpatterns = [
          name="reset_password_confirm"),
     path("reset/reset-email", UserViewSet.as_view({"post": "reset_username"}), name="reset_email"),
     path("reset/reset-email-confirm/<str:uid>/<str:token>", UserViewSet.as_view({"post": "reset_username_confirm"}), name="reset_email_confirm"),
+    path("files/avatar/upload", views.UserViewSet.as_view({"post": "avatar_upload"})),
 ]
 

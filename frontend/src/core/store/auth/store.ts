@@ -34,6 +34,7 @@ export const useAuthStore = create<AuthState & AuthActions>(set => ({
     try {
       set(() => ({ isLoading: true }));
       await AuthService.signUp(signUpData);
+      await AuthService.login({ email: signUpData.email, password: signUpData.password });
       set(() => ({
         isUserAuthorized: true,
         error: null,

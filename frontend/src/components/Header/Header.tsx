@@ -1,5 +1,5 @@
 import { FC, memo, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { Button, Typography } from 'antd';
 
@@ -16,6 +16,7 @@ const { Text } = Typography;
 const HeaderComponent: FC = () => {
   const { openAuthModal, isUserAuthorized, authBySecret, logout } = useAuthState();
   const user = useCurrentUserStore(store => store.user);
+  const navigator = useNavigate();
 
   useEffect(() => {
     authBySecret();
@@ -23,7 +24,9 @@ const HeaderComponent: FC = () => {
 
   return (
     <header className={`${classes.header}`} id={'header'}>
-      <img src="/src/assets/logo.svg" alt="Yart - portfolio" className={`${classes.header__logo}`}/>
+      <img src="/src/assets/logo.svg" alt="Yart - portfolio"
+        className={`${classes.header__logo}`}
+        onClick={() => navigator(toWorks())}/>
       <nav className={`${classes.navbar}`}>
         <NavLink to={toWorkEditor()} className={`${classes.navbar__group} ${classes.navbar__element}`}>
           <img src="/src/assets/icons/plus.svg" alt="add work" className={`${classes['header__work-btn']}`}/>
@@ -40,7 +43,8 @@ const HeaderComponent: FC = () => {
                }
                openAuthModal();
              }}>
-          <img src={'/src/assets/icons/user.svg'} alt="add work" className={`${classes['header__work-btn']}`}/>
+          <div style={{ backgroundImage: `url('${user?.userImageUrl ?? '/src/assets/icons/user.svg'}')` }}
+            className={`${classes['header__user-img']} ${user?.userImageUrl ? '' : classes.no_avatar}`}/>
           {user !== null &&
             <div className={`${classes.navbar__user_panel}`}>
               <div className={`${classes.navbar__user_info}`}>
@@ -50,8 +54,8 @@ const HeaderComponent: FC = () => {
                 </NavLink>
                 <Button type={'link'} onClick={logout} className={`${classes.navbar__user_info__btn} ${classes.navbar__user_info__btn_logout}`}>Выйти</Button>
               </div>
-              <img src={user.userImageUrl ?? '/src/assets/icons/user.svg'} alt="add work"
-                className={`${classes.navbar__user_info__img}`}/>
+              <div style={{ backgroundImage: `url('${user.userImageUrl ?? '/src/assets/icons/user.svg'}')` }}
+                className={`${classes.navbar__user_info__img} ${classes['header__user-img']} ${user.userImageUrl ? '' : classes.no_avatar}`}/>
             </div>}
         </div>
       </nav>

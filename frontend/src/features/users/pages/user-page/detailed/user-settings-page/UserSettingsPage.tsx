@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useState } from 'react';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
 
 import { ErrorMessage, Form, Formik } from 'formik';
 import { Button, Input, Spin, Typography } from 'antd';
@@ -21,6 +21,8 @@ import { useSeparatedSecondarySkills } from '../../../../../../core/services/hoo
 import { useCurrentUserStore } from '../../../../../../core/store/user/store';
 
 import { UsersService } from '../../../../../../core/services/users-service';
+
+import { FilesService } from '../../../../../../core/services/files-service';
 
 import { useEditorUserState } from './useEditorUserState';
 
@@ -54,6 +56,12 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
   /** Дополнительные ссылки пользователя. */
   const [links, setLinks] = useState<string[]>(['']);
 
+  /** Файл аватарки. */
+  const [file, setFile] = useState<File | null>(null);
+
+  /** Ссылка на файл. */
+  const fileUrl = useRef<string | null>(null);
+
   /** Категории для выбора в панели. */
   const { skills, isLoading: isSkillLoading } = useSeparatedSkills<DefaultOptionType>(skill => ({
     label: skill.name,
@@ -80,10 +88,19 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
     if (currentUser === null || editorUser === null) {
       return;
     }
+    let imageUrl = user.userImageUrl;
+    if (file !== null) {
+      try {
+        imageUrl = await FilesService.postAvatarFile(file);
+      } catch (error: unknown) {
+
+      }
+    }
+
     try {
       const parsedLinks = links.map(link => link.trim()).filter(link => link.length > 0);
       setLinks(parsedLinks.length > 0 ? parsedLinks : ['']);
-      await UsersService.postUserEdit(currentUser.userId, { ...user, userAdditionalLinks: parsedLinks });
+      await UsersService.postUserEdit(currentUser.userId, { ...user, userAdditionalLinks: parsedLinks, userImageUrl: imageUrl });
       if (editorUser.userEmail !== user.userEmail) {
         await UsersService.postActivationResend(user.userEmail);
       }
@@ -93,6 +110,15 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
       toast.success('Данные сохранены');
     } catch (error: unknown) {
       toast.error('Произошла ошибка');
+    }
+  };
+
+  const changeFile = (currFile: File | null) => {
+    setFile(currFile);
+    if (currFile) {
+      fileUrl.current = URL.createObjectURL(currFile);
+    } else {
+      fileUrl.current = null;
     }
   };
 
@@ -109,9 +135,9 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
           <Form>
             <div className={`${classes['user-settings__info-settings']}`}>
               <div className={`${classes['user-settings__main-settings']}`}>
-                <AvatarUpload url={values.userImageUrl as string}
+                <AvatarUpload url={fileUrl.current ?? values.userImageUrl as string}
                   className={`${classes['user-settings__avatar']}`}
-                  setUrl={url => setFieldValue('userImageUrl', url)}/>
+                  setFile={changeFile}/>
                 <InputWithError value={values.userFirstName}
                   placeholder={'Имя'}
                   error={errors.userFirstName}

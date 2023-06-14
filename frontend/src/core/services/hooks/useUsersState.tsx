@@ -10,6 +10,7 @@ type Props = Readonly<{
   skillIds?: string[] | number[];
   search?: string;
   onlySubscriptions?: boolean;
+  isStop?: boolean;
 }>;
 
 export const useUsersState = (props: Props) => {
@@ -18,8 +19,11 @@ export const useUsersState = (props: Props) => {
   const [error, setError] = useState<AppError<ShortUser[]> | null>(null);
 
   useEffect(() => {
-    getUsers();
+    !props.isStop && getUsers();
   }, [props.page, props.count, props.search, props.skillIds, props.onlySubscriptions]);
+
+  useEffect(() => {
+  }, [props.skillIds]);
 
   const getUsers = async() => {
     setIsLoading(true);

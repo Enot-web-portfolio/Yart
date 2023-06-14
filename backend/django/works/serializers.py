@@ -37,7 +37,9 @@ class EditingWorkSerializer(serializers.ModelSerializer):
         model = UserWorks
         fields = (
             'id',
+            'name',
             'image_url',
+            'name',
             'main_skills',
             'tags',
             'open_comments',
@@ -54,6 +56,12 @@ class EditingWorkSerializer(serializers.ModelSerializer):
         instance.file_urls = validated_data.get("fileUrls", instance.file_urls)
         instance.save()
         return instance
+
+
+class CreateWorkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserWorks
+        fields = '__all__'
 
 
 class UserCommentsSerializer(serializers.ModelSerializer):

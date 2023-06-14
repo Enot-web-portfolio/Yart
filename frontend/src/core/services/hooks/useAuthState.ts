@@ -15,6 +15,7 @@ export const useAuthState = () => {
   const logout = useAuthStore(store => store.logout);
   const login = useAuthStore(store => store.login);
   const signUp = useAuthStore(store => store.signUp);
+  const isLoading = useAuthStore(store => store.isLoading);
   const error = useAuthStore(store => store.error);
   const isOpenAuth = useAuthStore(store => store.isOpenAuth);
   const openAuthModal = useAuthStore(store => store.openAuthModal);
@@ -57,5 +58,6 @@ export const useAuthState = () => {
     openAuthModal,
     closeAuthModal,
     authBySecret,
+    isLoading,
   };
 };

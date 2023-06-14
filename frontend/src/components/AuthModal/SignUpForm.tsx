@@ -12,14 +12,14 @@ const { Text } = Typography;
 
 const SignUpFormComponent: FC = () => {
   const [repeatedPasswordError, setRepeatedPassword] = useState<string | null>(null);
-  const { signUp } = useAuthState();
+  const { signUp, isLoading } = useAuthState();
 
   return (
     <Formik initialValues={initialSignUpState}
       validationSchema={SignUpSchema}
       validateOnBlur
       onSubmit={signUp}>{
-        ({ setFieldValue, errors, values, setFieldError }) => (
+        ({ setFieldValue, errors, values }) => (
           <Form className={`${classes['auth-modal__form']}`}>
             <div className={`${classes['auth-modal__form_field']} ${classes['auth-modal__form_field__name']}`}>
               <div>
@@ -50,6 +50,7 @@ const SignUpFormComponent: FC = () => {
             <div className={`${classes['auth-modal__form_field']}`}>
               <Input value={values.password}
                 prefix={'Пароль:'}
+                type={'password'}
                 onChange={event => {
                      setFieldValue('password', event.target.value);
                      if (event.target.value === values.repeatedPassword) {
@@ -65,6 +66,7 @@ const SignUpFormComponent: FC = () => {
             <div className={`${classes['auth-modal__form_field']}`}>
               <Input value={values.repeatedPassword}
                 prefix={'Пароль х2:'}
+                type={'password'}
                 onChange={event => {
                      setFieldValue('repeatedPassword', event.target.value);
                      if (event.target.value === values.password) {
@@ -77,7 +79,7 @@ const SignUpFormComponent: FC = () => {
                 {errors.repeatedPassword ?? repeatedPasswordError}
               </Text>
             </div>
-            <Button type={'primary'} htmlType={'submit'}>За работу</Button>
+            <Button type={'primary'} htmlType={'submit'} loading={isLoading} disabled={isLoading}>За работу</Button>
           </Form>
         )
       }
