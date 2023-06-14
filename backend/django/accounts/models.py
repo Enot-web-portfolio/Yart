@@ -106,3 +106,12 @@ class SecondarySkillsType(models.Model):
 
     def __str__(self):
         return self.name
+
+class UserFiles(models.Model):
+    uploaded_at = models.DateTimeField(default=django.utils.timezone.now)
+    file = models.CharField(max_length=255)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.file
