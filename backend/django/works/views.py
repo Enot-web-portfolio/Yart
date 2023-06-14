@@ -1,15 +1,18 @@
+import datetime
 import json
 import uuid
 import boto3
+import django
 from django.core.paginator import Paginator
-from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from accounts.models import UserSubscribtions
 from backend import settings
-from .models import UserWorks, UserComments, WorksFiles
-from .serializers import WorksShortSerializer, WorksSerializer, WorksLikeSerializer, UserCommentsSerializer, EditingWorkSerializer, WorkFilesSerializer
+from .models import *
+from .serializers import *
 from accounts.models import UserAccount
 
 
@@ -17,7 +20,7 @@ class WorksViewSet(viewsets.ViewSet):
     def get_permissions(self):
         if self.action == "like_work" or self.action == 'unlike_work' or self.action == 'comment_work' \
                 or self.action == 'edit_comment_work' or self.action == 'delete_comment_work' \
-                or self.action == 'edit_work' or self.action == 'work_fileedit':
+                or self.action == 'edit_work':
             self.permission_classes = (IsAuthenticated,)
         else:
             self.permission_classes = (AllowAny,)
@@ -172,38 +175,81 @@ class WorksViewSet(viewsets.ViewSet):
         return Response(id)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
-    def edit_work(self, request, *args, **kwargs):
+    def edit_work_get(self, request, *args, **kwargs):
         Works = UserWorks
-        work = Works.objects.get_or_create(pk=kwargs['id'])
-        User = UserAccount
-        user = User.objects.get(pk=request.user.id)
-        user.works_count += 1
+        work = get_object_or_404(Works, pk=kwargs['id'])
+        return Response(EditingWorkSerializer(work).data)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def edit_work_post(self, request, *args, **kwargs):
+        Works = UserWorks
+        work = get_object_or_404(Works, pk=kwargs['id'])
         serializer = EditingWorkSerializer()
         EditingWorkSerializer.update(self=serializer, instance=work, validated_data=request.data)
         return Response(EditingWorkSerializer(work).data)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
-    def work_fileedit(self, request, *args, **kwargs):
-        response_list = []
-        for i in range(len(json.loads(request.body))):
-            image_file = json.loads(request.body)[i]['file']
-            session = boto3.session.Session()
-            s3 = session.client(
-                service_name='s3',
-                endpoint_url='https://hb.bizmrg.com',
-                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-            )
-            id = uuid.uuid4()
-            key = f'worksfile_{kwargs["id"]}_{id}.'+image_file.rsplit('.', 1)[1].lower()
-            s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/works/{kwargs["id"]}/{key}')
-            workfile = WorksFiles
-            workfile.objects.create(file=f'https://cloud.enotwebstudio.ru/media/works/{kwargs["id"]}/{key}')
-            response_list.append(
-                {
-                    'blockOrder': json.loads(request.body)[i]['blockOrder'],
-                    'fileUrl': f'https://cloud.enotwebstudio.ru/media/works/{kwargs["id"]}/{key}',
-                }
-            )
-        return Response(response_list)
+    def upload_files(self, request, *args, **kwargs):
+        data = request.data
+        img = data['file']
+        session = boto3.session.Session()
+        s3 = session.client(
+            service_name='s3',
+            endpoint_url='https://hb.bizmrg.com',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        )
+        id = uuid.uuid4()
+        key = f'worksfile_{id}.png'
+        s3.put_object(Body=img, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/user/{request.user.id}/works/{key}')
+        image_url = f'https://cloud.enotwebstudio.ru/media/user/{request.user.id}/works/{key}'
+        userFile = WorksFiles
+        userFile.objects.create(file=image_url)
+        return Response(image_url)
 
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def work_create_get(self, request, *args, **kwargs):
+        resp = {
+            "name": '',
+            "image_url": '',
+            "main_skills": [],
+            "tags": [],
+            "open_comments": False,
+            "blocks": [],
+            "file_urls": [],
+        }
+        return Response(resp)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def work_create_post(self, request, *args, **kwargs):
+        data = request.data
+        data["user_first_name"] = request.user.first_name
+        data["user_last_name"] = request.user.last_name
+        data["user_id"] = request.user.id
+        data["user_main_skills"] = request.user.selected_main_skills
+        data["user_image_url"] = request.user.image_url
+        data["likes_count"] = 0
+        data["likes_list"] = []
+        data["start_text"] = ""
+        data["comments"] = []
+        data["date"] = django.utils.timezone.now()
+        work = UserWorks.objects.create(
+            user_first_name=data["user_first_name"],
+            user_last_name=data["user_last_name"],
+            user_id=data["user_id"],
+            user_main_skills=data["user_main_skills"],
+            user_image_url=data["user_image_url"],
+            likes_count=data["likes_count"],
+            likes_list=data["likes_list"],
+            start_text=data["start_text"],
+            comments=data["comments"],
+            date=data["date"],
+            name=data["name"],
+            image_url=data["image_url"],
+            main_skills=data["main_skills"],
+            tags=data["tags"],
+            open_comments=data["open_comments"],
+            blocks=data["blocks"],
+            file_urls=data["file_urls"],
+        )
+        return Response(CreateWorkSerializer(work).data)

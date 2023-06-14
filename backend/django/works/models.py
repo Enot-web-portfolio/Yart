@@ -28,7 +28,7 @@ class UserComments(models.Model):
 
 
 class UserWorks(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user_first_name = models.CharField(max_length=255)
     user_last_name = models.CharField(max_length=255)
     user_id = models.IntegerField()
@@ -43,7 +43,7 @@ class UserWorks(models.Model):
     comments = ArrayField(models.IntegerField(), default=list)
     open_comments = models.BooleanField(default=False)
     blocks = ArrayField(models.IntegerField(), default=list)
-    date = models.DateField(default=django.utils.timezone.now)
+    date = models.DateTimeField(default=django.utils.timezone.now)
     tags = ArrayField(models.CharField(max_length=255), default=list)
     file_urls = ArrayField(models.CharField(max_length=255), default=list)
 
@@ -54,7 +54,7 @@ class UserWorks(models.Model):
 
 
 class WorksFiles(models.Model):
-    uploaded_at = models.DateField(default=django.utils.timezone.now)
+    uploaded_at = models.DateTimeField(default=django.utils.timezone.now)
     file = models.CharField(max_length=255)
 
     objects = models.Manager()

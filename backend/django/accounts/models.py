@@ -1,3 +1,4 @@
+import django
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, UserManager
 from django.contrib.postgres.fields import ArrayField
@@ -49,7 +50,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     company = models.CharField(default='', max_length=255, blank=True)
     subscribers_count = models.IntegerField(default=0, blank=True)
     works_count = models.IntegerField(default=0, blank=True)
-    phone = models.IntegerField(default=0, blank=True)
+    phone = models.CharField(default='', max_length=255, blank=True)
     additional_links = ArrayField(models.CharField(max_length=255, default=''), default=list, blank=True)
     description = models.CharField(max_length=255, default='', blank=True)
 
@@ -85,7 +86,7 @@ class UserSubscribtions(models.Model):
 
 
 class MainSkillsType(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=256)
     background_color = models.CharField(max_length=255)
     font_color = models.CharField(max_length=255)
     checked = models.BooleanField(default=False)
@@ -106,3 +107,13 @@ class SecondarySkillsType(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class UserFiles(models.Model):
+    uploaded_at = models.DateTimeField(default=django.utils.timezone.now)
+    file = models.CharField(max_length=255)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.file

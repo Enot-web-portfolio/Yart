@@ -1,7 +1,7 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import MainSkillsType
+from .models import MainSkillsType, SecondarySkillsType, UserFiles
 
 User = get_user_model()
 
@@ -40,6 +40,7 @@ class UserDetailSerializer(UserSerializer):
                   'description',
                   'selected_secondary_skills',
                   'is_active',
+                  'additional_links',
                   )
 
 
@@ -66,6 +67,9 @@ class UserEditSerializer(UserSerializer):
                   'company',
                   'image_url',
                   'id',
+                  'selected_main_skills',
+                  'selected_secondary_skills',
+                  'description',
                   )
 
 
@@ -73,3 +77,15 @@ class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainSkillsType
         fields = '__all__'
+
+
+class SecondarySkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SecondarySkillsType
+        fields = ('id', 'name')
+
+
+class UserFilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFiles
+        fields = ('file',)

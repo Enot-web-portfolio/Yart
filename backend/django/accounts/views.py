@@ -7,9 +7,10 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action, permission_classes, api_view
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+import accounts.models
 from backend import settings
-from .serializers import UserDetailSerializer, UserShortSerializer, SkillsSerializer, UserEditSerializer
-from .models import UserSubscribtions, MainSkillsType, SecondarySkillsType
+from .serializers import *
+from .models import *
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -18,7 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserEditSerializer
 
     def get_permissions(self):
-        if self.action == 'edit_get' or self.action == 'edit_post':
+        if self.action == 'edit_get' or self.action == 'edit_post' or self.action == 'avatar_upload':
             self.permission_classes = (IsAuthenticated,)
         else:
             self.permission_classes = (AllowAny,)
@@ -28,37 +29,104 @@ class UserViewSet(viewsets.ModelViewSet):
     def user_detail(self, request, *args, **kwargs):
         User = get_user_model()
         self.object = get_object_or_404(User, pk=kwargs["id"])
-        serializer = UserDetailSerializer(self.object)
-        return Response(serializer.data)
+        serializer = UserDetailSerializer(self.object).data
+        skills = []
+        for i in serializer["selected_main_skills"]:
+            skills.append(SkillsSerializer(MainSkillsType.objects.get(id=i)).data["name"])
+        serializer["selected_main_skills"] = skills
+        skills = []
+        for i in serializer["selected_secondary_skills"]:
+            skills.append(SkillsSerializer(SecondarySkillsType.objects.get(id=i)).data["name"])
+        serializer["selected_secondary_skills"] = skills
+        if request.user.id:
+            try:
+                slist = UserSubscribtions.objects.get(id=int(request.user.id))
+                if int(serializer["id"]) in slist.subs_list:
+                    serializer["isSubscribe"] = True
+                else:
+                    serializer["isSubscribe"] = False
+            except:
+                serializer["isSubscribe"] = False
+        if not request.user.id:
+            serializer["isSubscribe"] = False
+        return Response(serializer)
+
+    @action(permission_classes=(AllowAny,), detail=True)
+    def user_me(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            serializer = UserDetailSerializer(request.user)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
     @action(permission_classes=(AllowAny,), detail=True, url_name='user_search')
     def user_search(self, request, *args, **kwargs):
         User = get_user_model()
         potential_query = []
+        queue = []
         query = []
         search = str(request.GET.get("search", '')).strip()
         if request.GET.get("onlySubscriptions", 'false') == 'true' and request.user.id:
             List = UserSubscribtions
-            potential_query = List.objects.get(pk=request.user.id, first_name__contains=search)
-        if request.GET.get("mainSkills", None) is not None:
-            if potential_query:
-                for i in potential_query.subs_list:
+            potential_query = List.objects.get(id=request.user.id)
+            for i in potential_query.subs_list:
+                try:
+                    queue.append(UserShortSerializer(User.objects.get(id=int(i), first_name__icontains=search)).data)
+                except:
+                    pass
+            paginator = Paginator(queue, int(request.GET.get("count", 10)))
+        if request.GET.get("mainSkills", "") != "":
+            if queue:
+                obj = []
+                for i in queue:
                     try:
-                        query.append(UserShortSerializer(User.objects.get(
-                            pk=int(i), selected_main_skills=request.GET.get("mainSkills", []))).data)
+                        for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
+                            user = User.objects.get(
+                                    pk=int(i["id"]), selected_main_skills__contains=[item], first_name__icontains=search)
+                            if type(user) is accounts.models.UserAccount:
+                                if user.id not in obj:
+                                    query.append(UserShortSerializer(user).data)
+                                    obj.append(user.id)
+                            else:
+                                for j in user:
+                                    if j.id not in obj:
+                                        query.append(UserShortSerializer(user).data)
+                                        obj.append(j.id)
+                        queue = []
                     except:
                         pass
+                paginator = Paginator(query, int(request.GET.get("count", 10)))
             else:
-                potential_query = User.objects.filter(
-                    selected_main_skills__contains=request.GET.get("mainSkills", [])[1:-1].split(', '),
-                    first_name__contains=search)
-                for i in potential_query:
-                    query.append(UserShortSerializer(i).data)
+                obj = []
+                for item in list(map(int, request.GET.get("mainSkills", "").split(","))):
+                    user = User.objects.filter(
+                            selected_main_skills__contains=[item],
+                            first_name__icontains=search)
+                    for j in user:
+                        if j.id not in obj:
+                            query.append(UserShortSerializer(j).data)
+                            obj.append(j.id)
+                paginator = Paginator(query, int(request.GET.get("count", 10)))
         elif request.GET.get("onlySubscriptions", 'false') == 'false':
-            potential_query = User.objects.filter(first_name__contains=search)
+            potential_query = User.objects.filter(first_name__icontains=search)
             for i in potential_query:
                 query.append(UserShortSerializer(i).data)
-        paginator = Paginator(query, int(request.GET.get("count", 10)))
+            paginator = Paginator(query, int(request.GET.get("count", 10)))
+        if request.user.id:
+            try:
+                slist = UserSubscribtions.objects.get(id=int(request.user.id))
+                for user in query:
+                    if int(user["id"]) in slist.subs_list:
+                        user["isSubscribe"] = True
+                    else:
+                        user["isSubscribe"] = False
+            except:
+                for user in query:
+                    user["isSubscribe"] = False
+        if not request.user.id:
+            for user in query:
+                user["isSubscribe"] = False
+
         if int(request.GET.get("page", 1)) not in paginator.page_range:
             paginator = []
             return Response(paginator)
@@ -73,8 +141,21 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_post(self, request, *args, **kwargs):
+        if request.user.id and kwargs['id'] == request.user.id:
+            data = request.data
+            serializer = self.serializer_class(data=data, partial=True)
+            if serializer.is_valid():
+                serializer.update(instance=request.user, validated_data=data)
+                return Response(status=status.HTTP_201_CREATED)
+            else:
+                return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        else:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def avatar_upload(self, request, *args, **kwargs):
         data = request.data
-        image_file = data['image_url']
+        img = data['file']
         session = boto3.session.Session()
         s3 = session.client(
             service_name='s3',
@@ -83,15 +164,12 @@ class UserViewSet(viewsets.ModelViewSet):
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
         )
         id = uuid.uuid4()
-        key = f'useravatar_{kwargs["id"]}_{id}.' + image_file.rsplit('.', 1)[1].lower()
-        s3.upload_file(image_file, settings.AWS_STORAGE_BUCKET_NAME, f'media/users/{kwargs["id"]}/{key}')
-        data['image_url'] = f'https://cloud.enotwebstudio.ru/media/users/{kwargs["id"]}/{key}'
-        serializer = self.serializer_class(data=data, partial=True)
-        if serializer.is_valid():
-            serializer.update(instance=request.user, validated_data=data)
-            return Response(status=status.HTTP_201_CREATED)
-        else:
-            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        key = f'useravatar_{request.user.id}_{id}.png'
+        s3.put_object(Body=img, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/users/{request.user.id}/{key}')
+        image_url = f'https://cloud.enotwebstudio.ru/media/users/{request.user.id}/{key}'
+        userFile = UserFiles
+        userFile.objects.create(file=image_url)
+        return Response(image_url)
 
 
 class SubscribtionViewSet(viewsets.ViewSet):
@@ -159,7 +237,7 @@ class SkillsViewSet(viewsets.ViewSet):
         skills_list = []
         for i in range(SecondarySkillsType.objects.all().count()):
             try:
-                skill = SkillsSerializer(List.objects.get(pk=i))
+                skill = SecondarySkillsSerializer(List.objects.get(pk=i))
             except SecondarySkillsType.DoesNotExist:
                 continue
             skills_list.append(skill.data)
