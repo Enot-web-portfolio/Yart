@@ -2,6 +2,7 @@ import json
 import uuid
 import boto3
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -172,12 +173,15 @@ class WorksViewSet(viewsets.ViewSet):
         return Response(id)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
-    def edit_work(self, request, *args, **kwargs):
+    def edit_work_get(self, request, *args, **kwargs):
         Works = UserWorks
-        work = Works.objects.get_or_create(pk=kwargs['id'])
-        User = UserAccount
-        user = User.objects.get(pk=request.user.id)
-        user.works_count += 1
+        work = get_object_or_404(Works, pk=kwargs['id'])
+        return Response(EditingWorkSerializer(work).data)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def edit_work_post(self, request, *args, **kwargs):
+        Works = UserWorks
+        work = get_object_or_404(Works, pk=kwargs['id'])
         serializer = EditingWorkSerializer()
         EditingWorkSerializer.update(self=serializer, instance=work, validated_data=request.data)
         return Response(EditingWorkSerializer(work).data)
