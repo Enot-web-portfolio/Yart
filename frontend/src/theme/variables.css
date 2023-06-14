@@ -10,12 +10,18 @@
   --small-text-fs: calc(var(--root-font-size) * 0.8);
   --micro-text-fs: calc(var(--root-font-size) * 0.6);
 
+  /* Font weight */
+  --light-fw: 300;
+  --regular-fw: 400;
+  --medium-fw: 500;
+
   /* Border Radius */
   --border-radius-m: 50px;
   --border-radius-s: 25px;
 
   /* Colors */
   --pear-green-color: #c9e82d;
+  --green-color: #288200;
   --yellow-color: #facd08;
   --orange-color: #fda72e;
   --pink-color: #fe5ec8;
@@ -42,4 +48,13 @@
   /* Special */
   --box-shadow: 0 0 11px rgba(65 96 234 / 30%);
   --header-height: calc(var(--space-s) * 4 + var(--middle-text-fs) * var(--line-height));
+
+  /* Background color */
+  --modal-wrapper-background: rgb(0 0 0 / 30%);
+
+  /* Icons size */
+  --icon-large: 35px;
+  --icon-medium: 30px;
+  --icon-small: 20px;
+  --icon-very-small: 15px;
 }

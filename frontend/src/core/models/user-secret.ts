@@ -2,5 +2,8 @@
 export type UserSecret = Readonly<{
 
   /** Access token. */
-  token: string;
+  access: string;
+
+  /** Refresh token. */
+  refresh: string;
 }>;

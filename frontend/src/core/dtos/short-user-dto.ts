@@ -7,6 +7,9 @@ export type ShortUserDto = Readonly<{
   /** User first name. */
   first_name: string;
 
+  /** Is subscribe. */
+  isSubscribe: boolean;
+
   /** User's avatar url. */
   image_url: string | null;
 

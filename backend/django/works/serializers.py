@@ -39,6 +39,7 @@ class EditingWorkSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'image_url',
+            'name',
             'main_skills',
             'tags',
             'open_comments',

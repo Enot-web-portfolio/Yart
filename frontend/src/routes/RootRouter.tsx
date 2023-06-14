@@ -3,6 +3,7 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { componentsRoutes } from '../features/components/routes';
 import { worksRoutes } from '../features/works/routes';
+import { usersRoutes } from '../features/users/routes';
 
 const routes: RouteObject[] = [
   {
@@ -10,8 +11,9 @@ const routes: RouteObject[] = [
     element: <Navigate to="/works" />,
   },
 
-  // ...componentsRoutes,
+  ...componentsRoutes,
   ...worksRoutes,
+  ...usersRoutes,
 ];
 
 export const RootRouter: FC = () => useRoutes(routes);

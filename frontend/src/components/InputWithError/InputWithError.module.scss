@@ -1,0 +1,13 @@
+.input-with-error {
+  position: relative;
+  margin-bottom: calc(var(--space-s) * 1.5);
+
+  .input-with-error__error {
+    position: absolute;
+    bottom: calc(var(--space-s) * -1.5);
+    width: 100%;
+    left: 0;
+    color: var(--dark-pink-color);
+    font-size: var(--small-text-fs);
+  }
+}

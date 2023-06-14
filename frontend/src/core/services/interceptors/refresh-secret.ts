@@ -14,8 +14,8 @@ export async function refreshSecret(error: AxiosError) {
 
   if (
     secret == null ||
+    error.code === 'ERR_CANCELED' ||
     error.config == null ||
-    !shouldRefreshSecretForUrl(error.config) ||
     (error.response != null && error.response.status !== 401)
   ) {
     throw error;

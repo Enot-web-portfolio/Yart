@@ -1,27 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&family=Montserrat:wght@300;400;500&display=swap");
+
 body {
   margin: 0;
-  font-family: Roboto,
-  -apple-system,
-  BlinkMacSystemFont,
-  "Segoe UI",
-  Oxygen,
-  Ubuntu,
-  Cantarell,
-  "Fira Sans",
-  "Droid Sans",
-  "Helvetica Neue",
-  sans-serif;
+  font-family:
+    Montserrat,
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro,
-  Menlo,
-  Monaco,
-  Consolas,
-  "Courier New",
-  monospace;
+  font-family:
+    source-code-pro,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Courier New",
+    monospace;
 }
 
 * {
@@ -39,4 +44,8 @@ code {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+a {
+  text-decoration: none;
 }

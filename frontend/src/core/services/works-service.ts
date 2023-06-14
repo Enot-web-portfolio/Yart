@@ -13,9 +13,9 @@ export namespace WorksService {
    * @param count - Кол-во работ на странице.
    * @param onlySubscriptions - Работы только людей, на которых подписан.
    * @param userId - Работы пользователя с данным id.
-   * @param mainSkills - Выбранные категории
+   * @param mainSkills - Выбранные категории.
    */
-  export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number, mainSkills?: number[]): Promise<Work[]> {
+  export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number | string, mainSkills?: number[] | string[]): Promise<Work[]> {
     try {
       return await WorksApi.getWorks(page, count, onlySubscriptions, userId, mainSkills);
     } catch (error: unknown) {

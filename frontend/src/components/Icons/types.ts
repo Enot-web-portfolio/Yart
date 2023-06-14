@@ -2,7 +2,7 @@
 export type IconProps = Readonly<{
 
   /** Размер иконки. */
-  size: IconSize;
+  size?: IconSize;
 
   /** Цвет заливки. */
   fill?: string;
@@ -12,6 +12,9 @@ export type IconProps = Readonly<{
 
   /** Класс. */
   className?: string;
+
+  /** Ф-ция клика. */
+  onClick?: (e: React.MouseEvent) => void;
 }>;
 
 /** Размер иконки. */
