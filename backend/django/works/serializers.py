@@ -38,6 +38,7 @@ class EditingWorkSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'image_url',
+            'name',
             'main_skills',
             'tags',
             'open_comments',
