@@ -13,4 +13,5 @@ urlpatterns = [
     path("works/<int:id>/fileedit", views.WorksViewSet.as_view({"post": "work_fileedit"}), name='works'),
     path("works/create", views.WorksViewSet.as_view({"get": "work_create_get", "post": "work_create_post"}), name="works"),
     path("files/work/upload", views.WorksViewSet.as_view({"post": "upload_files"})),
+    path("works/createblock", views.WorksViewSet.as_view({"get": "workblock_create_get", "post": "workblock_create_post"}), name="works"),
 ]
