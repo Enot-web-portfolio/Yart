@@ -134,7 +134,11 @@ class WorksViewSet(viewsets.ViewSet):
     def works_id(self, request, *args, **kwargs):
         Works = UserWorks
         work = Works.objects.get(pk=kwargs["id"])
+        blocks = []
+        for i in work.blocks:
+            blocks.append(WorkBlockSerializer(WorkBlockType.objects.get(id=i)).data)
         serializer = WorksSerializer(work).data
+        serializer['blocks'] = blocks
         if request.user.id is not None and request.user.id in serializer['likes_list']:
             serializer['isLike'] = True
         elif request.user.id is not None and request.user.id not in serializer['likes_list']:
@@ -185,7 +189,18 @@ class WorksViewSet(viewsets.ViewSet):
         Works = UserWorks
         work = get_object_or_404(Works, pk=kwargs['id'])
         serializer = EditingWorkSerializer()
-        EditingWorkSerializer.update(self=serializer, instance=work, validated_data=request.data)
+        data = request.data
+        blocks = []
+        for i in data['blocks']:
+            block = WorkBlockType.objects.create(
+                type=i['type'],
+                image_urls=i['image_urls'],
+                text=i['text'],
+                order=i['order'],
+            )
+            blocks.append(block.id)
+        data['blocks'] = blocks
+        EditingWorkSerializer.update(self=serializer, instance=work, validated_data=data)
         return Response(EditingWorkSerializer(work).data)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
