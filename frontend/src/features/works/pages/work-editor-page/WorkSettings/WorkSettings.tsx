@@ -81,7 +81,10 @@ const WorkSettingsComponent: FC<Props> = props => {
                      <Formik initialValues={props.work}
                        validationSchema={validationSchema}
                        validateOnBlur={true}
-                       onSubmit={work => props.save({ ...work, workBlock: props.work.workBlock }, files)}>
+                       onSubmit={work => {
+                         props.save({ ...work, workBlock: props.work.workBlock }, files);
+                         setIsActive(false);
+                       }}>
                        {({ values, setFieldValue, errors }) => (
                          <Form className={`${classes['work-settings']}`}>
                            <CrossIcon className={`${classes['work-settings__close']}`}

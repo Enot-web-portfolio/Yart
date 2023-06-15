@@ -54,8 +54,10 @@ export const useWorkEditorState = () => {
     try {
       setIsSaving(true);
       await WorksService.postWorkCreate(curWork);
+      toast.success('Работа создана');
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
+      toast.error('Произошла ошибка');
     } finally {
       setIsSaving(false);
     }
@@ -72,8 +74,10 @@ export const useWorkEditorState = () => {
     try {
       setIsSaving(true);
       await WorksService.postWorkEdit(curWork, id ?? '');
+      toast.success('Работа изменена');
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
+      toast.error('Произошла ошибка');
     } finally {
       setIsSaving(false);
     }
