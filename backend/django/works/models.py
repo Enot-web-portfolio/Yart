@@ -4,7 +4,6 @@ from django.db import models
 
 
 class WorkBlockType(models.Model):
-    id = models.IntegerField(primary_key=True)
     type = models.IntegerField()
     image_urls = ArrayField(models.CharField(max_length=255), default=list)
     text = models.TextField(blank=True)
