@@ -75,3 +75,8 @@ class WorkFilesSerializer(serializers.ModelSerializer):
         model = WorksFiles
         fields = '__all__'
 
+        
+class WorkBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkBlockType
+        fields = '__all__'
