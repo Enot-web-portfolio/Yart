@@ -1,4 +1,4 @@
-.add-block-selector{
+.add-block-selector {
   width: 100%;
   position: relative;
   display: flex;
@@ -7,14 +7,14 @@
   opacity: 0;
   transition: opacity 0.3s;
 
-  .add-block-selector__line{
+  .add-block-selector__line {
     width: 100%;
     background-color: var(--secondary-text-color);
     margin: var(--space-m) 0;
     height: 3px;
   }
 
-  .add-block-selector__btn{
+  .add-block-selector__btn {
     display: none;
     position: absolute;
     background-color: var(--secondary-text-color);
@@ -25,31 +25,31 @@
     border-radius: var(--border-radius-m);
     transition: width 0.3s;
 
-    .add-block-selector__btn_icon{
+    .add-block-selector__btn_icon {
       width: var(--icon-small);
       height: var(--icon-small);
       stroke: #fff;
       transform: rotate(45deg);
     }
 
-    .add-block-selector__btn_text{
+    .add-block-selector__btn_text {
       display: none;
       font-size: var(--small-text-fs);
-      color:#fff;
+      color: #fff;
     }
 
-    &:hover{
-      .add-block-selector__btn_text{
+    &:hover {
+      .add-block-selector__btn_text {
         display: inherit;
       }
     }
   }
 
-  &:hover{
+  &:hover {
     opacity: 1;
 
-    .add-block-selector__btn{
-      display:flex;
+    .add-block-selector__btn {
+      display: flex;
     }
   }
 }

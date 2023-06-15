@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import { WorksService } from '../../../../core/services/works-service';
 import { EditingWork } from '../../../../core/models/editing-work';
-import { WorkBlock, WorkBlockType } from '../../../../core/models/work-block';
+import { WorkBlockType } from '../../../../core/models/work-block';
 import { FilesService } from '../../../../core/services/files-service';
 
 export const useWorkEditorState = () => {

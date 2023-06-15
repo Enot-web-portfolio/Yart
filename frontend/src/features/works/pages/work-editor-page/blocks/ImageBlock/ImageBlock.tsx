@@ -15,17 +15,26 @@ import classes from './ImageBlock.module.scss';
 const { Text } = Typography;
 
 type Props = Readonly<{
+
+  /** Изображение блока. */
   imageUrl: string | null;
+
+  /** Ф-ция сохранения изображения. */
   setFile(file: File | null): void;
 }>;
 
+/**
+ * Компонент Блок Изображение.
+ * @param props
+ */
 const ImageBlockComponent: FC<Props> = props => {
-  /** Доступные форматы аватарки. */
+
+  /** Доступные форматы изображения. */
   const accept = useRef(['jpg', 'png', 'webp']);
 
   /**
-   * Ф-ция загрузки аватарки.
-   * @param file
+   * Ф-ция загрузки изображения.
+   * @param file - Файл изображения.
    */
   const uploadImage = (file: UploadFile) => {
     if (file.originFileObj === undefined) {
@@ -36,7 +45,7 @@ const ImageBlockComponent: FC<Props> = props => {
 
   /**
    * Ф-ция проверки файла перед загрузкой.
-   * @param file - Файл аватарки.
+   * @param file - Файл изображения.
    */
   function beforeUpload(file: File) {
     const pathName = file.name.split('.');

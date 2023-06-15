@@ -25,12 +25,24 @@ import { TextBlock } from './blocks/TextBlock';
 import { ConfirmLeaveBox } from './ConfirmLeaveBox';
 import { ImageBlock } from './blocks/ImageBlock';
 
+/** Страница Редактор работ. */
 const WorkEditorPageComponent: FC = () => {
+
+  /** Авторизован ли пользователь. */
   const isUserAuthorized = useAuthStore(store => store.isUserAuthorized);
+
+  /** Открыто ли окно выхода из редактора. */
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+
   const { work, isSaving, isLoading, setWork, onWorkSave } = useWorkEditorState();
+
+  /** Тип открытой правой панели. */
   const [panelType, setPanelType] = useState(WorkPanelType.None);
 
+  /**
+   * Ф-ция добавления блока.
+   * @param block - Обьект блока.
+   */
   const addBlock = (block: WorkBlock) => {
     setWork(curWork => {
       if (curWork === null) {
@@ -42,6 +54,11 @@ const WorkEditorPageComponent: FC = () => {
     setPanelType(WorkPanelType.None);
   };
 
+  /**
+   * Ф-ция изменения текста блока.
+   * @param order - Порядковый номер блока.
+   * @param value - Текст блока.
+   */
   const changeBlockText = (order: number, value: string) => {
     setWork(curWork => {
       if (curWork === null) {
@@ -57,6 +74,11 @@ const WorkEditorPageComponent: FC = () => {
     });
   };
 
+  /**
+   * Ф-ция изменения изображения блока.
+   * @param order - Порядковый номер блока.
+   * @param value - Изображение блока.
+   */
   const changeBlockImage = (order: number, value: File | null) => {
     setWork(curWork => {
       if (curWork === null) {

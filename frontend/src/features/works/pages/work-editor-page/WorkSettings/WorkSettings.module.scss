@@ -14,7 +14,7 @@
     stroke: var(--secondary-text-color);
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       stroke: var(--dark-pink-color);
     }
   }
@@ -47,7 +47,7 @@
         background-size: cover;
       }
 
-      .work-settings__cover__btn{
+      .work-settings__cover__btn {
         font-size: var(--small-text-fs);
       }
     }

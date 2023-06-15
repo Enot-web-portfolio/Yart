@@ -9,7 +9,9 @@ import { initialSignInState, SignInSchema } from './config';
 
 const { Text } = Typography;
 
+/** Компонент Форма входа. */
 const SignInFormComponent: FC = () => {
+
   const { login, isLoading } = useAuthState();
 
   return (

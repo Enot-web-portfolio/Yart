@@ -1,12 +1,8 @@
 import React, { FC, useState } from 'react';
 
-import { Button, Spin, Switch, Typography, Upload } from 'antd';
+import { Button, Spin, Switch, Typography } from 'antd';
 
 import { Formik, Form, ErrorMessage } from 'formik';
-
-import { UploadFile } from 'antd/es/upload/interface';
-
-import { toast } from 'react-toastify';
 
 import { typedMemo } from '../../../../../core/utils/typed-memo';
 
@@ -20,8 +16,6 @@ import { EditingWork } from '../../../../../core/models/editing-work';
 
 import { CrossIcon } from '../../../../../components/Icons';
 
-import { workBlockMapper } from '../../../../../core/services/mappers/workBlockMapper';
-
 import classes from './WorkSettings.module.scss';
 import { CoverUpload } from './CoverUpload';
 import { validationSchema } from './validationSchema';
@@ -29,18 +23,38 @@ import { validationSchema } from './validationSchema';
 const { Text, Link } = Typography;
 
 type Props = Readonly<{
+
+  /** Редактируемая работа. */
   work: EditingWork;
+
+  /** Ф-ция сохранения работы. */
   save(work: EditingWork, files: File[]): void;
+
+  /** Сохраняется ли сейчас работы. */
   isSaving: boolean;
 }>;
 
+/**
+ * Компонент Окно настроек работы.
+ * @param props
+ */
 const WorkSettingsComponent: FC<Props> = props => {
+
+  /** Открыто ли окно. */
   const [isWorkModalActive, setIsWorkModalActive] = useState(false);
+
+  /** Открыт ли выбор обложки работы. */
   const [isCoverSelected, setIsCoverSelected] = useState(false);
+
   const { skills, isLoading } = useSeparatedSkills(skill => ({ value: skill.id, label: skill.name }));
+
+  /** Дополнительные файлы работы. */
   const [files, setFiles] = useState<File[]>([]);
+
+  /** Порядковый номер блока, из которого возьмется обложка. */
   const [orderBlockCover, setOrderBlockCover] = useState<number | null>(null);
 
+  /** Ссылка на обложку. */
   const coverUrl = orderBlockCover !== null ? props.work.workBlock.find(work => work.blockOrder === orderBlockCover)?.blockImageUrls[0] : '';
   return (
     <>
@@ -125,7 +139,10 @@ const WorkSettingsComponent: FC<Props> = props => {
                              </div>*/}
                              <div className={`${classes['work-settings__buttons']}`}>
                                <Button type={'default'} onClick={() => setIsActive(false)}>Отмена</Button>
-                               <Button type={'primary'} htmlType={'submit'}>Сохранить</Button>
+                               <Button type={'primary'}
+                                 loading={props.isSaving}
+                                 htmlType={'submit'}
+                                 disabled={props.isSaving}>Сохранить</Button>
                              </div>
                            </div>
                          </Form>

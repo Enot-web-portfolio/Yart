@@ -14,12 +14,23 @@ import { SignUpForm } from './SignUpForm';
 const { Link, Text } = Typography;
 
 type Props = Readonly<{
+
+  /** Ф-ция закрытия/открытия окна авторизации. */
   setIsActive(active: boolean): void;
+
+  /** Открыто ли окно авторизации. */
   isActive: boolean;
 }>;
 
+/**
+ * Компонент Окно авторизации.
+ * @param props
+ */
 const AuthModalComponent: FC<Props> = props => {
+
   const { isOpenAuth, closeAuthModal, isUserAuthorized } = useAuthState();
+
+  /** Тип авторизации. */
   const [authType, setAuthType] = useState(AuthType.SignIn);
 
   useEffect(() => {
@@ -36,6 +47,7 @@ const AuthModalComponent: FC<Props> = props => {
     isUserAuthorized && props.setIsActive(false);
   }, [isUserAuthorized]);
 
+  /** Ф-ция изменения типа авторизации. */
   const toggleAuthType = () => {
     setAuthType(curAuthType =>
       curAuthType === AuthType.SignUp ? AuthType.SignIn : AuthType.SignUp);

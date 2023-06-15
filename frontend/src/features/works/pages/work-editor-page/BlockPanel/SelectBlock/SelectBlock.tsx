@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import { Typography } from 'antd';
 
@@ -11,11 +11,24 @@ import classes from './SelectBlock.module.scss';
 const { Text } = Typography;
 
 type Props = Readonly<{
+
+  /** Класс заголовка. */
   headerClassName: string;
+
+  /** Ф-ция добавления блока. */
   addBlock(block: WorkBlock): void;
 }>;
 
+/**
+ * Компонент Выбор блока работы для вставки.
+ * @param props
+ */
 const SelectBlockComponent: FC<Props> = props => {
+
+  /**
+   * Ф-ция создания блока работы.
+   * @param type - Тип блока.
+   */
   const createBlock = (type: WorkBlockType): WorkBlock => ({
     blockType: type,
     blockText: '',

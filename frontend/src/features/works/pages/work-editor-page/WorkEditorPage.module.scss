@@ -1,5 +1,5 @@
-.work-editor{
-  flex:1;
+.work-editor {
+  flex: 1;
   background-color: var(--background-color);
   position: relative;
   display: flex;
@@ -8,7 +8,7 @@
   align-items: center;
   padding-bottom: var(--space-m);
 
-  .work-editor__buttons{
+  .work-editor__buttons {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -16,9 +16,9 @@
     padding: var(--space-m);
   }
 
-  .work-editor__name{
+  .work-editor__name {
     width: 100%;
     max-width: var(--work-container);
-    padding:0 var(--space-m);
+    padding: 0 var(--space-m);
   }
 }

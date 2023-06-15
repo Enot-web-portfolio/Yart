@@ -1,4 +1,4 @@
-.select-block__type{
+.select-block__type {
   margin: 0 var(--space-s);
   padding: var(--space-s);
   display: flex;
@@ -7,11 +7,11 @@
   cursor: pointer;
   border-radius: 5px;
 
-  &:hover{
+  &:hover {
     background-color: var(--background-color);
   }
 
-  .select-block__type_icon{
+  .select-block__type_icon {
     width: var(--icon-small);
     height: var(--icon-small);
   }

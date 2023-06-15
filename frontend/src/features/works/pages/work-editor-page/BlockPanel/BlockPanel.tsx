@@ -14,19 +14,33 @@ import classes from './BlockPanel.module.scss';
 import { SelectBlock } from './SelectBlock';
 
 type Props = Readonly<{
+
+  /** Ф-ция добавления блока. */
   addBlock(block: WorkBlock): void;
+
+  /** Тип правой панели. */
   panelType: WorkPanelType;
+
+  /** Ф-ция сохранения типа правой панели. */
   setPanelType(type: WorkPanelType): void;
 }>;
 
+/**
+ * Компонент Правая панель редактирования.
+ * @param props
+ */
 const BlockPanelComponent: FC<Props> = props => {
+
+  /** Ссылка на панель. */
   const panelRef = useRef<HTMLDivElement | null>(null);
+
   const { isActive, setIsActive } = useModalActivityState([panelRef.current], close);
 
   useEffect(() => {
     setIsActive(props.panelType !== WorkPanelType.None);
   }, [props.panelType]);
 
+  /** Ф-ция закрытия панели. */
   function close() {
     setIsActive(false);
     props.setPanelType(WorkPanelType.None);
