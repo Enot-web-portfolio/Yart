@@ -199,11 +199,9 @@ class WorksViewSet(viewsets.ViewSet):
             )
             blocks.append(block.id)
         data['blocks'] = blocks
-        serializer1 = EditingWorkSerializer(work).data
-        serializer1['start_text'] = None
         for i in data['blocks']:
             if i['type'] == 0:
-                serializer1['start_text'] = i['text']
+                work.start_text = i['text']
                 break
         EditingWorkSerializer.update(self=serializer, instance=work, validated_data=data)
         return Response(EditingWorkSerializer(work).data)
