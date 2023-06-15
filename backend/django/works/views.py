@@ -70,7 +70,7 @@ class WorksViewSet(viewsets.ViewSet):
             if int(request.GET.get("page", 1)) not in paginator.page_range:
                 paginator = []
                 return Response(paginator)
-        elif request.GET.getlist("skillIds", None) is not None:
+        elif request.GET.getlist("skillIds", None):
             List = Works
             query = List.objects.all()
             serializer = WorksShortSerializer(query, many=True).data
