@@ -56,7 +56,6 @@ class WorksViewSet(viewsets.ViewSet):
             List = Works
             query = List.objects.filter(user_id=int(request.GET.get("userOuterId", 1)))
             serializer = WorksShortSerializer(query, many=True).data
-            print(serializer)
             for i in range(len(serializer)):
                 print(serializer[i])
                 if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
@@ -200,6 +199,12 @@ class WorksViewSet(viewsets.ViewSet):
             )
             blocks.append(block.id)
         data['blocks'] = blocks
+        serializer1 = EditingWorkSerializer(work).data
+        serializer1['start_text'] = None
+        for i in data['blocks']:
+            if i['type'] == 0:
+                serializer1['start_text'] = i['text']
+                break
         EditingWorkSerializer.update(self=serializer, instance=work, validated_data=data)
         return Response(EditingWorkSerializer(work).data)
 
@@ -276,7 +281,13 @@ class WorksViewSet(viewsets.ViewSet):
             blocks=blocks,
             file_urls=data["file_urls"],
         )
-        return Response(CreateWorkSerializer(work).data)
+        serializer = CreateWorkSerializer(work).data
+        serializer['start_text'] = None
+        for i in data['blocks']:
+            if i['type'] == 0:
+                serializer['start_text'] = i['text']
+                break
+        return Response(serializer)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def workblock_create_get(self, request, *args, **kwargs):
