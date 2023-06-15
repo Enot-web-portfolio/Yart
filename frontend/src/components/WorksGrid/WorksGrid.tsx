@@ -54,8 +54,7 @@ const WorksGridComponent: FC<Props> = props => {
     <div className={`${classes['works-grid__wrapper']}`}>
       <div className={`${classes['works-grid']}`}>
         {works.map((work, i) =>
-          <WorkCard key={i} {...work} pageUserId={props.userId} onWorkClick={() => {
-          }}/>)}
+          <WorkCard key={i} {...work} pageUserId={props.userId}/>)}
       </div>
       {isLoading && <Spin/>}
     </div>

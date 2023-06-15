@@ -17,14 +17,13 @@ import { toUserWorks } from '../../routes/route-links';
 
 import { useSkillsStore } from '../../core/store/skills/store';
 
+import { useWorkReaderStore } from '../../core/store/work-reader/store';
+
 import classes from './WorkCard.module.scss';
 
 const { Text } = Typography;
 
 type Props = Readonly<Work & {
-
-  /** Ф-ция, открывающая чтение статьи к=при клике на карточку. */
-  onWorkClick: (workId: number) => void;
 
   /** Id юзера, с которого смотрят работы. */
   pageUserId?: number | string;
@@ -35,6 +34,8 @@ type Props = Readonly<Work & {
  * @param props
  */
 const WorkCardComponent: FC<Props> = props => {
+
+  const open = useWorkReaderStore(store => store.open);
 
   /** Скиллы. */
   const skills = useSkillsStore(store => store.defaultSkills);
@@ -67,7 +68,7 @@ const WorkCardComponent: FC<Props> = props => {
 
   return (
     <div className={`${classes['work-card']}`}
-      onClick={() => props.onWorkClick(props.workId)}>
+      onClick={() => open(props.workId)}>
       {props.workImageUrl == null ?
         <div className={`${classes['work-card__content']} ${classes['work-card_textual']}`}>
           <Text className={`${classes['work-card__content_name']}`}>{props.workName}</Text>

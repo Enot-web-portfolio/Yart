@@ -36,6 +36,15 @@ export namespace WorksApi {
   }
 
   /**
+   * Get work.
+   * @param workId - Id работы.
+   */
+  export async function getWork(workId: number): Promise<Work> {
+    const { data } = await http.get<Work>(`${CONFIG.apiUrl}/works/${workId}`);
+    return data;
+  }
+
+  /**
    * Unlike work.
    * @param workId - Id работы.
    * @param userId - Id пользователя, который убирает лайк.

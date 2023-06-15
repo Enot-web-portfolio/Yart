@@ -1,5 +1,3 @@
-import { Skill } from './skill';
-
 /** Work. */
 export type Work = Readonly<{
 

@@ -10,6 +10,7 @@ import 'react-toastify/scss/main.scss';
 import { AuthModal } from './components/AuthModal';
 import { Modal } from './components/Modal';
 import { useSkillsStore } from './core/store/skills/store';
+import { WorkReader } from './components/WorkReader';
 
 export const App: FC = () => {
   const getSkills = useSkillsStore(store => store.getSkills);
@@ -35,6 +36,7 @@ export const App: FC = () => {
           <Modal component={(setIsActive, isActive) =>
             <AuthModal setIsActive={setIsActive} isActive={isActive}/>}
           modalClassName={'auth-modal'}/>
+          <WorkReader/>
           <ToastContainer/>
         </Suspense>
       </ConfigProvider>
