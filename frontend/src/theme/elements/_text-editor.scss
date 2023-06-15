@@ -1,0 +1,50 @@
+.quill.text-editor {
+  width: 100%;
+  position: relative;
+
+  .ql-toolbar{
+    position: absolute;
+    top: -40px;
+    background-color: #fff;
+    border-radius: var(--border-radius-m);
+    border: none;
+    box-shadow: var(--box-shadom-small);
+    display: none;
+  }
+
+  &:hover{
+    .ql-toolbar{
+      display: block;
+    }
+  }
+
+  .ql-container{
+    border: none;
+    font-family: inherit;
+
+    .ql-editor{
+      border-radius: var(--border-radius-s);
+
+      &:focus-visible{
+        background-color: var(--background-color);
+        outline: 2px solid var(--button-primary-color);
+      }
+
+      &.ql-blank::before{
+        font-size: var(--small-text-fs);
+      }
+
+      p, li{
+        font-size: var(--middle-text-fs);
+      }
+
+      h2{
+        font-size: var(--big-text-fs);
+      }
+
+      h1{
+        font-size: var(--small-title-fs);
+      }
+    }
+  }
+}

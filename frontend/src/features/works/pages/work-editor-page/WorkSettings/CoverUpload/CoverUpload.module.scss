@@ -1,0 +1,50 @@
+.cover-upload{
+  gap: var(--space-s);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+
+  .cover-upload__image{
+    width: 100%;
+    height: 200px;
+    background-color: var(--background-color);
+    border-radius: var(--border-radius-vs);
+    border: 1px dashed var(--inactive-element-color);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .cover-upload__empty_list{
+    font-size: var(--small-text-fs);
+    color: var(--dark-pink-color);
+  }
+
+  .cover-upload__list{
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+
+    .cover-upload__list_item{
+      width: calc(var(--space-l) * 1.5);
+      height: calc(var(--space-l) * 1.5);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      cursor: pointer;
+      border-radius: var(--border-radius-vs);
+
+      &.active{
+        border: 1px solid var(--button-primary-color)
+      }
+    }
+  }
+
+  .cover-upload__buttons{
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+  }
+
+}

@@ -8,6 +8,7 @@ import { RootRouter } from './routes/RootRouter';
 import { Header } from './components/Header';
 import 'react-toastify/scss/main.scss';
 import { AuthModal } from './components/AuthModal';
+import { Modal } from './components/Modal';
 
 export const App: FC = () => (
   <BrowserRouter>
@@ -23,7 +24,9 @@ export const App: FC = () => (
         <div className="content">
           <RootRouter/>
         </div>
-        <AuthModal/>
+        <Modal component={(setIsActive, isActive) =>
+          <AuthModal setIsActive={setIsActive} isActive={isActive}/>}
+        modalClassName={'auth-modal'}/>
         <ToastContainer/>
       </Suspense>
     </ConfigProvider>

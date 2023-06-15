@@ -10,3 +10,8 @@
   color: var(--inactive-element-color);
   margin-right: var(--space-s);
 }
+
+.ant-input-affix-wrapper.title, .ant-input.title {
+  font-size: var(--small-title-fs);
+  font-weight: var(--medium-fw);
+}

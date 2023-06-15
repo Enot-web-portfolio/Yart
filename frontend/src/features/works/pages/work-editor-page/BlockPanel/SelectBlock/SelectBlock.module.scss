@@ -1,0 +1,18 @@
+.select-block__type {
+  margin: 0 var(--space-s);
+  padding: var(--space-s);
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  cursor: pointer;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: var(--background-color);
+  }
+
+  .select-block__type_icon {
+    width: var(--icon-small);
+    height: var(--icon-small);
+  }
+}

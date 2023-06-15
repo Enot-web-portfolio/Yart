@@ -10,6 +10,7 @@ import classes from './AuthModal.module.scss';
 
 const { Text } = Typography;
 
+/** Компонент Форма регистрации. */
 const SignUpFormComponent: FC = () => {
   const [repeatedPasswordError, setRepeatedPassword] = useState<string | null>(null);
   const { signUp, isLoading } = useAuthState();

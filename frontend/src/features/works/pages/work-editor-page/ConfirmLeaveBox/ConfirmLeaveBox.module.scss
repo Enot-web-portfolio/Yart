@@ -1,0 +1,10 @@
+.confirm-leave-box {
+  max-width: 600px;
+
+  .confirm-leave-box__buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    margin-top: var(--space-m);
+  }
+}

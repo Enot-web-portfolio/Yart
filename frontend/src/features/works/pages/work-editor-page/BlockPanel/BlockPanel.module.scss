@@ -1,0 +1,38 @@
+.block-panel {
+  position: fixed;
+  top: var(--header-height);
+  bottom: 0;
+  right: -430px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  width: 400px;
+  box-shadow: var(--box-shadow);
+  z-index: 1;
+  transition: right 0.3s;
+
+  &.active {
+    right: 0;
+  }
+
+  .block-panel__close {
+    position: absolute;
+    top: var(--space-s);
+    right: calc(var(--space-s) * 2);
+    width: var(--icon-small);
+    height: var(--icon-small);
+    stroke: var(--inactive-element-color);
+    cursor: pointer;
+
+    &:hover {
+      stroke: var(--dark-pink-color);
+    }
+  }
+
+  .block-panel__header {
+    font-size: var(--big-text-fs);
+    padding: var(--space-s) calc(var(--space-s) * 2 + var(--icon-small)) 0 calc(var(--space-s) * 2);
+    margin-bottom: var(--space-s);
+  }
+}

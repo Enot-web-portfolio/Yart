@@ -1,0 +1,26 @@
+.modal__wrapper{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  display: none;
+  opacity: 0;
+  z-index: 11;
+  transition: 0.3s opacity;
+  background-color: var(--modal-wrapper-background);
+
+  &.modal_active{
+    display: flex;
+    opacity: 100;
+  }
+
+  .modal{
+    border-radius: var(--border-radius-m);
+    padding: var(--space-m);
+    background-color: #fff;
+    margin: var(--space-m);
+  }
+}

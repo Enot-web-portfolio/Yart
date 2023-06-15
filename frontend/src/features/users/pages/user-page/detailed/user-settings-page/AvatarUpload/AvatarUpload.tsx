@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState } from 'react';
 
-import { Upload } from 'antd';
+import { Upload, Typography } from 'antd';
 import { UploadFile } from 'antd/es/upload/interface';
 import { toast } from 'react-toastify';
 
@@ -9,6 +9,8 @@ import { CrossIcon } from '../../../../../../../components/Icons';
 import { typedMemo } from '../../../../../../../core/utils/typed-memo';
 
 import classes from './AvatarUpload.module.scss';
+
+const { Text } = Typography;
 
 type Props = Readonly<{
 
@@ -89,7 +91,7 @@ const AvatarUploadComponent: FC<Props> = ({ url, setFile, className }) => {
         </div> :
         <div className={`${classes['avatar-upload__desc']}`}>
           <CrossIcon className={`${classes['avatar-upload__add_icon']}`}/>
-          <p>Загрузи аватарку<br/> (jpg или png)</p>
+          <Text>Загрузи аватарку<br/> (jpg или png)</Text>
         </div>}
     </Upload>
   );

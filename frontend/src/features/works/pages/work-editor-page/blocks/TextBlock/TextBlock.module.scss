@@ -1,0 +1,28 @@
+.text-block {
+  width: 100%;
+  position: relative;
+  max-width: var(--work-container);
+  padding: 0 var(--space-m);
+
+  .text-block__editor {
+    min-height: 50px;
+    width: 100%;
+    display: block;
+    font-size: var(--middle-text-fs);
+    padding: var(--space-s);
+    border-radius: var(--border-radius-s);
+
+    &:focus-visible {
+      outline-color: var(--button-primary-color);
+    }
+  }
+
+  .text-block__placeholder {
+    position: absolute;
+    top: var(--space-s);
+    left: calc(var(--space-m) + var(--space-s));
+    user-select: none;
+    color: var(--inactive-element-color);
+    pointer-events: none;
+  }
+}

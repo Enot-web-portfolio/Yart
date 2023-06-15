@@ -28,9 +28,10 @@ const HeaderComponent: FC = () => {
         className={`${classes.header__logo}`}
         onClick={() => navigator(toWorks())}/>
       <nav className={`${classes.navbar}`}>
-        <NavLink to={toWorkEditor()} className={`${classes.navbar__group} ${classes.navbar__element}`}>
-          <img src="/src/assets/icons/plus.svg" alt="add work" className={`${classes['header__work-btn']}`}/>
-        </NavLink>
+        {isUserAuthorized &&
+          <NavLink to={toWorkEditor()} className={`${classes.navbar__group} ${classes.navbar__element}`}>
+            <img src="/src/assets/icons/plus.svg" alt="add work" className={`${classes['header__work-btn']}`}/>
+          </NavLink>}
         <div className={`${classes.navbar__group}`}>
           <NavLink to={toAbout()} className={`${classes.navbar__link}`}>О нас</NavLink>
           <NavLink to={toWorks()} className={`${classes.navbar__link}`}>Работы</NavLink>
@@ -52,7 +53,8 @@ const HeaderComponent: FC = () => {
                 <NavLink to={toUserWorks(user.userId)}>
                   <Button type={'link'} className={`${classes.navbar__user_info__btn}`}>Профиль</Button>
                 </NavLink>
-                <Button type={'link'} onClick={logout} className={`${classes.navbar__user_info__btn} ${classes.navbar__user_info__btn_logout}`}>Выйти</Button>
+                <Button type={'link'} onClick={logout}
+                  className={`${classes.navbar__user_info__btn} ${classes.navbar__user_info__btn_logout}`}>Выйти</Button>
               </div>
               <div style={{ backgroundImage: `url('${user.userImageUrl ?? '/src/assets/icons/user.svg'}')` }}
                 className={`${classes.navbar__user_info__img} ${classes['header__user-img']} ${user.userImageUrl ? '' : classes.no_avatar}`}/>
