@@ -1,15 +1,20 @@
-import React, {FC, memo} from 'react';
+import React, { FC, memo } from 'react';
 
-import classes from './WorkReader.module.scss'
-import {useWorkReaderStore} from "../../core/store/work-reader/store";
+import { useWorkReaderStore } from '../../core/store/work-reader/store';
+
+import classes from './WorkReader.module.scss';
 
 const WorkReaderComponent: FC = () => {
   const workId = useWorkReaderStore(store => store.workId);
   const close = useWorkReaderStore(store => store.close);
-  
-  return(
 
-  )
-}
+  return (
+    <div className={`${classes['work-reader']}`}>
+      <div className="work-reader__header">
 
-export const WorkReader = memo(WorkReaderComponent)
+      </div>
+    </div>
+  );
+};
+
+export const WorkReader = memo(WorkReaderComponent);

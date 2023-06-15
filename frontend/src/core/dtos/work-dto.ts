@@ -16,16 +16,16 @@ export type WorkDto = Readonly<{
   user_id: number;
 
   /** Work skills. */
-  main_skills: readonly SkillDto[];
+  main_skills: readonly number[];
 
   /** Work likes. */
   likes_count: number;
 
   /** Work avatar url. */
-  image_url: string | null;
+  image_url: string;
 
   /** Work start text. */
-  start_text: string;
+  start_text: string | null;
 
   /** Work name. */
   name: string;

@@ -15,6 +15,8 @@ import { WorksService } from '../../core/services/works-service';
 
 import { toUserWorks } from '../../routes/route-links';
 
+import { useSkillsStore } from '../../core/store/skills/store';
+
 import classes from './WorkCard.module.scss';
 
 const { Text } = Typography;
@@ -33,6 +35,9 @@ type Props = Readonly<Work & {
  * @param props
  */
 const WorkCardComponent: FC<Props> = props => {
+
+  /** Скиллы. */
+  const skills = useSkillsStore(store => store.defaultSkills);
 
   /** Авторизован ли пользователь. */
   const { isUserAuthorized } = useAuthStore();
@@ -94,9 +99,14 @@ const WorkCardComponent: FC<Props> = props => {
         </div>
       </div>
       <div className={`${classes['work-card__tags']}`}>
-        {props.workMainSkills.map((skill, i) => (
-          <Tag textColor={skill.fontColor} color={skill.backgroundColor} key={i}>{skill.name}</Tag>
-        ))}
+        {skills && props.workMainSkills.map((skillId, i) => {
+          const curSkill = skills.find(skill => skill.id === skillId);
+          return curSkill ?
+            <Tag textColor={curSkill.fontColor} color={curSkill.backgroundColor} key={i}>
+              {curSkill.name}
+            </Tag> :
+            null;
+        })}
       </div>
     </div>
   );

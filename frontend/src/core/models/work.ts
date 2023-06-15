@@ -16,7 +16,7 @@ export type Work = Readonly<{
   userId: number;
 
   /** Work skills. */
-  workMainSkills: readonly Skill[];
+  workMainSkills: readonly number[];
 
   /** Work likes. */
   workLikesCount: number;
@@ -25,7 +25,7 @@ export type Work = Readonly<{
   workImageUrl: string | null;
 
   /** Work start text. */
-  workStartText: string;
+  workStartText: string | null;
 
   /** Work name. */
   workName: string;
