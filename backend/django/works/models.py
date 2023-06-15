@@ -42,7 +42,7 @@ class UserWorks(models.Model):
     comments = ArrayField(models.IntegerField(), default=list)
     open_comments = models.BooleanField(default=False)
     blocks = ArrayField(models.IntegerField(), default=list)
-    date = models.DateTimeField(default=django.utils.timezone.now)
+    date = models.DateField(default=django.utils.timezone.now)
     tags = ArrayField(models.CharField(max_length=255), default=list)
     file_urls = ArrayField(models.CharField(max_length=255), default=list)
 
