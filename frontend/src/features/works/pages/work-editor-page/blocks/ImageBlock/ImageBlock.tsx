@@ -1,32 +1,25 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef } from 'react';
 
 import { Upload, Typography } from 'antd';
+
+import 'react-quill/dist/quill.snow.css';
 import { UploadFile } from 'antd/es/upload/interface';
 import { toast } from 'react-toastify';
 
-import { CrossIcon } from '../../../../../../../components/Icons';
+import { CrossIcon } from '../../../../../../components/Icons';
 
-import { typedMemo } from '../../../../../../../core/utils/typed-memo';
+import { typedMemo } from '../../../../../../core/utils/typed-memo';
 
-import classes from './AvatarUpload.module.scss';
+import classes from './ImageBlock.module.scss';
 
 const { Text } = Typography;
 
 type Props = Readonly<{
-
-  /** Ссылка на аватар. */
-  url: string | null;
-
-  /** Ф-ция сохранения ссылки. */
-  setFile: (file: File | null) => void;
-
-  /** Класс для редактора аватарки. */
-  className: string;
+  imageUrl: string | null;
+  setFile(file: File | null): void;
 }>;
 
-/** Компонент Редактор аватарки Пользователя. */
-const AvatarUploadComponent: FC<Props> = ({ url, setFile, className }) => {
-
+const ImageBlockComponent: FC<Props> = props => {
   /** Доступные форматы аватарки. */
   const accept = useRef(['jpg', 'png', 'webp']);
 
@@ -38,7 +31,7 @@ const AvatarUploadComponent: FC<Props> = ({ url, setFile, className }) => {
     if (file.originFileObj === undefined) {
       return null;
     }
-    setFile(file.originFileObj || null);
+    props.setFile(file.originFileObj || null);
   };
 
   /**
@@ -72,29 +65,25 @@ const AvatarUploadComponent: FC<Props> = ({ url, setFile, className }) => {
       name="avatar"
       accept={accept.current.reduce((prev, next) => prev += `.${next}, `, '')}
       listType="picture-card"
-      className={`${classes['avatar-upload']} ${className}`}
+      className={`${classes['image-block']}`}
       showUploadList={false}
       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       beforeUpload={beforeUpload}
       onChange={({ file }) => uploadImage(file)}
     >
-      {url ?
-        <div className={`${classes['avatar-upload__file']}`}>
-          <img src={url} alt="avatar" style={{ width: '100%' }}/>
-          <div className={`${classes['avatar-upload__delete']}`}>
-            <CrossIcon className={`${classes['avatar-upload__delete_icon']}`}
+      {props.imageUrl ?
+        <div className={`${classes['image-block__file']}`} style={{ backgroundImage: `url('${props.imageUrl}')` }}>
+          <div className={`${classes['image-block__delete']}`}>
+            <CrossIcon className={`${classes['image-block__delete_icon']}`}
               onClick={e => {
                          e.stopPropagation();
-                         setFile(null);
+                         props.setFile(null);
                        }}/>
           </div>
         </div> :
-        <div className={`${classes['avatar-upload__desc']}`}>
-          <CrossIcon className={`${classes['avatar-upload__add_icon']}`}/>
-          <Text>Загрузи аватарку<br/> (jpg или png)</Text>
-        </div>}
+        <Text>Нажми или перетащи</Text>}
     </Upload>
   );
 };
 
-export const AvatarUpload = typedMemo(AvatarUploadComponent);
+export const ImageBlock = typedMemo(ImageBlockComponent);

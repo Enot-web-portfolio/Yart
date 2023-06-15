@@ -11,11 +11,12 @@ type Props = Readonly<{
   modalClassName?: string;
   isOutsideActive?: boolean;
   setIsOutsideActive?: (active: boolean) => void;
+  isNotClickAway?: boolean;
 }>;
 
 const ModalComponent: FC<Props> = props => {
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const { isActive, setIsActive } = useModalActivityState([modalRef.current]);
+  const { isActive, setIsActive } = useModalActivityState([modalRef.current], undefined, undefined, props.isNotClickAway);
 
   useEffect(() => {
     props.isOutsideActive !== undefined && setIsActive(props.isOutsideActive);

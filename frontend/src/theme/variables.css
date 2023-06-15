@@ -18,6 +18,7 @@
   /* Border Radius */
   --border-radius-m: 50px;
   --border-radius-s: 25px;
+  --border-radius-vs: 5px;
 
   /* Colors */
   --pear-green-color: #c9e82d;
@@ -47,6 +48,7 @@
 
   /* Special */
   --box-shadow: 0 0 11px rgba(65 96 234 / 30%);
+  --box-shadom-small: 0 4px 4px rgba(0 0 0 / 25%);
   --header-height: calc(var(--space-s) * 2 + var(--space-m) * 2 + var(--middle-text-fs) * var(--line-height));
 
   /* Background color */
@@ -59,5 +61,5 @@
   --icon-very-small: 15px;
 
   /* Works */
-  --work-container: 1600px;
+  --work-container: 1200px;
 }

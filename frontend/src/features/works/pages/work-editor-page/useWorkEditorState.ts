@@ -1,10 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { AxiosError } from 'axios';
 
+import { toast } from 'react-toastify';
+
 import { WorksService } from '../../../../core/services/works-service';
 import { EditingWork } from '../../../../core/models/editing-work';
+import { WorkBlock, WorkBlockType } from '../../../../core/models/work-block';
+import { FilesService } from '../../../../core/services/files-service';
 
 export const useWorkEditorState = () => {
 
@@ -39,14 +43,17 @@ export const useWorkEditorState = () => {
     }
   }
 
-  /** Ф-ция создания работы. */
-  async function onWorkCreate() {
-    if (work === null) {
+  /**
+   * Ф-ция создания работы.
+   * @param curWork
+   */
+  async function onWorkCreate(curWork: EditingWork) {
+    if (curWork === null) {
       return;
     }
     try {
       setIsSaving(true);
-      await WorksService.postWorkCreate(work);
+      await WorksService.postWorkCreate(curWork);
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
     } finally {
@@ -54,14 +61,17 @@ export const useWorkEditorState = () => {
     }
   }
 
-  /** Ф-ция редактирования работы. */
-  async function onWorkEdit() {
-    if (work === null) {
+  /**
+   * Ф-ция редактирования работы.
+   * @param curWork
+   */
+  async function onWorkEdit(curWork: EditingWork) {
+    if (curWork === null) {
       return;
     }
     try {
       setIsSaving(true);
-      await WorksService.postWorkEdit(work, id ?? '');
+      await WorksService.postWorkEdit(curWork, id ?? '');
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
     } finally {
@@ -69,12 +79,33 @@ export const useWorkEditorState = () => {
     }
   }
 
-  /** Ф-ция сохранения работы. */
-  function onWorkSave() {
+  /**
+   * Ф-ция сохранения работы.
+   * @param curWork
+   * @param files
+   */
+  async function onWorkSave(curWork: EditingWork, files: File[]) {
+    setIsSaving(true);
+    for (let i = 0; i < curWork.workBlock.length; i++) {
+      const block = curWork.workBlock[i];
+      if (block.blockType !== WorkBlockType.Image || !block.blockImage) {
+        continue;
+      }
+
+      const fileName = block.blockImage.name;
+      try {
+        const url = await FilesService.postWorkFile(block.blockImage);
+        block.blockImageUrls = [url];
+      } catch (error: unknown) {
+        toast.error(`Ошибка при загрузке файла: ${fileName}`);
+        block.blockImageUrls = [];
+      }
+    }
+
     if (id === 'new') {
-      onWorkCreate();
+      onWorkCreate(curWork);
     } else {
-      onWorkEdit();
+      onWorkEdit(curWork);
     }
   }
 

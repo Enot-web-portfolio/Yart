@@ -5,13 +5,16 @@ export type WorkBlock = {
   readonly blockType: WorkBlockType;
 
   /** Work block images. */
-  readonly blockImageUrls: string[];
+  blockImageUrls: string[];
 
   /** Work block text. */
   blockText: string;
 
   /** Work block order. */
   blockOrder: number;
+
+  /** Block image file. */
+  blockImage?: File | null;
 };
 
 /** Type work block. */

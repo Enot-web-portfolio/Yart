@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 
-export const useModalActivityState = (refs: (HTMLElement | null)[], onAwayClick?: () => void, onRefElementClick?: () => void) => {
+export const useModalActivityState = (refs: (HTMLElement | null)[], onAwayClick?: () => void, onRefElementClick?: () => void, isNotClickAway?: boolean) => {
 
   /** Активно ли окно. */
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    if (isNotClickAway) {
+      return;
+    }
     window.addEventListener('mousedown', onClickAwayCheck);
     return () => window.removeEventListener('mousedown', onClickAwayCheck);
   }, [refs]);

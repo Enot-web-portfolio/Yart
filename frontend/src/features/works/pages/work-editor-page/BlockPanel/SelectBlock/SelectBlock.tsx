@@ -36,11 +36,12 @@ const SelectBlockComponent: FC<Props> = props => {
           className={`${classes['select-block__type_icon']}`}/>
         <Text className={`${classes['select-block__type_text']}`}>Изображение</Text>
       </div>
-      <div className={`${classes['select-block__type']}`} onClick={() => props.addBlock(createBlock(WorkBlockType.Gallery))}>
+      {/* <div className={`${classes['select-block__type']}`}
+            onClick={() => props.addBlock(createBlock(WorkBlockType.Gallery))}>
         <img src="/src/assets/icons/gallery.svg" alt="text block"
-          className={`${classes['select-block__type_icon']}`}/>
+             className={`${classes['select-block__type_icon']}`}/>
         <Text className={`${classes['select-block__type_text']}`}>Галерея</Text>
-      </div>
+      </div>*/}
     </>
   );
 };

@@ -1,14 +1,18 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useRef, useState } from 'react';
 
-import { Button, Input, Typography } from 'antd';
+import { Button, Input } from 'antd';
 
 import { Spin } from 'antd/lib';
 
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { WorkBlock, WorkBlockType } from '../../../../core/models/work-block';
 
 import { ErrorResult } from '../../../../components/ErrorResult';
+
+import { useAuthStore } from '../../../../core/store/auth/store';
+
+import { toWorks } from '../../../../routes/route-links';
 
 import classes from './WorkEditorPage.module.scss';
 import { useWorkEditorState } from './useWorkEditorState';
@@ -19,12 +23,13 @@ import { WorkPanelType } from './types';
 
 import { TextBlock } from './blocks/TextBlock';
 import { ConfirmLeaveBox } from './ConfirmLeaveBox';
+import { ImageBlock } from './blocks/ImageBlock';
 
 const WorkEditorPageComponent: FC = () => {
+  const isUserAuthorized = useAuthStore(store => store.isUserAuthorized);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   const { work, isSaving, isLoading, setWork, onWorkSave } = useWorkEditorState();
   const [panelType, setPanelType] = useState(WorkPanelType.None);
-  const navigate = useNavigate();
 
   const addBlock = (block: WorkBlock) => {
     setWork(curWork => {
@@ -34,6 +39,7 @@ const WorkEditorPageComponent: FC = () => {
       block.blockOrder = curWork.workBlock.length;
       return { ...curWork, workBlock: [...curWork.workBlock, block] };
     });
+    setPanelType(WorkPanelType.None);
   };
 
   const changeBlockText = (order: number, value: string) => {
@@ -43,11 +49,33 @@ const WorkEditorPageComponent: FC = () => {
       }
       return {
         ...curWork,
-        workBlock: curWork.workBlock.map(block => ({ ...block, blockText: block.blockOrder === order ? value : block.blockText })),
+        workBlock: curWork.workBlock.map(block => ({
+          ...block,
+          blockText: block.blockOrder === order ? value : block.blockText,
+        })),
       };
     });
   };
 
+  const changeBlockImage = (order: number, value: File | null) => {
+    setWork(curWork => {
+      if (curWork === null) {
+        return null;
+      }
+      return {
+        ...curWork,
+        workBlock: curWork.workBlock.map(block => ({
+          ...block,
+          blockImage: block.blockOrder === order ? value : block.blockImage,
+          blockImageUrls: block.blockOrder === order ? value ? [URL.createObjectURL(value)] : [] : block.blockImageUrls,
+        })),
+      };
+    });
+  };
+
+  if (!isUserAuthorized) {
+    return <Navigate to={toWorks()}/>;
+  }
   if (isLoading) {
     return <Spin/>;
   }
@@ -57,15 +85,18 @@ const WorkEditorPageComponent: FC = () => {
   return (
     <div className={`${classes['work-editor']}`}>
       <BlockPanel addBlock={addBlock} panelType={panelType} setPanelType={setPanelType}/>
-      <WorkSettings/>
 
       <div className={`${classes['work-editor__buttons']}`}>
         <Button type={'default'} onClick={() => setIsLeaveModalOpen(true)}>Отмена</Button>
-        <Button type={'primary'}>Продолжить</Button>
+        <WorkSettings work={work} save={onWorkSave} isSaving={isSaving}/>
       </div>
 
       <div className={`${classes['work-editor__name']}`}>
-        <Input placeholder={'Напиши мое имя'} className={'title'}/>
+        <Input value={work.workName}
+          onChange={e => setWork(curWork => curWork !== null ?
+            ({ ...curWork, workName: e.target.value }) : null)}
+          placeholder={'Напиши мое имя'}
+          className={'title'}/>
       </div>
 
       <AddBlockSelector onClick={() => setPanelType(WorkPanelType.Add)}/>
@@ -74,9 +105,9 @@ const WorkEditorPageComponent: FC = () => {
         <>
           {block.blockType === WorkBlockType.Text ?
             <TextBlock text={block.blockText}
-              onClick={() => setPanelType(WorkPanelType.Text)}
               changeText={value => changeBlockText(block.blockOrder, value)}/> :
-            null}
+            <ImageBlock imageUrl={block.blockImageUrls[0]}
+              setFile={file => changeBlockImage(block.blockOrder, file)}/>}
           <AddBlockSelector onClick={() => setPanelType(WorkPanelType.Add)}/>
         </>
       ))}

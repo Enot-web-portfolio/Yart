@@ -4,8 +4,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-m);
+  gap: var(--space-vs);
   align-items: center;
+  padding-bottom: var(--space-m);
 
   .work-editor__buttons{
     display: flex;

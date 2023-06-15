@@ -1,0 +1,97 @@
+.work-settings {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  grid-gap: var(--space-m);
+  position: relative;
+  max-width: 950px;
+
+  .work-settings__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--icon-small);
+    height: var(--icon-small);
+    stroke: var(--secondary-text-color);
+    cursor: pointer;
+
+    &:hover{
+      stroke: var(--dark-pink-color);
+    }
+  }
+
+  .work-settings__header {
+    grid-column: 1/3;
+    font-size: var(--big-text-fs);
+  }
+
+  .work-settings__main {
+    padding: var(--space-s);
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    border-radius: var(--border-radius-s);
+
+    .work-settings__cover {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-s);
+
+      .work-settings__cover__image {
+        width: 100%;
+        height: 200px;
+        border-radius: 5px;
+        border: 1px dashed var(--inactive-element-color);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .work-settings__cover__btn{
+        font-size: var(--small-text-fs);
+      }
+    }
+  }
+
+  .work-settings__secondary {
+    display: flex;
+    flex-direction: column;
+    grid-gap: var(--space-m);
+
+    .work-settings__main_skills {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-s);
+
+      .work-settings__main_skills_error {
+        font-size: var(--small-text-fs);
+        color: var(--dark-pink-color);
+      }
+    }
+
+    .work-settings__comments {
+      display: flex;
+      align-items: center;
+      gap: var(--space-m);
+    }
+
+    .work-settings__files {
+      .work-settings__files__upload {
+
+      }
+    }
+
+    .work-settings__buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--space-m);
+      margin-top: auto;
+    }
+  }
+
+  .work-settings__subtitle {
+    font-size: var(--small-text-fs);
+    color: var(--inactive-element-color);
+  }
+}
