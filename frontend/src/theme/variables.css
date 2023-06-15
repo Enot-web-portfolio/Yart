@@ -57,4 +57,7 @@
   --icon-medium: 30px;
   --icon-small: 20px;
   --icon-very-small: 15px;
+
+  /* Works */
+  --work-container: 1600px;
 }

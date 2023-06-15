@@ -1,7 +1,7 @@
 import { WorkBlock } from './work-block';
 
 /** Editing work. */
-export type EditingWork = Readonly<{
+export type EditingWork = {
 
   /** Work name. */
   workName: string;
@@ -23,4 +23,4 @@ export type EditingWork = Readonly<{
 
   /** Work additional files. */
   workFileUrls: string[];
-}>;
+};

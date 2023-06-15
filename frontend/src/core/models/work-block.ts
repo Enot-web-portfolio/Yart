@@ -1,18 +1,18 @@
 /** Work block. */
-export type WorkBlock = Readonly<{
+export type WorkBlock = {
 
   /** Work block type (Text, Image, Gallery). */
-  blockType: WorkBlockType;
+  readonly blockType: WorkBlockType;
 
   /** Work block images. */
-  blockImageUrls: string[];
+  readonly blockImageUrls: string[];
 
   /** Work block text. */
   blockText: string;
 
   /** Work block order. */
   blockOrder: number;
-}>;
+};
 
 /** Type work block. */
 export enum WorkBlockType {

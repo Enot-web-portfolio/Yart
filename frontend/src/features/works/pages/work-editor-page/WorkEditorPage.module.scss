@@ -1,0 +1,23 @@
+.work-editor{
+  flex:1;
+  background-color: var(--background-color);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  align-items: center;
+
+  .work-editor__buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-m);
+  }
+
+  .work-editor__name{
+    width: 100%;
+    max-width: var(--work-container);
+    padding:0 var(--space-m);
+  }
+}
