@@ -253,3 +253,24 @@ class WorksViewSet(viewsets.ViewSet):
             file_urls=data["file_urls"],
         )
         return Response(CreateWorkSerializer(work).data)
+    
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def workblock_create_get(self, request, *args, **kwargs):
+        resp = {
+            "type": 0,
+            "image_urls": [],
+            "text": "",
+            "order": 0,
+        }
+        return Response(resp)
+
+    @action(permission_classes=(IsAuthenticated,), detail=True)
+    def workblock_create_post(self, request, *args, **kwargs):
+        data = request.data
+        block = WorkBlockType.objects.create(
+            type=data['type'],
+            image_urls=data['image_urls'],
+            text=data['text'],
+            order=data['order'],
+        )
+        return Response(WorkBlockSerializer(block).data)
