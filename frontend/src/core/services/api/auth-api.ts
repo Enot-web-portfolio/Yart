@@ -49,6 +49,7 @@ export namespace AuthApi {
    * @param secret User secret.
    */
   export async function refreshSecret(secret: UserSecret): Promise<UserSecretDto> {
+    console.log(secret);
     const { data: newSecretDto } = await http.post<UserSecretDto>(
       refreshSecretUrl,
       userSecretMapper.toDto(secret),

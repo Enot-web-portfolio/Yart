@@ -60,7 +60,7 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
   const [file, setFile] = useState<File | null>(null);
 
   /** Ссылка на файл. */
-  const fileUrl = useRef<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   /** Категории для выбора в панели. */
   const { skills, isLoading: isSkillLoading } = useSeparatedSkills<DefaultOptionType>(skill => ({
@@ -75,6 +75,9 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
   } = useSeparatedSecondarySkills<DefaultOptionType>(skill => ({ label: skill.name, value: skill.id }));
 
   useEffect(() => {
+    if (editorUser) {
+      setImageUrl(editorUser.userImageUrl);
+    }
     if (editorUser && editorUser.userAdditionalLinks.length > 0) {
       setLinks(editorUser.userAdditionalLinks);
     }
@@ -88,10 +91,13 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
     if (currentUser === null || editorUser === null) {
       return;
     }
-    let imageUrl = user.userImageUrl;
+
+    let curImageUrl = imageUrl;
     if (file !== null) {
       try {
-        imageUrl = await FilesService.postAvatarFile(file);
+        const url = await FilesService.postAvatarFile(file);
+        curImageUrl = url;
+        setImageUrl(url);
       } catch (error: unknown) {
 
       }
@@ -100,7 +106,7 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
     try {
       const parsedLinks = links.map(link => link.trim()).filter(link => link.length > 0);
       setLinks(parsedLinks.length > 0 ? parsedLinks : ['']);
-      await UsersService.postUserEdit(currentUser.userId, { ...user, userAdditionalLinks: parsedLinks, userImageUrl: imageUrl });
+      await UsersService.postUserEdit(currentUser.userId, { ...user, userAdditionalLinks: parsedLinks, userImageUrl: curImageUrl });
       if (editorUser.userEmail !== user.userEmail) {
         await UsersService.postActivationResend(user.userEmail);
       }
@@ -116,9 +122,9 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
   const changeFile = (currFile: File | null) => {
     setFile(currFile);
     if (currFile) {
-      fileUrl.current = URL.createObjectURL(currFile);
+      setImageUrl(URL.createObjectURL(currFile));
     } else {
-      fileUrl.current = null;
+      setImageUrl(null);
     }
   };
 
@@ -135,7 +141,7 @@ const UserSettingsPageComponent: FC<Props> = ({ updateUser }) => {
           <Form>
             <div className={`${classes['user-settings__info-settings']}`}>
               <div className={`${classes['user-settings__main-settings']}`}>
-                <AvatarUpload url={fileUrl.current ?? values.userImageUrl as string}
+                <AvatarUpload url={imageUrl}
                   className={`${classes['user-settings__avatar']}`}
                   setFile={changeFile}/>
                 <InputWithError value={values.userFirstName}
