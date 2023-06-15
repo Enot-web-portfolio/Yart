@@ -201,8 +201,8 @@ class WorksViewSet(viewsets.ViewSet):
         )
         id = uuid.uuid4()
         key = f'worksfile_{id}.png'
-        s3.put_object(Body=img, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/users/{request.user.id}/works/{key}')
-        image_url = f'https://cloud.enotwebstudio.ru/media/users/{request.user.id}/works/{key}'
+        s3.put_object(Body=img, Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'media/user/{request.user.id}/works/{key}')
+        image_url = f'https://cloud.enotwebstudio.ru/media/user/{request.user.id}/works/{key}'
         userFile = WorksFiles
         userFile.objects.create(file=image_url)
         return Response(image_url)
@@ -233,6 +233,15 @@ class WorksViewSet(viewsets.ViewSet):
         data["start_text"] = ""
         data["comments"] = []
         data["date"] = django.utils.timezone.now()
+        blocks = []
+        for i in data['blocks']:
+            block = WorkBlockType.objects.create(
+                type=i['type'],
+                image_urls=i['image_urls'],
+                text=i['text'],
+                order=i['order'],
+            )
+            blocks.append(block.id)
         work = UserWorks.objects.create(
             user_first_name=data["user_first_name"],
             user_last_name=data["user_last_name"],
@@ -249,11 +258,11 @@ class WorksViewSet(viewsets.ViewSet):
             main_skills=data["main_skills"],
             tags=data["tags"],
             open_comments=data["open_comments"],
-            blocks=data["blocks"],
+            blocks=blocks,
             file_urls=data["file_urls"],
         )
         return Response(CreateWorkSerializer(work).data)
-    
+
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def workblock_create_get(self, request, *args, **kwargs):
         resp = {
