@@ -15,10 +15,10 @@
 
   .work-reader__close {
     width: 100%;
-    background-color: var(--modal-wrapper-background);
-    padding: var(--space-vs);
+    padding: var(--space-s);
     display: flex;
     justify-content: flex-end;
+    cursor: pointer;
 
     .work-reader__close_icon {
       width: var(--icon-small);
@@ -27,7 +27,7 @@
       opacity: 0.8;
       cursor: pointer;
 
-      &:hover{
+      &:hover {
         opacity: 1;
       }
     }
@@ -40,9 +40,8 @@
 
     .work-reader {
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       background-color: #fff;
-      border-radius: var(--border-radius-s);
       gap: var(--space-m);
       padding: var(--space-m);
       display: flex;
@@ -51,9 +50,27 @@
 
       .work-reader__header {
         max-width: var(--work-container);
+        width: 100%;
         display: flex;
         justify-content: space-between;
         gap: var(--space-m);
+        align-items: flex-start;
+
+        .work-reader__like_icon {
+          width: var(--icon-small);
+          height: var(--icon-small);
+          fill: #fff;
+          stroke: #fff;
+          margin-right: var(--space-vs);
+        }
+
+        .work-reader__like_icon_unlike{
+          width: var(--icon-small);
+          height: var(--icon-small);
+          stroke: var(--button-primary-color);
+          fill: var(--button-primary-color);
+          margin-right: var(--space-vs);
+        }
 
         .work-reader__header_author {
           --icon-size: calc(var(--middle-text-fs) + var(--space-vs) + var(--small-text-fs));
@@ -80,6 +97,7 @@
             display: flex;
             align-items: center;
             gap: var(--space-vs);
+            grid-column: 1/3;
 
             .work-reader__header_author__name {
               font-size: var(--small-text-fs);
@@ -104,10 +122,24 @@
         font-size: var(--small-text-fs);
         color: var(--inactive-element-color);
         max-width: var(--work-container);
+        width: 100%;
       }
 
       .work-reader__content {
         max-width: var(--work-container);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-s);
+        font-size: var(--middle-text-fs);
+
+        .work-reader__content_image {
+          height: calc(var(--work-container) / 16 * 9);
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-color: var(--background-color);
+          border-radius: var(--border-radius-s);
+        }
       }
 
       .work-reader__author {
@@ -116,10 +148,32 @@
         flex-direction: column;
         align-items: center;
         gap: var(--space-s);
+        margin-top: var(--space-l);
 
-        .work-reader__author_image {
+        .work-reader__author_image_wrapper {
+          display: grid;
+          grid-template-columns: 1fr calc(var(--space-l) * 1.5) 1fr;
+          grid-gap: var(--space-s);
+          width: 100%;
+          align-items: center;
 
+          .work-reader__author_image {
+            width: calc(var(--space-l) * 1.5);
+            height: calc(var(--space-l) * 1.5);
+            border-radius: 100%;
+            background-color: var(--background-color);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+
+          .work-reader__author_image_line {
+            width: 100%;
+            height: 2px;
+            background-color: var(--background-color);
+          }
         }
+
 
         .work-reader__author_name {
 
@@ -136,11 +190,11 @@
         background-color: var(--background-color);
         border-radius: var(--border-radius-s);
         padding: var(--space-m);
-        gap: var(--space-m);
 
         .work-reader__author_work__header {
           display: flex;
           justify-content: space-between;
+          margin-bottom: var(--space-m);
 
           .work-reader__author_work__desc {
 

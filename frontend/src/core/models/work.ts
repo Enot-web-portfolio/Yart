@@ -1,5 +1,10 @@
+import { WorkBlock } from './work-block';
+
 /** Work. */
 export type Work = Readonly<{
+
+  /** Work blocks. */
+  workBlocks: WorkBlock[];
 
   /** User name. */
   userFirstName: string;

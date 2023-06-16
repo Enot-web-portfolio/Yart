@@ -35,7 +35,7 @@ const WorksGridComponent: FC<Props> = props => {
   /** Текущая страница работ. */
   const [page, setPage] = useState(1);
 
-  const { works, isLoading } = useWorksState({ page, count: props.count, search: props.search });
+  const { works, isLoading } = useWorksState({ page, count: props.count, search: props.search, userId: props.userId });
 
   useEffect(() => {
     setPage(1);

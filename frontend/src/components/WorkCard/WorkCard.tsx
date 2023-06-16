@@ -7,13 +7,13 @@ import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { typedMemo } from '../../core/utils/typed-memo';
-import { HeartFillIcon, HeartLineIcon } from '../Icons';
+import { EditIcon, HeartFillIcon, HeartLineIcon } from '../Icons';
 import { Tag } from '../Tag';
 import { useCurrentUserStore } from '../../core/store/user/store';
 import { useAuthStore } from '../../core/store/auth/store';
 import { WorksService } from '../../core/services/works-service';
 
-import { toUserWorks } from '../../routes/route-links';
+import { toUserWorks, toWorkEditor } from '../../routes/route-links';
 
 import { useSkillsStore } from '../../core/store/skills/store';
 
@@ -55,7 +55,7 @@ const WorkCardComponent: FC<Props> = props => {
       return null;
     }
     try {
-      if (props.workIsLike) {
+      if (isLike) {
         WorksService.postWorkUnlike(props.workId, user.userId);
       } else {
         WorksService.postWorkLike(props.workId, user.userId);
@@ -81,9 +81,15 @@ const WorkCardComponent: FC<Props> = props => {
           </div>
         </div>
       }
+      {isUserAuthorized && user && user.userId === props.userId &&
+        <div className={`${classes['work-card__panel']}`}>
+          <NavLink to={toWorkEditor(props.workId)}>
+            <EditIcon className={`${classes['work-card__panel_edit']}`}/>
+          </NavLink>
+        </div>}
       <div className={`${classes['work-card__info']}`}>
         {props.pageUserId === undefined &&
-          <NavLink to={toUserWorks(props.userId)}>
+          <NavLink to={toUserWorks(props.userId)} onClick={e => e.stopPropagation()}>
             <div className={`${classes['work-card__user-info']}`}>
               <div className={`${classes['work-card_user-img']}`}
                 style={{ backgroundImage: `url('${props.userImageUrl}')` }}/>
@@ -92,12 +98,16 @@ const WorkCardComponent: FC<Props> = props => {
               </Text>
             </div>
           </NavLink>}
-        <div className={`${classes['work-card__like']}`} onClick={onWorkLike}>
-          {isLike ?
-            <HeartFillIcon size={30} fill={'#E61E59'} stroke={'#E61E59'}/> :
-            <HeartLineIcon size={30} className={`${classes['work-card__line_icon']}`}/>}
-          <Text className={`${classes['work-card__line_count']}`}>{props.workLikesCount}</Text>
-        </div>
+        {isUserAuthorized && user &&
+          <div className={`${classes['work-card__like']}`} onClick={e => {
+          e.stopPropagation();
+          onWorkLike();
+        }}>
+            {isLike ?
+              <HeartFillIcon size={30} fill={'#E61E59'} stroke={'#E61E59'}/> :
+              <HeartLineIcon size={30} className={`${classes['work-card__line_icon']}`}/>}
+            <Text className={`${classes['work-card__line_count']}`}>{props.workLikesCount + (props.workIsLike !== isLike ? !isLike ? -1 : 1 : 0)}</Text>
+          </div>}
       </div>
       <div className={`${classes['work-card__tags']}`}>
         {skills && props.workMainSkills.map((skillId, i) => {
