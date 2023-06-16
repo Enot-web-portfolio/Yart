@@ -28,7 +28,7 @@ type Props = Readonly<{
   work: EditingWork;
 
   /** Ф-ция сохранения работы. */
-  save(work: EditingWork, files: File[]): void;
+  save(work: EditingWork, files: File[], imageOrder: number | null): void;
 
   /** Сохраняется ли сейчас работы. */
   isSaving: boolean;
@@ -85,9 +85,8 @@ const WorkSettingsComponent: FC<Props> = props => {
                          props.save({
                            ...work,
                            workBlock: props.work.workBlock,
-                           workImageUrl: props.work.workBlock.find(block => block.blockOrder === orderBlockCover)?.blockImageUrls[0] ?? '',
                            workName: props.work.workName,
-                         }, files);
+                         }, files, orderBlockCover);
                          setIsActive(false);
                        }}>
                        {({ values, setFieldValue, errors }) => (

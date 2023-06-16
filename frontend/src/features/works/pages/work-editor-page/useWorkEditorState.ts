@@ -92,8 +92,9 @@ export const useWorkEditorState = () => {
    * Ф-ция сохранения работы.
    * @param curWork - Work.
    * @param files - Files.
+   * @param imageOrder
    */
-  async function onWorkSave(curWork: EditingWork, files: File[]) {
+  async function onWorkSave(curWork: EditingWork, files: File[], imageOrder: number | null) {
     setIsSaving(true);
     for (let i = 0; i < curWork.workBlock.length; i++) {
       const block = curWork.workBlock[i];
@@ -111,6 +112,9 @@ export const useWorkEditorState = () => {
       }
     }
 
+    if (imageOrder !== null && curWork) {
+      curWork.workImageUrl = curWork.workBlock.find(block => block.blockOrder === imageOrder)?.blockImageUrls[0] ?? '';
+    }
     if (id === 'new') {
       onWorkCreate(curWork);
     } else {
