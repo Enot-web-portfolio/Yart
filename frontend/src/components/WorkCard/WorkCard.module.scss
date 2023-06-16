@@ -16,8 +16,11 @@
       flex-direction: column;
 
       .work-card__content_text {
-        color: var(--inactive-element-color);
-        font-size: var(--middle-text-fs);
+        p, li{
+          color: var(--inactive-element-color);
+          font-size: var(--middle-text-fs);
+          margin: 0;
+        }
       }
 
       .work-card__content_name {

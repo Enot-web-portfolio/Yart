@@ -66,7 +66,7 @@ const WorkCardComponent: FC<Props> = props => {
       {props.workImageUrl == null ?
         <div className={`${classes['work-card__content']} ${classes['work-card_textual']}`}>
           <Text className={`${classes['work-card__content_name']}`}>{props.workName}</Text>
-          <Text className={`${classes['work-card__content_text']}`}>{props.workStartText}</Text>
+          <div className={`${classes['work-card__content_text']}`} dangerouslySetInnerHTML={{ __html: props.workStartText || '' }}/>
         </div> :
         <div className={`${classes['work-card__content']} ${classes['work-card_picture']}`}
           style={{ backgroundImage: `url('${props.workImageUrl}')` }}>

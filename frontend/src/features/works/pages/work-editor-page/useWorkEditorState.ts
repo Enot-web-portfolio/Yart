@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { AxiosError } from 'axios';
 
@@ -9,6 +9,7 @@ import { WorksService } from '../../../../core/services/works-service';
 import { EditingWork } from '../../../../core/models/editing-work';
 import { WorkBlockType } from '../../../../core/models/work-block';
 import { FilesService } from '../../../../core/services/files-service';
+import { toWorkEditor } from '../../../../routes/route-links';
 
 export const useWorkEditorState = () => {
 
@@ -26,6 +27,9 @@ export const useWorkEditorState = () => {
 
   /** Сохраняется ли работа. */
   const [isSaving, setIsSaving] = useState(false);
+
+  /** Обьект навигации. */
+  const navigate = useNavigate();
 
   useEffect(() => {
     onDataGet();
@@ -53,9 +57,12 @@ export const useWorkEditorState = () => {
     }
     try {
       setIsSaving(true);
-      await WorksService.postWorkCreate(curWork);
+      const id = await WorksService.postWorkCreate(curWork);
+      toast.success('Работа создана');
+      navigate(toWorkEditor(id));
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
+      toast.error('Произошла ошибка');
     } finally {
       setIsSaving(false);
     }
@@ -71,9 +78,11 @@ export const useWorkEditorState = () => {
     }
     try {
       setIsSaving(true);
-      await WorksService.postWorkEdit(curWork, id ?? '');
+      await WorksService.putWorkEdit(curWork, id ?? '');
+      toast.success('Работа изменена');
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);
+      toast.error('Произошла ошибка');
     } finally {
       setIsSaving(false);
     }

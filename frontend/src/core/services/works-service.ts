@@ -77,9 +77,9 @@ export namespace WorksService {
    * Post create work.
    * @param work - Editing work data.
    */
-  export async function postWorkCreate(work: EditingWork) {
+  export async function postWorkCreate(work: EditingWork): Promise<string | number> {
     try {
-      await WorksApi.postWorkCreate(work);
+      return await WorksApi.postWorkCreate(work);
     } catch (error: unknown) {
       if (isApiError(error)) {
         throw AppErrorMapper.fromDto(error);

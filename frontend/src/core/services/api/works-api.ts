@@ -54,8 +54,9 @@ export namespace WorksApi {
    * Post create work.
    * @param work - Editing work data.
    */
-  export async function postWorkCreate(work: EditingWork) {
-    await http.post(`${CONFIG.apiUrl}/works/create`, editingWorkMapper.toDto(work));
+  export async function postWorkCreate(work: EditingWork): Promise<number | string> {
+    const { data } = await http.post<WorkDto>(`${CONFIG.apiUrl}/works/create`, editingWorkMapper.toDto(work));
+    return data.id;
   }
 
   /**
