@@ -35,7 +35,7 @@ const WorksGridComponent: FC<Props> = props => {
   /** Текущая страница работ. */
   const [page, setPage] = useState(1);
 
-  const { works, isLoading } = useWorksState({ page, count: props.count, search: props.search });
+  const { works, isLoading } = useWorksState({ page, count: props.count, search: props.search, userId: props.userId });
 
   useEffect(() => {
     setPage(1);
@@ -54,8 +54,7 @@ const WorksGridComponent: FC<Props> = props => {
     <div className={`${classes['works-grid__wrapper']}`}>
       <div className={`${classes['works-grid']}`}>
         {works.map((work, i) =>
-          <WorkCard key={i} {...work} pageUserId={props.userId} onWorkClick={() => {
-          }}/>)}
+          <WorkCard key={i} {...work} pageUserId={props.userId}/>)}
       </div>
       {isLoading && <Spin/>}
     </div>

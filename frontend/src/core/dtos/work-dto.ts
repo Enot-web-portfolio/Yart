@@ -1,7 +1,10 @@
-import {SkillDto} from "./skill-dto";
+import {WorkBlockDto} from "./work-block-dto";
 
 /** Work Dto. */
 export type WorkDto = Readonly<{
+
+  /** Work blocks. */
+  blocks?: WorkBlockDto[];
 
   /** User name. */
   user_first_name: string;
@@ -16,16 +19,16 @@ export type WorkDto = Readonly<{
   user_id: number;
 
   /** Work skills. */
-  main_skills: readonly SkillDto[];
+  main_skills: readonly number[];
 
   /** Work likes. */
   likes_count: number;
 
   /** Work avatar url. */
-  image_url: string | null;
+  image_url: string;
 
   /** Work start text. */
-  start_text: string;
+  start_text: string | null;
 
   /** Work name. */
   name: string;
@@ -34,5 +37,5 @@ export type WorkDto = Readonly<{
   id: number;
 
   /** Work was like current user .*/
-  is_like: boolean;
+  isLike: boolean;
 }>

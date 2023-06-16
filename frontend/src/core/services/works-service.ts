@@ -45,6 +45,22 @@ export namespace WorksService {
   }
 
   /**
+   * Get work.
+   * @param workId - Id работы.
+   */
+  export async function getWork(workId: number): Promise<Work> {
+    try {
+      const work = await WorksApi.getWork(workId);
+      return work;
+    } catch (error: unknown) {
+      if (isApiError(error)) {
+        throw AppErrorMapper.fromDto(error);
+      }
+      throw error;
+    }
+  }
+
+  /**
    * Like work.
    * @param workId - Id работы.
    * @param userId - Id пользователя, который убирает лайк.

@@ -5,4 +5,5 @@ export { HeartLineIcon } from './HeartLineIcon';
 export { InfoFillIcon } from './InfoFillIcon';
 export { MessageFillIcon } from './MessageFillIcon';
 export { UserAddIcon } from './UserAddIcon';
-export {CrossIcon} from "./CrossIcon";
+export { CrossIcon } from './CrossIcon';
+export { EditIcon } from './EditIcon';

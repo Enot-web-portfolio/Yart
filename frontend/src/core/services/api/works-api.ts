@@ -18,7 +18,7 @@ export namespace WorksApi {
    * @param mainSkills - Выбранные категории.
    */
   export async function getWorks(page: number, count: number, onlySubscriptions: boolean, userId?: number | string, mainSkills?: number[] | string[]): Promise<Work[]> {
-    const url = `${CONFIG.apiUrl}/works?page=${page}&count=${count}&only_subscriptions=${onlySubscriptions}${userId !== undefined ? `&user_id=${userId}` : ''}${mainSkills !== undefined ? `&main_skills=${mainSkills.join(', ')}` : ''}`;
+    const url = `${CONFIG.apiUrl}/works?page=${page}&count=${count}&onlySubscriptions=${onlySubscriptions}${userId !== undefined ? `&userOuterId=${userId}` : ''}${mainSkills !== undefined ? `&mainSkills=${mainSkills.join(', ')}` : ''}`;
     const { data: works } = await http.get<WorkDto[]>(url);
 
     return works.map(workDto => workMapper.fromDto(workDto));
@@ -30,7 +30,16 @@ export namespace WorksApi {
    * @param userId - Id пользователя, который лайкает.
    */
   export async function postWorkLike(workId: number, userId: number) {
-    await http.post(`${CONFIG.apiUrl}/works/${workId}/${userId}/like/`);
+    await http.post(`${CONFIG.apiUrl}/works/${workId}/${userId}/like`);
+  }
+
+  /**
+   * Get work.
+   * @param workId - Id работы.
+   */
+  export async function getWork(workId: number): Promise<Work> {
+    const { data } = await http.get<WorkDto>(`${CONFIG.apiUrl}/works/${workId}`);
+    return workMapper.fromDto(data);
   }
 
   /**
@@ -39,7 +48,7 @@ export namespace WorksApi {
    * @param userId - Id пользователя, который убирает лайк.
    */
   export async function postWorkUnlike(workId: number, userId: number) {
-    await http.post(`${CONFIG.apiUrl}/works/${workId}/${userId}/unlike/`);
+    await http.post(`${CONFIG.apiUrl}/works/${workId}/${userId}/unlike`);
   }
 
   /** Get create work.*/

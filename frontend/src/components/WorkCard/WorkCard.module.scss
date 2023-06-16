@@ -6,6 +6,36 @@
   min-width:350px;
   width: 100%;
   cursor: pointer;
+  position: relative;
+
+  .work-card__panel{
+    position: absolute;
+    top: 0;
+    right:0;
+    background-color: #fff;
+    padding: var(--space-s) var(--space-m) var(--space-s) var(--space-s);
+    border-bottom-left-radius: var(--border-radius-vs);
+    align-items: center;
+    display: none;
+
+    .work-card__panel_edit{
+      width: var(--icon-small);
+      height: var(--icon-small);
+      stroke: var(--inactive-element-color);
+      fill: var(--inactive-element-color);
+
+      &:hover{
+        stroke: var(--button-primary-color);
+        fill: var(--button-primary-color);
+      }
+    }
+  }
+
+  &:hover{
+    .work-card__panel{
+      display: flex;
+    }
+  }
 
   .work-card__content {
     height: 300px;
