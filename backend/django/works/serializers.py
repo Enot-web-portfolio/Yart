@@ -48,12 +48,13 @@ class EditingWorkSerializer(serializers.ModelSerializer):
         )
 
     def update(self, instance, validated_data):
-        instance.image_url = validated_data.get("imageUrl", instance.image_url)
-        instance.main_skills = validated_data.get("mainSkills", instance.main_skills)
+        instance.image_url = validated_data.get("image_url", instance.image_url)
+        instance.main_skills = validated_data.get("main_skills", instance.main_skills)
         instance.tags = validated_data.get("tags", instance.tags)
-        instance.open_comments = validated_data.get("openComments", instance.open_comments)
+        instance.open_comments = validated_data.get("open_comments", instance.open_comments)
         instance.blocks = validated_data.get("blocks", instance.blocks)
-        instance.file_urls = validated_data.get("fileUrls", instance.file_urls)
+        instance.file_urls = validated_data.get("file_urls", instance.file_urls)
+        instance.name = validated_data.get("name", instance.file_urls)
         instance.save()
         return instance
 
@@ -75,8 +76,9 @@ class WorkFilesSerializer(serializers.ModelSerializer):
         model = WorksFiles
         fields = '__all__'
 
-        
+
 class WorkBlockSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkBlockType
         fields = '__all__'
+
