@@ -27,7 +27,7 @@ export const useWorksState = (props: Props) => {
     setIsLoading(true);
     try {
       const newWorks = await WorksService.getWorks(props.page, props.count, props.onlySubscriptions ?? false, props.userId, props.selectedMainSkills);
-      setWorks(currentWorks => currentWorks ? currentWorks.concat(newWorks) : newWorks);
+      setWorks(newWorks);
       setIsEmpty(newWorks.length === 0);
     } catch (error: unknown) {
       setIsEmpty(true);
