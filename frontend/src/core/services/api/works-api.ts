@@ -81,7 +81,7 @@ export namespace WorksApi {
    * @param work - Editing work data.
    * @param id - Work id.
    */
-  export async function postWorkEdit(work: EditingWork, id: number | string) {
-    await http.post(`${CONFIG.apiUrl}/works/${id}/edit`, editingWorkMapper.toDto(work));
+  export async function putWorkEdit(work: EditingWork, id: number | string) {
+    await http.put(`${CONFIG.apiUrl}/works/${id}/edit`, editingWorkMapper.toDto(work));
   }
 }

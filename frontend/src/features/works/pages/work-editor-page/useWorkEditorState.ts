@@ -73,7 +73,7 @@ export const useWorkEditorState = () => {
     }
     try {
       setIsSaving(true);
-      await WorksService.postWorkEdit(curWork, id ?? '');
+      await WorksService.putWorkEdit(curWork, id ?? '');
       toast.success('Работа изменена');
     } catch (error: unknown) {
       setError((error as AxiosError).status ?? 404);

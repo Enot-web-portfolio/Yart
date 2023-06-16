@@ -82,7 +82,7 @@ const WorkSettingsComponent: FC<Props> = props => {
                        validationSchema={validationSchema}
                        validateOnBlur={true}
                        onSubmit={work => {
-                         props.save({ ...work, workBlock: props.work.workBlock }, files);
+                         props.save({ ...work, workBlock: props.work.workBlock, workName: props.work.workName }, files);
                          setIsActive(false);
                        }}>
                        {({ values, setFieldValue, errors }) => (

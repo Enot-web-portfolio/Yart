@@ -83,7 +83,7 @@ const WorkCardComponent: FC<Props> = props => {
       }
       {isUserAuthorized && user && user.userId === props.userId &&
         <div className={`${classes['work-card__panel']}`}>
-          <NavLink to={toWorkEditor(props.workId)}>
+          <NavLink to={toWorkEditor(props.workId)} onClick={e => e.stopPropagation()}>
             <EditIcon className={`${classes['work-card__panel_edit']}`}/>
           </NavLink>
         </div>}

@@ -81,7 +81,7 @@ const WorkReaderComponent: FC = () => {
                 <div className={`${classes['work-reader__header_author__data']}`}>
                   <Text
                     className={`${classes['work-reader__header_author__name']}`}>{work.userFirstName} {work.userLastName}</Text>
-                  {currentUser !== null &&
+                  {currentUser !== null && currentUser.userId !== work.userId &&
                     <>
                       <div className={`${classes['work-reader__header_author_dot']}`}/>
                       <Link className={`${classes['work-reader__header_author__subscribe']}`}>Подписаться</Link>
@@ -91,7 +91,7 @@ const WorkReaderComponent: FC = () => {
 
               {currentUser === null ?
                 null :
-                isLike ?
+                !isLike ?
                   <Button type={'primary'} loading={isLikeLoading} onClick={toggleLike}
                     icon={<HeartFillIcon className={`${classes['work-reader__like_icon']}`}/>}>Нравится</Button> :
                   <Button type={'default'} loading={isLikeLoading} onClick={toggleLike}
@@ -110,7 +110,7 @@ const WorkReaderComponent: FC = () => {
                 block.blockType === WorkBlockType.Text ?
                   <div dangerouslySetInnerHTML={{ __html: block.blockText }} key={i}/> :
                   <div className={`${classes['work-reader__content_image']}`}
-                    style={{ backgroundImage: `url('${block.blockImage}')` }} key={i}/>)}
+                    style={{ backgroundImage: `url('${block.blockImageUrls[0]}')` }} key={i}/>)}
             </div>
 
             <div className={`${classes['work-reader__author']}`}>
@@ -122,7 +122,7 @@ const WorkReaderComponent: FC = () => {
               </div>
               <Text className={`${classes['work-reader__author_name']}`}>{work.userFirstName} {work.userLastName}</Text>
               <Text className={`${classes['work-reader__author_skills']}`}>Skiils</Text>
-              {currentUser !== null && <Button type={'primary'}>Подписаться</Button>}
+              {currentUser !== null && currentUser.userId !== work.userId && <Button type={'primary'}>Подписаться</Button>}
             </div>
 
             <div className={`${classes['work-reader__author_work']}`}>
