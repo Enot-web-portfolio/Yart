@@ -109,9 +109,9 @@ export namespace WorksService {
    * @param work - Editing work data.
    * @param id - Work id.
    */
-  export async function postWorkEdit(work: EditingWork, id: number | string) {
+  export async function putWorkEdit(work: EditingWork, id: number | string) {
     try {
-      await WorksApi.postWorkEdit(work, id);
+      await WorksApi.putWorkEdit(work, id);
     } catch (error: unknown) {
       if (isApiError(error)) {
         throw AppErrorMapper.fromDto(error);

@@ -40,8 +40,8 @@ export const useWorkEditorState = () => {
     try {
       const workData = id === 'new' ? await WorksService.getWorkCreate() : await WorksService.getWorkEdit(id ?? '');
       setWork(workData);
-    } catch (error: unknown) {
-      setError((error as AxiosError).status ?? 404);
+    } catch (newError: unknown) {
+      setError((newError as AxiosError).status ?? 404);
     } finally {
       setIsLoading(false);
     }
@@ -49,7 +49,7 @@ export const useWorkEditorState = () => {
 
   /**
    * Ф-ция создания работы.
-   * @param curWork
+   * @param curWork - Creating work.
    */
   async function onWorkCreate(curWork: EditingWork) {
     if (curWork === null) {
@@ -57,11 +57,11 @@ export const useWorkEditorState = () => {
     }
     try {
       setIsSaving(true);
-      const id = await WorksService.postWorkCreate(curWork);
+      const newId = await WorksService.postWorkCreate(curWork);
       toast.success('Работа создана');
-      navigate(toWorkEditor(id));
-    } catch (error: unknown) {
-      setError((error as AxiosError).status ?? 404);
+      navigate(toWorkEditor(newId));
+    } catch (newError: unknown) {
+      setError((newError as AxiosError).status ?? 404);
       toast.error('Произошла ошибка');
     } finally {
       setIsSaving(false);
@@ -70,7 +70,7 @@ export const useWorkEditorState = () => {
 
   /**
    * Ф-ция редактирования работы.
-   * @param curWork
+   * @param curWork - Editing work.
    */
   async function onWorkEdit(curWork: EditingWork) {
     if (curWork === null) {
@@ -80,8 +80,8 @@ export const useWorkEditorState = () => {
       setIsSaving(true);
       await WorksService.putWorkEdit(curWork, id ?? '');
       toast.success('Работа изменена');
-    } catch (error: unknown) {
-      setError((error as AxiosError).status ?? 404);
+    } catch (newError: unknown) {
+      setError((newError as AxiosError).status ?? 404);
       toast.error('Произошла ошибка');
     } finally {
       setIsSaving(false);
@@ -90,8 +90,8 @@ export const useWorkEditorState = () => {
 
   /**
    * Ф-ция сохранения работы.
-   * @param curWork
-   * @param files
+   * @param curWork - Work.
+   * @param files - Files.
    */
   async function onWorkSave(curWork: EditingWork, files: File[]) {
     setIsSaving(true);
@@ -105,7 +105,7 @@ export const useWorkEditorState = () => {
       try {
         const url = await FilesService.postWorkFile(block.blockImage);
         block.blockImageUrls = [url];
-      } catch (error: unknown) {
+      } catch (newError: unknown) {
         toast.error(`Ошибка при загрузке файла: ${fileName}`);
         block.blockImageUrls = [];
       }
