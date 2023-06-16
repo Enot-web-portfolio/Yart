@@ -228,20 +228,29 @@ class WorksViewSet(viewsets.ViewSet):
         work = get_object_or_404(Works, pk=kwargs['id'])
         serializer = EditingWorkSerializer()
         data = request.data
-        blocks = []
-        for i in data['blocks']:
-            block = WorkBlockType.objects.get_or_create(
-                type=i['type'],
-                image_urls=i['image_urls'],
-                text=i['text'],
-                order=i['order'],
-            )
-            blocks.append(block.id)
-        data['blocks'] = blocks
         for i in data['blocks']:
             if i['type'] == 0:
-                work.start_text = i['text']
+                work.start_text = i['text'][:255]
                 break
+        blocks = []
+        for i in data['blocks']:
+            try:
+                block = WorkBlockSerializer(WorkBlockType.objects.get(
+                    type=i['type'],
+                    image_urls=i['image_urls'],
+                    text=i['text'],
+                    order=i['order'],
+                )).data
+                blocks.append(block['id'])
+            except:
+                block = WorkBlockType.objects.create(
+                    type=i['type'],
+                    image_urls=i['image_urls'],
+                    text=i['text'],
+                    order=i['order'],
+                )
+                blocks.append(block.id)
+        data['blocks'] = blocks
         EditingWorkSerializer.update(self=serializer, instance=work, validated_data=data)
         return Response(EditingWorkSerializer(work).data)
 
