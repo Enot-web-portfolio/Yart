@@ -82,7 +82,12 @@ const WorkSettingsComponent: FC<Props> = props => {
                        validationSchema={validationSchema}
                        validateOnBlur={true}
                        onSubmit={work => {
-                         props.save({ ...work, workBlock: props.work.workBlock, workName: props.work.workName }, files);
+                         props.save({
+                           ...work,
+                           workBlock: props.work.workBlock,
+                           workImageUrl: props.work.workBlock.find(block => block.blockOrder === orderBlockCover)?.blockImageUrls[0] ?? '',
+                           workName: props.work.workName,
+                         }, files);
                          setIsActive(false);
                        }}>
                        {({ values, setFieldValue, errors }) => (
