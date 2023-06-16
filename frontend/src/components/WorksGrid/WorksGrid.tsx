@@ -35,13 +35,13 @@ const WorksGridComponent: FC<Props> = props => {
   /** Текущая страница работ. */
   const [page, setPage] = useState(1);
 
-  const { works, isLoading } = useWorksState({ page, count: props.count, search: props.search, userId: props.userId });
+  const { works, isLoading } = useWorksState({ page, count: props.count, search: props.search, userId: props.userId, selectedMainSkills: props.selectedMainSkills });
 
   useEffect(() => {
     setPage(1);
   }, [props.selectedMainSkills, props.userId, props.count, props.search]);
 
-  if (isLoading && works === null) {
+  if (isLoading) {
     return <Spin/>;
   }
   if (works === null) {
