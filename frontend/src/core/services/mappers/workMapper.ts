@@ -21,6 +21,8 @@ class WorkMapper implements IMapperFromDto<WorkDto, Work> {
       userImageUrl: dto.user_image_url,
       userLastName: dto.user_last_name,
       workBlocks: dto.blocks ? dto.blocks.map(block => workBlockMapper.fromDto(block)) : [],
+      userMainSkills: dto.user_main_skills,
+      userIsSubscribe: dto.is_subscribe,
     };
   }
 }

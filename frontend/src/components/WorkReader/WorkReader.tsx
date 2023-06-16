@@ -81,7 +81,7 @@ const WorkReaderComponent: FC = () => {
                 <div className={`${classes['work-reader__header_author__data']}`}>
                   <Text
                     className={`${classes['work-reader__header_author__name']}`}>{work.userFirstName} {work.userLastName}</Text>
-                  {currentUser !== null && currentUser.userId !== work.userId &&
+                  {currentUser !== null && currentUser.userId !== work.userId && !work.userIsSubscribe &&
                     <>
                       <div className={`${classes['work-reader__header_author_dot']}`}/>
                       <Link className={`${classes['work-reader__header_author__subscribe']}`}>Подписаться</Link>
@@ -99,10 +99,13 @@ const WorkReaderComponent: FC = () => {
                       className={`${classes['work-reader__like_icon_unlike']}`}/>}>{work.workLikesCount}</Button>}
             </div>
             {skills && <Text className={`${classes['work-reader__skills']}`}>
-              {work.workMainSkills.reduce((prev, next) => {
-                const curSkill = skills.find(skill => skill.id === next);
-                return curSkill ? `${prev} ${curSkill.name}` : prev;
-              }, '')}
+              {work.workMainSkills.map(skillId => {
+                const curSkill = skills.find(skill => skill.id === skillId);
+                if (curSkill) {
+                  return curSkill.name;
+                }
+                return '';
+              }).join(', ')}
             </Text>}
 
             <div className={`${classes['work-reader__content']}`}>
@@ -121,8 +124,18 @@ const WorkReaderComponent: FC = () => {
                 <div className={`${classes['work-reader__author_image_line']}`}/>
               </div>
               <Text className={`${classes['work-reader__author_name']}`}>{work.userFirstName} {work.userLastName}</Text>
-              <Text className={`${classes['work-reader__author_skills']}`}>Skiils</Text>
-              {currentUser !== null && currentUser.userId !== work.userId && <Button type={'primary'}>Подписаться</Button>}
+              {skills &&
+                <Text className={`${classes['work-reader__author_skills']}`}>
+                  {work.userMainSkills.map(skillId => {
+                    const curSkill = skills.find(skill => skill.id === skillId);
+                    if (curSkill) {
+                      return curSkill.name;
+                    }
+                    return '';
+                  }).join(', ')}
+                </Text>}
+              {currentUser !== null && currentUser.userId !== work.userId && !work.userIsSubscribe &&
+                <Button type={'primary'}>Подписаться</Button>}
             </div>
 
             <div className={`${classes['work-reader__author_work']}`}>

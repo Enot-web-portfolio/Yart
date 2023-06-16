@@ -18,6 +18,12 @@ export type WorkDto = Readonly<{
   /** User id */
   user_id: number;
 
+  /** User main skills. */
+  user_main_skills: number[];
+
+  /** User is subscribe. */
+  is_subscribe: boolean;
+
   /** Work skills. */
   main_skills: readonly number[];
 

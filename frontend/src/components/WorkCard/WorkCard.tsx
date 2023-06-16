@@ -72,7 +72,8 @@ const WorkCardComponent: FC<Props> = props => {
       {props.workImageUrl == null ?
         <div className={`${classes['work-card__content']} ${classes['work-card_textual']}`}>
           <Text className={`${classes['work-card__content_name']}`}>{props.workName}</Text>
-          <div className={`${classes['work-card__content_text']}`} dangerouslySetInnerHTML={{ __html: props.workStartText || '' }}/>
+          <div className={`${classes['work-card__content_text']}`}
+            dangerouslySetInnerHTML={{ __html: props.workStartText || '' }}/>
         </div> :
         <div className={`${classes['work-card__content']} ${classes['work-card_picture']}`}
           style={{ backgroundImage: `url('${props.workImageUrl}')` }}>
@@ -98,16 +99,20 @@ const WorkCardComponent: FC<Props> = props => {
               </Text>
             </div>
           </NavLink>}
-        {isUserAuthorized && user &&
-          <div className={`${classes['work-card__like']}`} onClick={e => {
+
+        <div className={`${classes['work-card__like']}`} onClick={e => {
+          if (!(isUserAuthorized && user)) {
+            return;
+          }
           e.stopPropagation();
           onWorkLike();
         }}>
-            {isLike ?
-              <HeartFillIcon size={30} fill={'#E61E59'} stroke={'#E61E59'}/> :
-              <HeartLineIcon size={30} className={`${classes['work-card__line_icon']}`}/>}
-            <Text className={`${classes['work-card__line_count']}`}>{props.workLikesCount + (props.workIsLike !== isLike ? !isLike ? -1 : 1 : 0)}</Text>
-          </div>}
+          {isLike ?
+            <HeartFillIcon size={30} fill={'#E61E59'} stroke={'#E61E59'}/> :
+            <HeartLineIcon size={30} className={`${classes['work-card__line_icon']}`}/>}
+          <Text
+            className={`${classes['work-card__line_count']}`}>{props.workLikesCount + (props.workIsLike !== isLike ? !isLike ? -1 : 1 : 0)}</Text>
+        </div>
       </div>
       <div className={`${classes['work-card__tags']}`}>
         {skills && props.workMainSkills.map((skillId, i) => {

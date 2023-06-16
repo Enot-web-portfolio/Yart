@@ -18,6 +18,12 @@ export type Work = Readonly<{
   /** User id */
   userId: number;
 
+  /** User main skills. */
+  userMainSkills: number[];
+
+  /** User is subscribe. */
+  userIsSubscribe: boolean;
+
   /** Work skills. */
   workMainSkills: readonly number[];
 
