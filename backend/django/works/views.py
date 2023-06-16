@@ -38,6 +38,13 @@ class WorksViewSet(viewsets.ViewSet):
                 try:
                     serializer = WorksShortSerializer(Works.objects.get(user_id=int(i))).data
                     query.append(serializer)
+                    if request.user.id is not None:
+                        serializer['user_main_skills'] = request.user.selected_main_skills
+                        subs = UserSubscribtions.objects.get(id=request.user.id)
+                        if serializer['user_id'] in subs.subs_list:
+                            serializer['is_subscribe'] = True
+                        else:
+                            serializer['is_subscribe'] = False
                     if request.user.id is not None and request.user.id in serializer['likes_list']:
                         serializer['isLike'] = True
                     elif request.user.id is not None and request.user.id not in serializer['likes_list']:
@@ -57,7 +64,13 @@ class WorksViewSet(viewsets.ViewSet):
             query = List.objects.filter(user_id=int(request.GET.get("userOuterId", 1)))
             serializer = WorksShortSerializer(query, many=True).data
             for i in range(len(serializer)):
-                print(serializer[i])
+                if request.user.id is not None:
+                    serializer[i]['user_main_skills'] = request.user.selected_main_skills
+                    subs = UserSubscribtions.objects.get(id=request.user.id)
+                    if serializer[i]['user_id'] in subs.subs_list:
+                        serializer[i]['is_subscribe'] = True
+                    else:
+                        serializer[i]['is_subscribe'] = False
                 if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
                     serializer[i]['isLike'] = True
                 elif request.user.id is not None and request.user.id not in serializer[i]['likes_list']:
@@ -80,6 +93,13 @@ class WorksViewSet(viewsets.ViewSet):
                     if int(j) in i['main_skills'] and i not in response_list:
                         response_list.append(i)
             for i in range(len(response_list)):
+                if request.user.id is not None:
+                    serializer[i]['user_main_skills'] = request.user.selected_main_skills
+                    subs = UserSubscribtions.objects.get(id=request.user.id)
+                    if serializer[i]['user_id'] in subs.subs_list:
+                        serializer[i]['is_subscribe'] = True
+                    else:
+                        serializer[i]['is_subscribe'] = False
                 if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
                     response_list[i]['isLike'] = True
                 elif request.user.id is not None and request.user.id not in serializer[i]['likes_list']:
@@ -95,7 +115,13 @@ class WorksViewSet(viewsets.ViewSet):
             query = Works.objects.all()
             serializer = WorksShortSerializer(query, many=True).data
             for i in range(len(serializer)):
-                print(serializer[i])
+                if request.user.id is not None:
+                    serializer[i]['user_main_skills'] = request.user.selected_main_skills
+                    subs = UserSubscribtions.objects.get(id=request.user.id)
+                    if serializer[i]['user_id'] in subs.subs_list:
+                        serializer[i]['is_subscribe'] = True
+                    else:
+                        serializer[i]['is_subscribe'] = False
                 if request.user.id is not None and request.user.id in serializer[i]['likes_list']:
                     serializer[i]['isLike'] = True
                 elif request.user.id is not None and request.user.id not in serializer[i]['likes_list']:
@@ -138,6 +164,13 @@ class WorksViewSet(viewsets.ViewSet):
             blocks.append(WorkBlockSerializer(WorkBlockType.objects.get(id=i)).data)
         serializer = WorksSerializer(work).data
         serializer['blocks'] = blocks
+        if request.user.id is not None:
+            serializer['user_main_skills'] = request.user.selected_main_skills
+            subs = UserSubscribtions.objects.get(id=request.user.id)
+            if serializer['user_id'] in subs.subs_list:
+                serializer['is_subscribe'] = True
+            else:
+                serializer['is_subscribe'] = False
         if request.user.id is not None and request.user.id in serializer['likes_list']:
             serializer['isLike'] = True
         elif request.user.id is not None and request.user.id not in serializer['likes_list']:
@@ -181,7 +214,13 @@ class WorksViewSet(viewsets.ViewSet):
     def edit_work_get(self, request, *args, **kwargs):
         Works = UserWorks
         work = get_object_or_404(Works, pk=kwargs['id'])
-        return Response(EditingWorkSerializer(work).data)
+        serializer = EditingWorkSerializer(work).data
+        blocks = []
+        for i in serializer['blocks']:
+            block = WorkBlockType.objects.get(id=i)
+            blocks.append(WorkBlockSerializer(block).data)
+        serializer['blocks'] = blocks
+        return Response(serializer)
 
     @action(permission_classes=(IsAuthenticated,), detail=True)
     def edit_work_post(self, request, *args, **kwargs):
@@ -191,7 +230,7 @@ class WorksViewSet(viewsets.ViewSet):
         data = request.data
         blocks = []
         for i in data['blocks']:
-            block = WorkBlockType.objects.create(
+            block = WorkBlockType.objects.get_or_create(
                 type=i['type'],
                 image_urls=i['image_urls'],
                 text=i['text'],
@@ -250,7 +289,7 @@ class WorksViewSet(viewsets.ViewSet):
         data["likes_list"] = []
         data["start_text"] = ""
         data["comments"] = []
-        data["date"] = django.utils.timezone.now()
+        data["date"] = datetime.date.today()
         blocks = []
         for i in data['blocks']:
             block = WorkBlockType.objects.create(
