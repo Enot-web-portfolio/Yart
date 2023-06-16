@@ -54,7 +54,7 @@ class EditingWorkSerializer(serializers.ModelSerializer):
         instance.open_comments = validated_data.get("open_comments", instance.open_comments)
         instance.blocks = validated_data.get("blocks", instance.blocks)
         instance.file_urls = validated_data.get("file_urls", instance.file_urls)
-        instance.name = validated_data.get("name", instance.file_urls)
+        instance.name = validated_data.get("name", instance.name)
         instance.save()
         return instance
 
