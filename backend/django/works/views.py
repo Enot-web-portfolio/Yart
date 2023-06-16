@@ -87,7 +87,7 @@ class WorksViewSet(viewsets.ViewSet):
             query = List.objects.all()
             serializer = WorksShortSerializer(query, many=True).data
             response_list = []
-            s_ids = request.GET.getlist("skillIds")
+            s_ids = list(map(int, request.GET.get("skillIds", "").split(",")))
             for i in serializer:
                 for j in s_ids:
                     if int(j) in i['main_skills'] and i not in response_list:
